@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Synthetic data. -->
+<odoo noupdate="1">
+    <record id="tag_b2b" model="res.partner.category"><field name="name">B2B customer</field></record>
+    <record id="tag_vendor_raw" model="res.partner.category"><field name="name">Raw material vendor</field></record>
+    <record id="categ_finished" model="product.category">
+        <field name="name">Tableware</field>
+        <field name="parent_id" ref="product.product_category_all"/>
+    </record>
+    <record id="categ_raw" model="product.category">
+        <field name="name">Raw materials</field>
+        <field name="parent_id" ref="product.product_category_all"/>
+    </record>
+</odoo>

@@ -1,0 +1,25 @@
+{
+    "name": "Kilnworks Demo Company",
+    "summary": "Synthetic stoneware maker used to demonstrate the Kilnworks modules",
+    "version": "18.0.1.0.0",
+    "category": "Hidden",
+    "author": "Kilnworks demo (synthetic)",
+    "website": "https://github.com/geffaa/kilnworks-odoo",
+    "license": "LGPL-3",
+    "depends": [
+        "contacts",
+        "purchase_stock",
+        "sale_stock",
+        "sale_management",
+        "account",
+        "l10n_id",
+    ],
+    "data": [
+        "data/res_partner_category.xml",
+        "data/res_partner.xml",
+        "data/product.xml",
+        "data/res_users.xml",
+    ],
+    "post_init_hook": "post_init_hook",
+    "installable": True,
+}

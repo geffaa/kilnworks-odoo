@@ -1,0 +1,15 @@
+{
+  "product": "Kilnworks on Odoo",
+  "direction": "native Odoo 18 Community host + Kilnworks glaze layer inside custom client actions",
+  "theme": "light",
+  "colors": {"brand": "#71639e", "ink": "#1f2328", "ink2": "#4a5059", "ink3": "#636a74", "bg": "#f2f3f5", "surface": "#ffffff",
+    "celadon": "#5f8f7b", "celadonInk": "#2f5a49", "celadonSoft": "#e6efeb", "clay": "#a5673f",
+    "success": "#1d7a46", "warning": "#8a5a00", "danger": "#b42335", "info": "#0f6a8b"},
+  "type": {"family": "system-ui stack (Odoo default)", "mono": "ui-monospace", "scale": [12, 13, 14, 16, 20, 26], "body": 14},
+  "space": [4, 8, 12, 16, 24, 32, 48],
+  "radius": {"control": 4, "popover": 6, "panel": 8},
+  "icons": "lucide-static via portfolio kit.py, stroke 1.75",
+  "navigation": "Odoo navbar + app 'Kilnworks Ops' (Dashboard, Approvals, Shopify, Firing Batches, Configuration)",
+  "memorable": "needs-attention band on the dashboard",
+  "mockups": ["mockups/dashboard.html", "mockups/purchase-order.html", "mockups/shopify.html", "mockups/components.html"]
+}

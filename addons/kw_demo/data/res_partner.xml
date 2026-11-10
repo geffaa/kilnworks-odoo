@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Synthetic data: every company and address here is made up. -->
+<odoo noupdate="1">
+    <record id="v_lempung" model="res.partner">
+        <field name="name">CV Sumber Lempung Godean</field><field name="is_company" eval="True"/><field name="city">Sleman</field>
+        <field name="country_id" ref="base.id"/><field name="email">sales@lempung-godean.example</field>
+        <field name="category_id" eval="[(4, ref('tag_vendor_raw'))]"/><field name="supplier_rank">1</field>
+    </record>
+    <record id="v_glasir" model="res.partner">
+        <field name="name">UD Glasir Tirta Mulya</field><field name="is_company" eval="True"/><field name="city">Bantul</field>
+        <field name="country_id" ref="base.id"/><field name="email">order@tirtamulya.example</field>
+        <field name="category_id" eval="[(4, ref('tag_vendor_raw'))]"/><field name="supplier_rank">1</field>
+    </record>
+    <record id="v_karton" model="res.partner">
+        <field name="name">PT Kemas Karton Piyungan</field><field name="is_company" eval="True"/><field name="city">Bantul</field>
+        <field name="country_id" ref="base.id"/><field name="email">cs@kemaspiyungan.example</field>
+        <field name="category_id" eval="[(4, ref('tag_vendor_raw'))]"/><field name="supplier_rank">1</field>
+    </record>
+    <record id="v_gas" model="res.partner">
+        <field name="name">Agen Elpiji Kasongan Jaya</field><field name="is_company" eval="True"/><field name="city">Bantul</field>
+        <field name="country_id" ref="base.id"/><field name="email">kasonganjaya@mail.example</field>
+        <field name="category_id" eval="[(4, ref('tag_vendor_raw'))]"/><field name="supplier_rank">1</field>
+    </record>
+    <record id="v_oksida" model="res.partner">
+        <field name="name">CV Oksida Warna Prima</field><field name="is_company" eval="True"/><field name="city">Surabaya</field>
+        <field name="country_id" ref="base.id"/><field name="email">prima@oksidawarna.example</field>
+        <field name="category_id" eval="[(4, ref('tag_vendor_raw'))]"/><field name="supplier_rank">1</field>
+    </record>
+    <record id="v_ekspedisi" model="res.partner">
+        <field name="name">PT Lintas Kargo Samudra</field><field name="is_company" eval="True"/><field name="city">Semarang</field>
+        <field name="country_id" ref="base.id"/><field name="email">booking@lintaskargo.example</field>
+        <field name="category_id" eval="[(4, ref('tag_vendor_raw'))]"/><field name="supplier_rank">1</field>
+    </record>
+    <record id="c_teras" model="res.partner">
+        <field name="name">Teras Kopi Jakal</field><field name="is_company" eval="True"/><field name="city">Sleman</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@teraskopijakal.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_wisma" model="res.partner">
+        <field name="name">Wisma Lereng Merapi</field><field name="is_company" eval="True"/><field name="city">Sleman</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@wismalerengmerapi.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_seduh" model="res.partner">
+        <field name="name">Kedai Seduh Pakem</field><field name="is_company" eval="True"/><field name="city">Sleman</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@kedaiseduhpakem.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_tirto" model="res.partner">
+        <field name="name">Dapur Tirtodipuran</field><field name="is_company" eval="True"/><field name="city">Yogyakarta</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@dapurtirtodipuran.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_pojok" model="res.partner">
+        <field name="name">Kopi Pojok Prawirotaman</field><field name="is_company" eval="True"/><field name="city">Yogyakarta</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@kopipojokprawirota.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_senja" model="res.partner">
+        <field name="name">Restoran Senja Seminyak</field><field name="is_company" eval="True"/><field name="city">Badung</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@restoransenjasemin.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_ruangteh" model="res.partner">
+        <field name="name">Ruang Teh Kemang</field><field name="is_company" eval="True"/><field name="city">Jakarta Selatan</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@ruangtehkemang.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_setaman" model="res.partner">
+        <field name="name">Hotel Kembang Setaman</field><field name="is_company" eval="True"/><field name="city">Surakarta</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@hotelkembangsetama.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_ladang" model="res.partner">
+        <field name="name">Kafe Ladang Kebun Tebet</field><field name="is_company" eval="True"/><field name="city">Jakarta Selatan</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@kafeladangkebunteb.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_larasati" model="res.partner">
+        <field name="name">Bakmi Larasati Kotabaru</field><field name="is_company" eval="True"/><field name="city">Yogyakarta</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@bakmilarasatikotab.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_batukali" model="res.partner">
+        <field name="name">Roastery Batu Kali</field><field name="is_company" eval="True"/><field name="city">Malang</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@roasterybatukali.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_sawah" model="res.partner">
+        <field name="name">Penginapan Sawah Ubud</field><field name="is_company" eval="True"/><field name="city">Gianyar</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@penginapansawahubu.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_tepirel" model="res.partner">
+        <field name="name">Warung Kopi Tepi Rel</field><field name="is_company" eval="True"/><field name="city">Bandung</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@warungkopitepirel.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+    <record id="c_rupa" model="res.partner">
+        <field name="name">Toko Perabot Rupa Rupi</field><field name="is_company" eval="True"/><field name="city">Surabaya</field>
+        <field name="country_id" ref="base.id"/><field name="email">purchasing@tokoperabotruparup.example</field>
+        <field name="category_id" eval="[(4, ref('tag_b2b'))]"/><field name="customer_rank">1</field>
+        <field name="property_payment_term_id" ref="account.account_payment_term_30days"/>
+    </record>
+</odoo>

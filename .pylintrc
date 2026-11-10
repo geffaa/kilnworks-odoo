@@ -1,0 +1,16 @@
+[MASTER]
+load-plugins=pylint_odoo
+score=n
+
+[ODOOLINT]
+manifest-required-authors=Kilnworks demo (synthetic)
+manifest-required-keys=license
+manifest-deprecated-keys=description,active
+license-allowed=LGPL-3,AGPL-3
+valid-odoo-versions=18.0
+
+[MESSAGES CONTROL]
+disable=all
+enable=anomalous-backslash-in-string,assignment-from-none,dangerous-default-value,duplicate-key,
+    manifest-required-author,manifest-required-key,translation-required,sql-injection,attribute-deprecated,method-required-super,
+    print-used,external-request-timeout,missing-return,consider-merging-classes-inherited,context-overridden

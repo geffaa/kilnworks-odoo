@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopify · Kilnworks on Odoo</title>
+<link rel="stylesheet" href="kilnworks-ds.css"></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" />
+  <path d="m17 8-5-5-5 5" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+  <circle cx="12" cy="12" r="3" /></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5" />
+  <path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244" />
+  <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05" /></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" />
+  <circle cx="11" cy="11" r="8" /></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" />
+  <path d="m6 6 12 12" /></symbol><symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="m9 12 2 2 4-4" /></symbol><symbol id="i-rotate-cw" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+  <path d="M21 3v5h-5" /></symbol><symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="14" rx="1" />
+  <rect width="7" height="7" x="3" y="14" rx="1" /></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" />
+  <path d="M12 6v6l4 2" /></symbol></svg>
+<header class="o-navbar">
+  <button class="o-apps" aria-label="Home menu"><svg class="icon" aria-hidden="true"><use href="#i-layout-grid"/></svg></button>
+  <button class="o-apps o-burger" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <span class="o-appname">Kilnworks Ops</span>
+  <nav aria-label="Kilnworks Ops menu"><ul class="o-menu"><li><a href="dashboard.html">Dashboard</a></li><li><a href="#">Approvals</a></li><li><a href="shopify.html" aria-current="page">Shopify</a></li><li><a href="#">Firing Batches</a></li><li><a href="#">Configuration</a></li></ul></nav>
+  <div class="o-systray">
+    <button aria-label="Messages, 3 unread"><svg class="icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="o-badge-count">3</span></button>
+    <button aria-label="Activities, 5 due"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="o-badge-count">5</span></button>
+    <span class="o-company">Kilnworks Stoneware</span>
+    <span class="o-avatar" role="img" aria-label="Ratna Wibisono">RW</span>
+  </div>
+</header>
+<div class="o-cp">
+  <div class="o-bc"><span class="cur">Shopify</span></div>
+  <div class="o-cp-right">
+    <button class="btn btn-secondary"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>Push stock now</button>
+    <button class="btn btn-ghost btn-icon" aria-label="Store settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button>
+  </div>
+</div>
+<main class="o-content">
+  <div class="store-strip">
+    <span class="store-mark"><svg class="icon" aria-hidden="true"><use href="#i-store"/></svg></span>
+    <div><div style="font-weight:600">kilnworks-studio.myshopify.com</div>
+      <div class="store-facts"><span><span class="ok-dot"></span><b>Connected</b></span><span>API <b>2025-10</b></span>
+        <span>Webhooks <b>4 of 4</b> registered</span><span>Stock push <b>09:20</b>, 18 items</span><span>Location <b>WH/Stock</b></span></div></div>
+    <a class="btn btn-ghost" href="#"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Product map · 34 SKUs</a>
+  </div>
+  <div class="console">
+    <section class="panel" aria-labelledby="ev-h">
+      <div class="panel-h"><h2 id="ev-h">Sync log</h2><span class="count">last 24 hours</span></div>
+      <div class="filters">
+        <div class="seg" role="radiogroup" aria-label="Filter by state">
+          <button role="radio" aria-checked="false">All <span class="n">47</span></button>
+          <button role="radio" aria-checked="true">Needs a look <span class="n">2</span></button>
+          <button role="radio" aria-checked="false">Done <span class="n">45</span></button>
+        </div>
+        <div class="search" role="search"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-search"/></svg><span>Search order or SKU</span></div>
+      </div>
+      <div class="tbl-wrap"><table class="o-list"><caption class="sr-only">Webhook events</caption>
+        <thead><tr><th>Received</th><th>Order</th><th>State</th><th class="hide-sm">Sale order</th></tr></thead>
+        <tbody><tr><td class="num muted">09:26</td><td><b>#KW1044</b><span class="sub">orders/create</span></td><td><span class="badge b-info">Retrying</span></td><td class="hide-sm">—</td></tr><tr aria-selected="true"><td class="num muted">09:17</td><td><b>#KW1043</b><span class="sub">orders/create</span></td><td><span class="badge b-warning">Needs mapping</span></td><td class="hide-sm">—</td></tr><tr><td class="num muted">09:14</td><td><b>#KW1042</b><span class="sub">orders/create</span></td><td><span class="badge b-success">Done</span></td><td class="hide-sm"><a href="#">S/2026/1203</a></td></tr><tr><td class="num muted">09:02</td><td><b>#KW1031</b><span class="sub">orders/cancelled</span></td><td><span class="badge b-success">Done</span></td><td class="hide-sm"><a href="#">S/2026/1189</a></td></tr><tr><td class="num muted">08:47</td><td><b>#KW1041</b><span class="sub">orders/create</span></td><td><span class="badge b-success">Done</span></td><td class="hide-sm"><a href="#">S/2026/1202</a></td></tr><tr><td class="num muted">08:31</td><td><b>#KW1040</b><span class="sub">orders/create</span></td><td><span class="badge b-success">Done</span></td><td class="hide-sm"><a href="#">S/2026/1201</a></td></tr><tr><td class="num muted">07:55</td><td><b>#KW1039</b><span class="sub">orders/create</span></td><td><span class="badge b-success">Done</span></td><td class="hide-sm"><a href="#">S/2026/1200</a></td></tr><tr><td class="num muted">06:10</td><td><b>#KW1038</b><span class="sub">orders/create</span></td><td><span class="badge b-success">Done</span></td><td class="hide-sm"><a href="#">S/2026/1199</a></td></tr></tbody></table></div>
+      <p class="panel-f muted">Showing the 2 that need a look plus the latest done. Duplicate deliveries are ignored by webhook ID (3 today).</p>
+    </section>
+
+    <section class="panel detail" aria-labelledby="dt-h">
+      <div class="panel-h"><h2 id="dt-h">#KW1043</h2><span class="badge b-warning">Needs mapping</span>
+        <div class="end"><button class="btn btn-sm btn-ghost" aria-label="Close detail"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-x"/></svg></button></div></div>
+      <div class="panel-b">
+        <dl>
+          <dt>Topic</dt><dd>orders/create</dd>
+          <dt>Webhook ID</dt><dd class="mono">b54557e4-bdd9-4b37-8a5f-bf7d70bcd043</dd>
+          <dt>Signature</dt><dd><svg class="icon icon-sm" aria-hidden="true"><use href="#i-shield-check"/></svg> HMAC valid</dd>
+          <dt>Order total</dt><dd class="num">US$ 118.00 · 2 lines</dd>
+          <dt>Attempts</dt><dd>1 · stopped, waiting for a fix</dd>
+        </dl>
+        <div class="fix"><h3>SKU KW-MUG-350-SAGE has no Odoo product</h3>
+          <p>No sale order was created, so nothing is half-imported. Map the SKU, then retry. The sage glaze was added in Shopify on Nov 9.</p></div>
+        <div class="decision" style="border-top:0;padding-top:0">
+          <button class="btn btn-primary"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>Map SKU</button>
+          <button class="btn btn-secondary" aria-disabled="true" title="Map the SKU first"><svg class="icon" aria-hidden="true"><use href="#i-rotate-cw"/></svg>Retry</button>
+        </div>
+        <ul class="timeline" aria-label="Event history">
+          <li><time>09:17:04</time><span>Received, signature checked, stored</span></li>
+          <li><time>09:17:05</time><span>Queued on channel root.kw_shopify</span></li>
+          <li><time>09:17:06</time><span>Stopped: 1 of 2 SKUs unmapped</span></li>
+        </ul>
+        <pre class="payload" aria-label="Payload excerpt">{
+  <span class="pk">"name"</span>: <span class="ps">"#KW1043"</span>,
+  <span class="pk">"currency"</span>: <span class="ps">"USD"</span>,
+  <span class="pk">"total_price"</span>: <span class="ps">"118.00"</span>,
+  <span class="pk">"customer"</span>: { <span class="pk">"email"</span>: <span class="ps">"m.okafor@example.com"</span> },
+  <span class="pk">"line_items"</span>: [
+    { <span class="pk">"sku"</span>: <span class="ps">"KW-MUG-350-SAGE"</span>, <span class="pk">"quantity"</span>: <span class="pn">4</span>, <span class="pk">"price"</span>: <span class="ps">"24.00"</span> },
+    { <span class="pk">"sku"</span>: <span class="ps">"KW-PLT-210-SPK"</span>, <span class="pk">"quantity"</span>: <span class="pn">1</span>, <span class="pk">"price"</span>: <span class="ps">"22.00"</span> }
+  ]
+}</pre>
+      </div>
+    </section>
+  </div>
+  <p class="synthetic" style="margin-top:var(--s4)">Synthetic data. Store, customers and orders are made up for the demo.</p>
+</main>
+</body></html>

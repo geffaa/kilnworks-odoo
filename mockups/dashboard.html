@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard · Kilnworks on Odoo</title>
+<link rel="stylesheet" href="kilnworks-ds.css"></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+  <path d="M21 3v5h-5" />
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+  <path d="M8 16H3v5" /></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5" />
+  <path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244" />
+  <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05" /></symbol><symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" /></symbol><symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="14" rx="1" />
+  <rect width="7" height="7" x="3" y="14" rx="1" /></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" />
+  <path d="M12 6v6l4 2" /></symbol></svg>
+<header class="o-navbar">
+  <button class="o-apps" aria-label="Home menu"><svg class="icon" aria-hidden="true"><use href="#i-layout-grid"/></svg></button>
+  <button class="o-apps o-burger" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <span class="o-appname">Kilnworks Ops</span>
+  <nav aria-label="Kilnworks Ops menu"><ul class="o-menu"><li><a href="dashboard.html" aria-current="page">Dashboard</a></li><li><a href="#">Approvals</a></li><li><a href="shopify.html">Shopify</a></li><li><a href="#">Firing Batches</a></li><li><a href="#">Configuration</a></li></ul></nav>
+  <div class="o-systray">
+    <button aria-label="Messages, 3 unread"><svg class="icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="o-badge-count">3</span></button>
+    <button aria-label="Activities, 5 due"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="o-badge-count">5</span></button>
+    <span class="o-company">Kilnworks Stoneware</span>
+    <span class="o-avatar" role="img" aria-label="Ratna Wibisono">RW</span>
+  </div>
+</header>
+<div class="o-cp">
+  <div class="o-bc"><span class="cur">Dashboard</span></div>
+  <div class="o-cp-right">
+    <div class="seg" role="radiogroup" aria-label="Period">
+      <button role="radio" aria-checked="false">7 days</button>
+      <button role="radio" aria-checked="true">30 days</button>
+      <button role="radio" aria-checked="false">90 days</button>
+    </div>
+    <button class="btn btn-ghost btn-icon" aria-label="Refresh"><svg class="icon" aria-hidden="true"><use href="#i-refresh-cw"/></svg></button>
+  </div>
+</div>
+<main class="o-content">
+  <div class="dash">
+    <div class="span-12 attn" aria-label="Needs attention">
+      <section>
+        <div class="attn-h"><span class="big">3</span><h2>approvals waiting</h2>
+          <a class="end" href="#">Open inbox</a></div>
+        <div class="tbl-wrap"><table class="o-list"><caption class="sr-only">Approvals waiting</caption>
+          <thead><tr><th>Document</th><th class="hide-sm">Rule</th><th class="r">Amount</th><th class="r">Waiting</th></tr></thead>
+          <tbody><tr><td><a href="purchase-order.html">PO/2026/0418</a><span class="sub">Sumber Lempung Godean</span></td><td class="hide-sm">Purchase · tier 1 of 2</td><td class="r num">Rp 48,600,000</td><td class="r"><span class="age late">26 h</span></td></tr><tr><td><a href="purchase-order.html">S/2026/1187</a><span class="sub">Teras Kopi Jakal</span></td><td class="hide-sm">Discount 15% · owner</td><td class="r num">Rp 21,420,000</td><td class="r"><span class="age">5 h</span></td></tr><tr><td><a href="purchase-order.html">PO/2026/0421</a><span class="sub">UD Glasir Tirta Mulya</span></td><td class="hide-sm">Purchase · tier 1 of 1</td><td class="r num">Rp 31,250,000</td><td class="r"><span class="age">2 h</span></td></tr></tbody></table></div>
+      </section>
+      <section>
+        <div class="attn-h"><span class="big">2</span><h2>Shopify events need a look</h2>
+          <a class="end" href="shopify.html">Open sync log</a></div>
+        <div class="tbl-wrap"><table class="o-list"><caption class="sr-only">Sync events needing attention</caption>
+          <thead><tr><th>Order</th><th>State</th><th class="r">Received</th></tr></thead>
+          <tbody><tr><td><a href="shopify.html">#KW1043</a><span class="sub">orders/create</span></td><td><span class="badge b-warning">Needs mapping</span><span class="sub">SKU KW-MUG-350-SAGE has no Odoo product</span></td><td class="r num muted">09:17</td></tr><tr><td><a href="shopify.html">#KW1044</a><span class="sub">orders/create</span></td><td><span class="badge b-info">Retrying</span><span class="sub">Shopify throttled the call · next try 09:31</span></td><td class="r num muted">09:26</td></tr></tbody></table></div>
+        <p class="panel-f muted">45 of 47 events in the last 24 h were processed. Stock pushed at 09:20 (18 items).</p>
+      </section>
+    </div>
+
+    <section class="panel span-7" aria-labelledby="rev-h">
+      <div class="panel-h"><h2 id="rev-h">Revenue by channel</h2><span class="count">11 Oct – 10 Nov 2026</span></div>
+      <div class="panel-b">
+        <div class="channel">
+          <div><div class="k"><span class="key" style="background:var(--kw-clay)"></span>B2B · 23 orders</div>
+            <div class="v num">Rp 184,250,000</div><div class="d up num">+13.8% vs previous 30 days</div></div>
+          <div><div class="k"><span class="key" style="background:var(--kw-celadon)"></span>Shopify · 212 orders</div>
+            <div class="v num">US$ 9,842</div><div class="d down num">−4.1% · ≈ Rp 156,400,000</div></div>
+        </div>
+        <svg class="chart" viewBox="0 0 640 220" role="img" aria-label="Weekly revenue by channel, last 30 days, in Rp million"><line x1="40" x2="640" y1="194.0" y2="194.0" stroke="#eceef1"/><text x="32" y="198.0" text-anchor="end">0</text><line x1="40" x2="640" y1="132.7" y2="132.7" stroke="#eceef1"/><text x="32" y="136.7" text-anchor="end">20</text><line x1="40" x2="640" y1="71.3" y2="71.3" stroke="#eceef1"/><text x="32" y="75.3" text-anchor="end">40</text><line x1="40" x2="640" y1="10.0" y2="10.0" stroke="#eceef1"/><text x="32" y="14.0" text-anchor="end">60</text><rect x="77.0" y="77.2" width="22" height="116.8" rx="2" fill="var(--kw-clay)"><title>B2B week of 13 Oct: Rp 38.1 million</title></rect><rect x="101.0" y="90.0" width="22" height="104.0" rx="2" fill="var(--kw-celadon)"><title>Shopify week of 13 Oct: Rp 33.9 million</title></rect><text x="100.0" y="212" text-anchor="middle">13 Oct</text><rect x="197.0" y="50.8" width="22" height="143.2" rx="2" fill="var(--kw-clay)"><title>B2B week of 20 Oct: Rp 46.7 million</title></rect><rect x="221.0" y="86.1" width="22" height="107.9" rx="2" fill="var(--kw-celadon)"><title>Shopify week of 20 Oct: Rp 35.2 million</title></rect><text x="220.0" y="212" text-anchor="middle">20 Oct</text><rect x="317.0" y="67.7" width="22" height="126.3" rx="2" fill="var(--kw-clay)"><title>B2B week of 27 Oct: Rp 41.2 million</title></rect><rect x="341.0" y="69.5" width="22" height="124.5" rx="2" fill="var(--kw-celadon)"><title>Shopify week of 27 Oct: Rp 40.6 million</title></rect><text x="340.0" y="212" text-anchor="middle">27 Oct</text><rect x="437.0" y="32.7" width="22" height="161.3" rx="2" fill="var(--kw-clay)"><title>B2B week of 3 Nov: Rp 52.6 million</title></rect><rect x="461.0" y="71.9" width="22" height="122.1" rx="2" fill="var(--kw-celadon)"><title>Shopify week of 3 Nov: Rp 39.8 million</title></rect><text x="460.0" y="212" text-anchor="middle">3 Nov</text><rect x="557.0" y="176.7" width="22" height="17.3" rx="2" fill="var(--kw-clay)"><title>B2B week of 10 Nov: Rp 5.7 million</title></rect><rect x="581.0" y="172.8" width="22" height="21.2" rx="2" fill="var(--kw-celadon)"><title>Shopify week of 10 Nov: Rp 6.9 million</title></rect><text x="580.0" y="212" text-anchor="middle">10 Nov *</text></svg>
+        <p class="synthetic">Rp million per week. * Week in progress. USD converted at the company rate on each order date. Synthetic data.</p>
+      </div>
+    </section>
+
+    <section class="panel span-5" aria-labelledby="stk-h">
+      <div class="panel-h"><h2 id="stk-h">Below minimum stock</h2><span class="count">5 of 18 products</span>
+        <div class="end"><a href="#" class="btn btn-sm btn-ghost">Replenish</a></div></div>
+      <div class="tbl-wrap"><table class="o-list"><caption class="sr-only">Products below minimum</caption>
+        <thead><tr><th>Product</th><th class="r">On hand / min</th><th class="hide-sm"></th></tr></thead>
+        <tbody><tr><td>Celadon mug 350 ml<span class="sub mono">KW-MUG-350-CEL</span></td><td class="r num">42 <span class="muted">/ 120</span></td><td class="hide-sm"><div class="stockbar" role="img" aria-label="35% of minimum"><i class="mid" style="width:35%"></i></div></td></tr><tr><td>Speckled dinner plate 27 cm<span class="sub mono">KW-PLT-270-SPK</span></td><td class="r num">18 <span class="muted">/ 80</span></td><td class="hide-sm"><div class="stockbar" role="img" aria-label="22% of minimum"><i class="" style="width:22%"></i></div></td></tr><tr><td>Ash-glaze ramen bowl<span class="sub mono">KW-BWL-900-ASH</span></td><td class="r num">9 <span class="muted">/ 60</span></td><td class="hide-sm"><div class="stockbar" role="img" aria-label="15% of minimum"><i class="" style="width:15%"></i></div></td></tr><tr><td>Espresso cup 90 ml, sand<span class="sub mono">KW-ESP-090-SND</span></td><td class="r num">64 <span class="muted">/ 150</span></td><td class="hide-sm"><div class="stockbar" role="img" aria-label="43% of minimum"><i class="mid" style="width:43%"></i></div></td></tr><tr><td>Pour-over dripper, iron red<span class="sub mono">KW-DRP-002-IRR</span></td><td class="r num">11 <span class="muted">/ 40</span></td><td class="hide-sm"><div class="stockbar" role="img" aria-label="28% of minimum"><i class="" style="width:28%"></i></div></td></tr></tbody></table></div>
+    </section>
+
+    <section class="panel span-7" aria-labelledby="inv-h">
+      <div class="panel-h"><h2 id="inv-h">B2B invoices due</h2><span class="count">Midtrans payment links</span></div>
+      <div class="tbl-wrap"><table class="o-list"><caption class="sr-only">Invoices due</caption>
+        <thead><tr><th>Invoice</th><th class="r">Amount</th><th class="r">Due</th></tr></thead>
+        <tbody><tr><td>INV/2026/00391<span class="sub">Teras Kopi Jakal</span></td><td class="r num">Rp 21,420,000</td><td class="r"><span class="num">12 Nov</span><span class="sub"><span class="badge b-info">Link sent</span></span></td></tr><tr><td>INV/2026/00377<span class="sub">Wisma Lereng Merapi</span></td><td class="r num">Rp 64,800,000</td><td class="r"><span class="num">Overdue 3 d</span><span class="sub"><span class="badge b-danger">No payment</span></span></td></tr><tr><td>INV/2026/00385<span class="sub">Kedai Seduh Pakem</span></td><td class="r num">Rp 8,910,000</td><td class="r"><span class="num">15 Nov</span><span class="sub"><span class="badge b-warning">VA pending</span></span></td></tr></tbody></table></div>
+    </section>
+
+    <section class="panel span-5" aria-labelledby="st-h">
+      <div class="panel-h"><h2 id="st-h">Block states</h2><span class="count">how each block behaves</span></div>
+      <div class="panel-b" style="display:grid;gap:var(--s4)">
+        <div aria-hidden="true"><div class="skel" style="width:60%"></div><div class="skel" style="width:90%;margin-top:8px"></div>
+          <div class="skel" style="width:75%;margin-top:8px"></div><p class="synthetic" style="margin:6px 0 0">Loading</p></div>
+        <div class="empty" style="padding:var(--s3) 0"><svg class="icon" aria-hidden="true"><use href="#i-store"/></svg><h3>No orders yet</h3>
+          <p>Connect a Shopify store in Configuration › Stores, or confirm a B2B quotation.</p></div>
+        <div class="alert alert-warning" style="margin:0"><svg class="icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg><div>Couldn't load revenue: the server took too long.
+          <a href="#">Try again</a></div></div>
+      </div>
+    </section>
+  </div>
+  <p class="synthetic" style="margin-top:var(--s4)">Kilnworks is a synthetic company. Every name, amount and order on this page is made up for the demo.</p>
+</main>
+</body></html>

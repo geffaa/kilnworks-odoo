@@ -1,0 +1,12 @@
+target-version = "py310"
+line-length = 100
+exclude = ["oca", "mockups"]
+[lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+[lint.isort]
+known-first-party = ["odoo"]
+
+[lint.per-file-ignores]
+"tools/**" = ["E501", "E702", "B023"]
+"**/__manifest__.py" = ["B018"]
+"**/__init__.py" = ["F401"]

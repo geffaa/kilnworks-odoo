@@ -1,0 +1,16 @@
+[submodule "oca/server-ux"]
+	path = oca/server-ux
+	url = https://github.com/OCA/server-ux.git
+	branch = 18.0
+[submodule "oca/purchase-workflow"]
+	path = oca/purchase-workflow
+	url = https://github.com/OCA/purchase-workflow.git
+	branch = 18.0
+[submodule "oca/sale-workflow"]
+	path = oca/sale-workflow
+	url = https://github.com/OCA/sale-workflow.git
+	branch = 18.0
+[submodule "oca/queue"]
+	path = oca/queue
+	url = https://github.com/OCA/queue.git
+	branch = 18.0

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Components · Kilnworks on Odoo</title>
+<link rel="stylesheet" href="kilnworks-ds.css"></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol><symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="14" rx="1" />
+  <rect width="7" height="7" x="3" y="14" rx="1" /></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" />
+  <path d="M12 6v6l4 2" /></symbol></svg>
+<header class="o-navbar">
+  <button class="o-apps" aria-label="Home menu"><svg class="icon" aria-hidden="true"><use href="#i-layout-grid"/></svg></button>
+  <button class="o-apps o-burger" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <span class="o-appname">Kilnworks Ops</span>
+  <nav aria-label="Kilnworks Ops menu"><ul class="o-menu"><li><a href="dashboard.html">Dashboard</a></li><li><a href="#">Approvals</a></li><li><a href="shopify.html">Shopify</a></li><li><a href="#">Firing Batches</a></li><li><a href="#">Configuration</a></li></ul></nav>
+  <div class="o-systray">
+    <button aria-label="Messages, 3 unread"><svg class="icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="o-badge-count">3</span></button>
+    <button aria-label="Activities, 5 due"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="o-badge-count">5</span></button>
+    <span class="o-company">Kilnworks Stoneware</span>
+    <span class="o-avatar" role="img" aria-label="Ratna Wibisono">RW</span>
+  </div>
+</header>
+<div class="o-cp"><div class="o-bc"><span class="cur">Components</span></div></div>
+<main class="o-content">
+  <p class="muted" style="max-width:70ch;margin-top:0">Open states of the custom controls used in the client actions. In the real modules these are
+  Odoo's own OWL components (Dropdown, DateTimeInput, CheckBox) so they inherit keyboard support; the segmented control is a Kilnworks component with role="radiogroup".</p>
+  <div class="comp-grid">
+    <section class="panel"><div class="panel-h"><h2>Many2one / select</h2></div><div class="panel-b">
+      <div class="combo"><button class="combo-btn" aria-haspopup="listbox" aria-expanded="true">Sekar Ayuningtyas <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+        <ul class="listbox" role="listbox" aria-label="Delegate to">
+          <li role="option" aria-selected="false">Dimas Pratama <span class="muted">Production</span></li>
+          <li role="option" aria-selected="true" class="active">Sekar Ayuningtyas <span class="muted">Sales</span></li>
+          <li role="option" aria-selected="false">Bayu Santoso <span class="muted">E-commerce</span></li>
+        </ul></div></div></section>
+    <section class="panel"><div class="panel-h"><h2>Date range</h2><span class="count">Delegation</span></div><div class="panel-b">
+      <div class="cal" role="dialog" aria-label="Choose delegation dates">
+        <div class="cal-h"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Previous month"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          November 2026<button class="btn btn-ghost btn-icon btn-sm" aria-label="Next month"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+        <div class="cal-g"><span class="dow">Mo</span><span class="dow">Tu</span><span class="dow">We</span><span class="dow">Th</span>
+          <span class="dow">Fr</span><span class="dow">Sa</span><span class="dow">Su</span><button class="out" tabindex="-1">26</button><button class="out" tabindex="-1">27</button><button class="out" tabindex="-1">28</button><button class="out" tabindex="-1">29</button><button class="out" tabindex="-1">30</button><button class="out" tabindex="-1">31</button><button class="" aria-label="November 1, 2026">1</button><button class="" aria-label="November 2, 2026">2</button><button class="" aria-label="November 3, 2026">3</button><button class="" aria-label="November 4, 2026">4</button><button class="" aria-label="November 5, 2026">5</button><button class="" aria-label="November 6, 2026">6</button><button class="" aria-label="November 7, 2026">7</button><button class="" aria-label="November 8, 2026">8</button><button class="" aria-label="November 9, 2026">9</button><button class="edge today" aria-pressed="true" aria-label="November 10, 2026">10</button><button class="range" aria-label="November 11, 2026">11</button><button class="range" aria-label="November 12, 2026">12</button><button class="range" aria-label="November 13, 2026">13</button><button class="edge" aria-pressed="true" aria-label="November 14, 2026">14</button><button class="" aria-label="November 15, 2026">15</button><button class="" aria-label="November 16, 2026">16</button><button class="" aria-label="November 17, 2026">17</button><button class="" aria-label="November 18, 2026">18</button><button class="" aria-label="November 19, 2026">19</button><button class="" aria-label="November 20, 2026">20</button><button class="" aria-label="November 21, 2026">21</button><button class="" aria-label="November 22, 2026">22</button><button class="" aria-label="November 23, 2026">23</button><button class="" aria-label="November 24, 2026">24</button><button class="" aria-label="November 25, 2026">25</button><button class="" aria-label="November 26, 2026">26</button><button class="" aria-label="November 27, 2026">27</button><button class="" aria-label="November 28, 2026">28</button><button class="" aria-label="November 29, 2026">29</button><button class="" aria-label="November 30, 2026">30</button></div></div></div></section>
+    <section class="panel"><div class="panel-h"><h2>Checkbox</h2><span class="count">API key scopes</span></div><div class="panel-b">
+      <div role="group" aria-label="Scopes">
+        <div class="check"><span class="box" role="checkbox" aria-checked="true" tabindex="0"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>products:read</div>
+        <div class="check"><span class="box" role="checkbox" aria-checked="true" tabindex="0"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>stock:read</div>
+        <div class="check"><span class="box" role="checkbox" aria-checked="false" tabindex="0"></span>orders:write</div>
+      </div></div></section>
+    <section class="panel"><div class="panel-h"><h2>Segmented · badges</h2></div><div class="panel-b" style="display:grid;gap:var(--s4)">
+      <div class="seg" role="radiogroup" aria-label="Period"><button role="radio" aria-checked="true">7 days</button>
+        <button role="radio" aria-checked="false">30 days</button><button role="radio" aria-checked="false">90 days</button></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-success">Done</span><span class="badge b-warning">Needs mapping</span>
+        <span class="badge b-info">Retrying</span><span class="badge b-danger">Failed</span><span class="badge b-muted">Not started</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary">Approve</button><button class="btn btn-secondary">Retry</button>
+        <button class="btn btn-danger-ghost">Reject…</button><button class="btn btn-primary" aria-disabled="true">Confirm Order</button></div>
+    </div></section>
+  </div>
+</main>
+</body></html>

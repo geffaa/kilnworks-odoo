@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Synthetic data. -->
+<odoo noupdate="1">
+    <record id="p_kw_mug_350_cel" model="product.template">
+        <field name="name">Celadon mug 350 ml</field><field name="default_code">KW-MUG-350-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">185000</field>
+        <field name="standard_price">62000</field><field name="weight">0.42</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_mug_350_ash" model="product.template">
+        <field name="name">Ash-glaze mug 350 ml</field><field name="default_code">KW-MUG-350-ASH</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">185000</field>
+        <field name="standard_price">62000</field><field name="weight">0.42</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_mug_250_snd" model="product.template">
+        <field name="name">Sand mug 250 ml</field><field name="default_code">KW-MUG-250-SND</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">160000</field>
+        <field name="standard_price">54000</field><field name="weight">0.34</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_esp_090_snd" model="product.template">
+        <field name="name">Espresso cup 90 ml, sand</field><field name="default_code">KW-ESP-090-SND</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">95000</field>
+        <field name="standard_price">31000</field><field name="weight">0.16</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_esp_090_cel" model="product.template">
+        <field name="name">Espresso cup 90 ml, celadon</field><field name="default_code">KW-ESP-090-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">95000</field>
+        <field name="standard_price">31000</field><field name="weight">0.16</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_cup_200_irr" model="product.template">
+        <field name="name">Latte cup 200 ml, iron red</field><field name="default_code">KW-CUP-200-IRR</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">140000</field>
+        <field name="standard_price">47000</field><field name="weight">0.3</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_sau_140_irr" model="product.template">
+        <field name="name">Saucer 14 cm, iron red</field><field name="default_code">KW-SAU-140-IRR</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">75000</field>
+        <field name="standard_price">24000</field><field name="weight">0.22</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_plt_270_spk" model="product.template">
+        <field name="name">Speckled dinner plate 27 cm</field><field name="default_code">KW-PLT-270-SPK</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">265000</field>
+        <field name="standard_price">88000</field><field name="weight">0.95</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_plt_210_spk" model="product.template">
+        <field name="name">Speckled side plate 21 cm</field><field name="default_code">KW-PLT-210-SPK</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">195000</field>
+        <field name="standard_price">64000</field><field name="weight">0.6</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_plt_270_cel" model="product.template">
+        <field name="name">Celadon dinner plate 27 cm</field><field name="default_code">KW-PLT-270-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">275000</field>
+        <field name="standard_price">91000</field><field name="weight">0.95</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_bwl_900_ash" model="product.template">
+        <field name="name">Ash-glaze ramen bowl</field><field name="default_code">KW-BWL-900-ASH</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">245000</field>
+        <field name="standard_price">82000</field><field name="weight">0.88</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_bwl_500_cel" model="product.template">
+        <field name="name">Celadon rice bowl 500 ml</field><field name="default_code">KW-BWL-500-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">150000</field>
+        <field name="standard_price">49000</field><field name="weight">0.4</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_bwl_150_snd" model="product.template">
+        <field name="name">Dipping bowl 150 ml, sand</field><field name="default_code">KW-BWL-150-SND</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">70000</field>
+        <field name="standard_price">22000</field><field name="weight">0.14</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_drp_002_irr" model="product.template">
+        <field name="name">Pour-over dripper, iron red</field><field name="default_code">KW-DRP-002-IRR</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">320000</field>
+        <field name="standard_price">105000</field><field name="weight">0.55</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_srv_001_cel" model="product.template">
+        <field name="name">Serving server 600 ml, celadon</field><field name="default_code">KW-SRV-001-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">290000</field>
+        <field name="standard_price">97000</field><field name="weight">0.62</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_tpt_800_ash" model="product.template">
+        <field name="name">Teapot 800 ml, ash glaze</field><field name="default_code">KW-TPT-800-ASH</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">480000</field>
+        <field name="standard_price">165000</field><field name="weight">1.1</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_vas_180_spk" model="product.template">
+        <field name="name">Bud vase 18 cm, speckled</field><field name="default_code">KW-VAS-180-SPK</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">210000</field>
+        <field name="standard_price">70000</field><field name="weight">0.48</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_kw_set_4pc_cel" model="product.template">
+        <field name="name">Breakfast set 4 pcs, celadon</field><field name="default_code">KW-SET-4PC-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_finished"/><field name="list_price">690000</field>
+        <field name="standard_price">231000</field><field name="weight">2.1</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="p_rm_clay_gdn" model="product.template">
+        <field name="name">Stoneware clay, Godean, 25 kg sack</field><field name="default_code">RM-CLAY-GDN</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_raw"/><field name="sale_ok" eval="False"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/><field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">14500</field>
+    </record>
+    <record id="p_rm_clay_gdn_seller" model="product.supplierinfo">
+        <field name="product_tmpl_id" ref="p_rm_clay_gdn"/><field name="partner_id" ref="v_lempung"/>
+        <field name="price">14500</field><field name="delay">3</field>
+    </record>
+    <record id="p_rm_glz_cel" model="product.template">
+        <field name="name">Celadon glaze base, dry</field><field name="default_code">RM-GLZ-CEL</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_raw"/><field name="sale_ok" eval="False"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/><field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">180000</field>
+    </record>
+    <record id="p_rm_glz_cel_seller" model="product.supplierinfo">
+        <field name="product_tmpl_id" ref="p_rm_glz_cel"/><field name="partner_id" ref="v_glasir"/>
+        <field name="price">180000</field><field name="delay">3</field>
+    </record>
+    <record id="p_rm_glz_ash" model="product.template">
+        <field name="name">Ash glaze base, dry</field><field name="default_code">RM-GLZ-ASH</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_raw"/><field name="sale_ok" eval="False"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/><field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">150000</field>
+    </record>
+    <record id="p_rm_glz_ash_seller" model="product.supplierinfo">
+        <field name="product_tmpl_id" ref="p_rm_glz_ash"/><field name="partner_id" ref="v_glasir"/>
+        <field name="price">150000</field><field name="delay">3</field>
+    </record>
+    <record id="p_rm_oxd_irn" model="product.template">
+        <field name="name">Red iron oxide</field><field name="default_code">RM-OXD-IRN</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_raw"/><field name="sale_ok" eval="False"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/><field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">95000</field>
+    </record>
+    <record id="p_rm_oxd_irn_seller" model="product.supplierinfo">
+        <field name="product_tmpl_id" ref="p_rm_oxd_irn"/><field name="partner_id" ref="v_oksida"/>
+        <field name="price">95000</field><field name="delay">3</field>
+    </record>
+    <record id="p_rm_ctn_5ply" model="product.template">
+        <field name="name">Export carton 5-ply, 40x30x30 cm</field><field name="default_code">RM-CTN-5PLY</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_raw"/><field name="sale_ok" eval="False"/>
+        <field name="uom_id" ref="uom.product_uom_unit"/><field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="standard_price">7500</field>
+    </record>
+    <record id="p_rm_ctn_5ply_seller" model="product.supplierinfo">
+        <field name="product_tmpl_id" ref="p_rm_ctn_5ply"/><field name="partner_id" ref="v_karton"/>
+        <field name="price">7500</field><field name="delay">3</field>
+    </record>
+    <record id="p_rm_lpg_50" model="product.template">
+        <field name="name">LPG 50 kg cylinder refill</field><field name="default_code">RM-LPG-50</field>
+        <field name="type">consu</field><field name="is_storable" eval="True"/>
+        <field name="categ_id" ref="categ_raw"/><field name="sale_ok" eval="False"/>
+        <field name="uom_id" ref="uom.product_uom_unit"/><field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="standard_price">1150000</field>
+    </record>
+    <record id="p_rm_lpg_50_seller" model="product.supplierinfo">
+        <field name="product_tmpl_id" ref="p_rm_lpg_50"/><field name="partner_id" ref="v_gas"/>
+        <field name="price">1150000</field><field name="delay">3</field>
+    </record>
+</odoo>

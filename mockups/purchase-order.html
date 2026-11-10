@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PO/2026/0418 · Kilnworks on Odoo</title>
+<link rel="stylesheet" href="kilnworks-ds.css"></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol><symbol id="i-shield-alert" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="M12 8v4" />
+  <path d="M12 16h.01" /></symbol><symbol id="i-corner-down-right" viewBox="0 0 24 24"><path d="m15 10 5 5-5 5" />
+  <path d="M4 4v7a4 4 0 0 0 4 4h12" /></symbol><symbol id="i-bell-ring" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0" />
+  <path d="M22 8c0-2.3-.8-4.3-2-6" />
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+  <path d="M4 2C2.8 3.7 2 5.7 2 8" /></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" />
+  <path d="m6 6 12 12" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" />
+  <path d="M12 6v6l4 2" /></symbol><symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="14" rx="1" />
+  <rect width="7" height="7" x="3" y="14" rx="1" /></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></symbol></svg>
+<header class="o-navbar">
+  <button class="o-apps" aria-label="Home menu"><svg class="icon" aria-hidden="true"><use href="#i-layout-grid"/></svg></button>
+  <button class="o-apps o-burger" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  <span class="o-appname">Purchase</span>
+  <nav aria-label="Purchase menu"><ul class="o-menu"><li><a href="purchase-order.html" aria-current="page">Orders</a></li><li><a href="#">Products</a></li><li><a href="#">Reporting</a></li><li><a href="#">Configuration</a></li></ul></nav>
+  <div class="o-systray">
+    <button aria-label="Messages, 3 unread"><svg class="icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="o-badge-count">3</span></button>
+    <button aria-label="Activities, 5 due"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="o-badge-count">5</span></button>
+    <span class="o-company">Kilnworks Stoneware</span>
+    <span class="o-avatar" role="img" aria-label="Ratna Wibisono">RW</span>
+  </div>
+</header>
+<div class="o-cp">
+  <div class="o-bc"><a href="#">Requests for Quotation</a><span class="sep">/</span><span class="cur">PO/2026/0418</span></div>
+  <div class="o-cp-right"><span class="o-pager">4 / 12 <button class="btn btn-ghost btn-icon btn-sm" aria-label="Previous"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+    <button class="btn btn-ghost btn-icon btn-sm" aria-label="Next"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></span></div>
+</div>
+<div class="o-form-wrap">
+  <main class="o-form-main">
+    <div class="o-statusbar">
+      <div class="o-cp-actions">
+        <button class="btn btn-primary" aria-disabled="true" title="Waiting for validation">Confirm Order</button>
+        <button class="btn btn-secondary">Send by Email</button>
+        <button class="btn btn-secondary">Print RFQ</button>
+        <button class="btn btn-secondary">Cancel</button>
+      </div>
+      <div class="o-status" aria-label="Status">
+        <span>RFQ</span><span>RFQ Sent</span><span aria-current="step">Waiting Validation</span><span>Purchase Order</span>
+      </div>
+    </div>
+    <div class="alert alert-warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-shield-alert"/></svg><div><b>This order needs 2 approvals before it can be confirmed.</b>
+      Amount Rp 48,600,000 is above the Rp 25,000,000 purchase limit. Tier 1 has waited 26 hours and was escalated to you.</div></div>
+    <div class="o-sheet">
+      <div class="o-title"><small>Purchase Order</small><h1>PO/2026/0418</h1></div>
+      <div class="o-groups">
+        <div>
+          <div class="o-field"><label>Vendor</label><div class="val"><a href="#">CV Sumber Lempung Godean</a></div></div>
+          <div class="o-field"><label>Vendor Reference</label><div class="val">SLG/INV/11-026</div></div>
+          <div class="o-field"><label>Currency</label><div class="val">IDR</div></div>
+        </div>
+        <div>
+          <div class="o-field"><label>Order Deadline</label><div class="val num">11/12/2026 10:00</div></div>
+          <div class="o-field"><label>Expected Arrival</label><div class="val num">11/14/2026</div></div>
+          <div class="o-field"><label>Buyer</label><div class="val">Dimas Pratama</div></div>
+        </div>
+      </div>
+
+      <div class="o-notebook">
+        <div class="o-tabs" role="tablist">
+          <button role="tab" aria-selected="false">Products</button>
+          <button role="tab" aria-selected="true">Validation <span class="tab-count">2 pending</span></button>
+          <button role="tab" aria-selected="false">Other Information</button>
+        </div>
+        <div role="tabpanel">
+          <ol class="tier-steps">
+            <li><span class="step-dot now">1</span>
+              <div><div class="who">Head of production → Ratna Wibisono</div>
+                <div class="note"><svg class="icon" aria-hidden="true"><use href="#i-corner-down-right"/></svg> Redirected: Dimas Pratama created this order and cannot approve it.</div>
+                <div class="note"><svg class="icon" aria-hidden="true"><use href="#i-bell-ring"/></svg> Escalated 11/10 09:00 after 24 working hours. Sekar Ayuningtyas may act for you (delegation 11/10–11/14).</div></div>
+              <span class="badge b-warning">Waiting · 26 h</span></li>
+            <li><span class="step-dot">2</span>
+              <div><div class="who">Owner · Ratna Wibisono</div><div class="note">Starts after tier 1 is approved.</div></div>
+              <span class="badge b-muted">Not started</span></li>
+          </ol>
+          <div class="decision">
+            <button class="btn btn-primary"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Approve tier 1</button>
+            <button class="btn btn-danger-ghost"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Reject…</button>
+            <span class="synthetic">Approving both tiers yourself is allowed for the owner; each is recorded separately.</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="font-size:var(--fs-lg);margin:var(--s6) 0 var(--s2)">Products</h2>
+      <div class="tbl-wrap"><table class="o-list"><caption class="sr-only">Order lines</caption>
+        <thead><tr><th>Product</th><th class="r">Quantity</th><th class="r">Unit Price</th><th class="r hide-sm">Taxes</th><th class="r">Amount</th></tr></thead>
+        <tbody><tr><td>Stoneware clay, Godean, 25 kg sack</td><td class="r num">2,400.00 kg</td><td class="r num">14,500.00</td><td class="r num hide-sm">—</td><td class="r num">Rp 34,800,000.00</td></tr><tr><td>Celadon glaze base, dry</td><td class="r num">60.00 kg</td><td class="r num">180,000.00</td><td class="r num hide-sm">—</td><td class="r num">Rp 10,800,000.00</td></tr><tr><td>Export carton 5-ply, 40×30×30 cm</td><td class="r num">400.00 Units</td><td class="r num">7,500.00</td><td class="r num hide-sm">—</td><td class="r num">Rp 3,000,000.00</td></tr></tbody></table></div>
+      <div class="totals"><span>Untaxed Amount:</span><span class="num">Rp 48,600,000.00</span>
+        <span>Taxes:</span><span class="num">Rp 0.00</span>
+        <span class="t">Total:</span><span class="t num">Rp 48,600,000.00</span></div>
+      <p class="synthetic">Vendor is not VAT-registered (non-PKP), so no tax applies. Synthetic data.</p>
+    </div>
+  </main>
+  <aside class="o-chatter" aria-label="Chatter">
+    <div class="o-chatter-top"><button class="btn btn-primary btn-sm">Send message</button><button class="btn btn-secondary btn-sm">Log note</button>
+      <button class="btn btn-secondary btn-sm"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg>Activities</button></div>
+    <div class="o-day">Today</div>
+    <div class="msg"><span class="o-avatar av-bot">OB</span><div><div class="h"><b>OdooBot</b><span>09:00</span></div>
+      <p>Tier 1 validation has waited more than 24 working hours. Escalated to Ratna Wibisono.</p></div></div>
+    <div class="o-day">Yesterday</div>
+    <div class="msg"><span class="o-avatar av-bot">OB</span><div><div class="h"><b>OdooBot</b><span>07:12</span></div>
+      <p>Tier 1 reviewer changed from Dimas Pratama to Ratna Wibisono: the creator of a document cannot approve it.</p></div></div>
+    <div class="msg"><span class="o-avatar av-d">DP</span><div><div class="h"><b>Dimas Pratama</b><span>07:12</span></div>
+      <p>Clay for the December glaze run. Price is up Rp 500/kg from October, still below Bantul suppliers.</p>
+      <div class="track">Status: RFQ Sent → Waiting Validation</div></div></div>
+    <div class="msg"><span class="o-avatar av-d">DP</span><div><div class="h"><b>Dimas Pratama</b><span>Nov 8</span></div>
+      <p>RFQ sent to CV Sumber Lempung Godean.</p></div></div>
+  </aside>
+</div>
+</body></html>
