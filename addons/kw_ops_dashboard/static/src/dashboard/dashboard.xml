@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="kw_ops_dashboard.Dashboard">
+        <div class="o_action kw_dash d-flex flex-column h-100">
+            <div class="o_control_panel d-flex align-items-center gap-2 px-3 py-2 border-bottom bg-view flex-wrap">
+                <span class="fs-4">Dashboard</span>
+                <div class="ms-auto d-flex gap-2 align-items-center">
+                    <div class="btn-group" role="radiogroup" aria-label="Period">
+                        <t t-foreach="periods" t-as="p" t-key="p.value">
+                            <button role="radio" t-att-aria-checked="state.period === p.value ? 'true' : 'false'"
+                                    t-attf-class="btn btn-sm {{ state.period === p.value ? 'btn-primary' : 'btn-light' }}"
+                                    t-on-click="() => this.setPeriod(p.value)" t-esc="p.label"/>
+                        </t>
+                    </div>
+                    <button class="btn btn-light btn-sm" t-on-click="load" aria-label="Refresh" title="Refresh">
+                        <i class="fa fa-refresh" aria-hidden="true"/>
+                    </button>
+                </div>
+            </div>
+
+            <div class="o_content flex-grow-1 overflow-auto p-3">
+                <div t-if="state.error" class="alert alert-warning d-flex gap-2" role="alert">
+                    <span t-esc="state.error"/><a href="#" t-on-click.prevent="load">Try again</a>
+                </div>
+                <t t-elif="!state.data">
+                    <div class="kw_skel w-50"/><div class="kw_skel w-75 mt-2"/><div class="kw_skel w-25 mt-2"/>
+                </t>
+                <t t-else="">
+                    <t t-set="d" t-value="state.data"/>
+                    <div class="kw_grid" t-att-class="{ 'opacity-50': state.loading }">
+                        <div class="kw_attn kw_span12" aria-label="Needs attention">
+                            <section>
+                                <div class="kw_attn_h">
+                                    <span class="kw_big" t-esc="d.approvals.count"/>
+                                    <h2><t t-if="d.approvals.count === 1">approval waiting</t><t t-else="">approvals waiting</t></h2>
+                                    <a href="#" class="ms-auto small" t-on-click.prevent="openInbox">Open inbox</a>
+                                </div>
+                                <div t-if="!d.approvals.count" class="kw_empty">Nothing is waiting for you.</div>
+                                <div t-else="" class="table-responsive">
+                                    <table class="table table-hover mb-0 kw_table">
+                                        <caption class="visually-hidden">Approvals waiting</caption>
+                                        <thead><tr><th>Document</th><th class="d-none d-md-table-cell">Rule</th><th class="text-end">Amount</th><th class="text-end">Waiting</th></tr></thead>
+                                        <tbody>
+                                            <tr t-foreach="d.approvals.rows" t-as="r" t-key="r.id" tabindex="0"
+                                                t-on-click="() => this.openReview(r.id)" t-on-keydown="(ev) => ev.key === 'Enter' and this.openReview(r.id)">
+                                                <td><span class="kw_link" t-esc="r.document"/><div class="small text-muted" t-esc="r.partner"/></td>
+                                                <td class="d-none d-md-table-cell" t-esc="r.rule"/>
+                                                <td class="text-end kw_num" t-esc="r.amount"/>
+                                                <td class="text-end"><span t-attf-class="kw_age {{ r.late ? 'kw_late' : '' }}"><t t-esc="r.waiting_hours"/> h</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="kw_attn_h">
+                                    <span class="kw_big" t-esc="d.sync.count"/>
+                                    <h2>Shopify events need a look</h2>
+                                    <a href="#" class="ms-auto small" t-on-click.prevent="openSync">Open sync log</a>
+                                </div>
+                                <div t-if="!d.sync.count" class="kw_empty">Every Shopify order went through.</div>
+                                <div t-else="" class="table-responsive">
+                                    <table class="table table-hover mb-0 kw_table">
+                                        <caption class="visually-hidden">Sync events needing attention</caption>
+                                        <thead><tr><th>Order</th><th>State</th><th class="text-end">Received</th></tr></thead>
+                                        <tbody>
+                                            <tr t-foreach="d.sync.rows" t-as="e" t-key="e.id" tabindex="0" t-on-click="openSync">
+                                                <td><span class="kw_link" t-esc="e.order"/><div class="small text-muted" t-esc="e.topic"/></td>
+                                                <td><span t-attf-class="badge rounded-pill {{ badge(e.state) }}" t-esc="e.state_label"/>
+                                                    <div class="small text-muted kw_why" t-esc="e.why"/></td>
+                                                <td class="text-end text-muted kw_num" t-esc="time(e.received_at)"/>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="kw_foot text-muted small">
+                                    <t t-esc="d.sync.processed"/> of <t t-esc="d.sync.received"/> events in the last 24 h were processed.
+                                    <t t-if="d.sync.last_push">Stock pushed at <t t-esc="time(d.sync.last_push)"/> (<t t-esc="d.sync.last_push_count"/> items).</t>
+                                </p>
+                            </section>
+                        </div>
+
+                        <section class="kw_panel kw_span7" aria-labelledby="kw-rev-h">
+                            <div class="kw_panel_h"><h2 id="kw-rev-h">Revenue by channel</h2><span class="small text-muted" t-esc="d.range"/></div>
+                            <div class="p-3">
+                                <div class="kw_channels">
+                                    <div t-foreach="d.revenue.channels" t-as="c" t-key="c.code">
+                                        <div class="small text-muted d-flex align-items-center gap-2">
+                                            <span t-attf-class="kw_key kw_key_{{ c.code }}"/><t t-esc="c.label"/> · <t t-esc="c.orders"/> orders
+                                        </div>
+                                        <div class="fs-5 fw-semibold kw_num" t-esc="c.amount"/>
+                                        <div t-if="c.delta !== null" t-attf-class="small kw_num {{ c.delta >= 0 ? 'text-success' : 'text-danger' }}">
+                                            <t t-esc="(c.delta >= 0 ? '+' : '−') + Math.abs(c.delta)"/>% vs previous period<t t-if="c.foreign"> · ≈ <t t-esc="c.company_amount"/></t>
+                                        </div>
+                                        <div t-elif="c.foreign" class="small text-muted kw_num">≈ <t t-esc="c.company_amount"/></div>
+                                    </div>
+                                </div>
+                                <t t-set="g" t-value="chart"/>
+                                <svg class="kw_chart" t-attf-viewBox="0 0 {{ g.width }} {{ g.height }}" role="img"
+                                     t-att-aria-label="'Revenue by channel per bucket, in ' + d.revenue.unit">
+                                    <t t-foreach="g.grid" t-as="line" t-key="line_index">
+                                        <line t-att-x1="g.left" t-att-x2="g.width" t-att-y1="line.y" t-att-y2="line.y" class="kw_gridline"/>
+                                        <text t-att-x="g.left - 8" t-att-y="line.y + 4" text-anchor="end" t-esc="line.label"/>
+                                    </t>
+                                    <t t-foreach="g.groups" t-as="grp" t-key="grp_index">
+                                        <t t-foreach="grp.bars" t-as="b" t-key="b.name">
+                                            <rect t-att-x="b.x" t-att-y="b.y" t-att-width="b.w" t-att-height="b.h" rx="2" t-att-class="b.cls">
+                                                <title t-esc="b.name + ' · ' + grp.label + ': ' + b.value"/>
+                                            </rect>
+                                        </t>
+                                        <text t-att-x="grp.cx" t-att-y="g.labelY" text-anchor="middle" t-esc="grp.label"/>
+                                    </t>
+                                </svg>
+                                <p class="small text-muted mb-0"><t t-esc="d.revenue.unit"/>, untaxed.<t t-if="g.anyPartial"> * In progress.</t> Foreign currency converted at the rate on each order date.</p>
+                            </div>
+                        </section>
+
+                        <section class="kw_panel kw_span5" aria-labelledby="kw-stk-h">
+                            <div class="kw_panel_h">
+                                <h2 id="kw-stk-h">Below minimum stock</h2>
+                                <span class="small text-muted"><t t-esc="d.low_stock.count"/> of <t t-esc="d.low_stock.total"/> products</span>
+                                <button class="btn btn-sm btn-light ms-auto" t-on-click="openReplenishment">Replenish</button>
+                            </div>
+                            <div t-if="!d.low_stock.count" class="kw_empty">Every product is above its minimum.</div>
+                            <div t-else="" class="table-responsive">
+                                <table class="table table-hover mb-0 kw_table">
+                                    <caption class="visually-hidden">Products below minimum</caption>
+                                    <thead><tr><th>Product</th><th class="text-end">On hand / min</th><th class="d-none d-sm-table-cell"/></tr></thead>
+                                    <tbody>
+                                        <tr t-foreach="d.low_stock.rows" t-as="s" t-key="s.product_id" tabindex="0"
+                                            t-on-click="() => this.openRecord('product.product', s.product_id)">
+                                            <td><t t-esc="s.name"/><div class="small text-muted font-monospace" t-esc="s.sku"/></td>
+                                            <td class="text-end kw_num"><t t-esc="s.on_hand"/> <span class="text-muted">/ <t t-esc="s.minimum"/></span></td>
+                                            <td class="d-none d-sm-table-cell">
+                                                <div class="kw_stockbar" role="img" t-att-aria-label="Math.round(s.ratio * 100) + '% of minimum'">
+                                                    <i t-attf-class="{{ s.ratio >= 0.4 ? 'kw_mid' : '' }}" t-attf-style="width: {{ Math.round(s.ratio * 100) }}%"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="kw_panel kw_span12" aria-labelledby="kw-inv-h">
+                            <div class="kw_panel_h"><h2 id="kw-inv-h">B2B invoices due</h2><span class="small text-muted">oldest first</span></div>
+                            <div t-if="!d.invoices.rows.length" class="kw_empty">No open customer invoices.</div>
+                            <div t-else="" class="table-responsive">
+                                <table class="table table-hover mb-0 kw_table">
+                                    <caption class="visually-hidden">Invoices due</caption>
+                                    <thead><tr><th>Invoice</th><th class="text-end">Amount due</th><th class="text-end">Due</th></tr></thead>
+                                    <tbody>
+                                        <tr t-foreach="d.invoices.rows" t-as="i" t-key="i.id" tabindex="0"
+                                            t-on-click="() => this.openRecord('account.move', i.id)">
+                                            <td><t t-esc="i.name"/><div class="small text-muted" t-esc="i.partner"/></td>
+                                            <td class="text-end kw_num" t-esc="i.amount"/>
+                                            <td class="text-end"><span t-attf-class="kw_num {{ i.overdue ? 'text-danger fw-semibold' : '' }}" t-esc="i.due"/>
+                                                <div><span t-attf-class="badge rounded-pill text-bg-{{ i.tone }}" t-esc="i.status"/></div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

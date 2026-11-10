@@ -17,6 +17,9 @@
         "kw_shopify",
         "account_payment",
         "payment_midtrans",
+        "kw_reports",
+        "kw_rest_api",
+        "kw_ops_dashboard",
     ],
     "data": [
         "data/res_partner_category.xml",

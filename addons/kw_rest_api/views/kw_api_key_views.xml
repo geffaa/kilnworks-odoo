@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_api_key_view_list" model="ir.ui.view">
+        <field name="name">kw.api.key.list</field>
+        <field name="model">kw.api.key</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="key_prefix" string="Key"/>
+                <field name="scope_ids" widget="many2many_tags"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="last_used_at"/>
+                <field name="expires_at"/>
+            </list>
+        </field>
+    </record>
+    <record id="kw_api_key_view_form" model="ir.ui.view">
+        <field name="name">kw.api.key.form</field>
+        <field name="model">kw.api.key</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate" type="object" string="Generate key" class="btn-primary"
+                            invisible="key_prefix"/>
+                    <button name="action_generate" type="object" string="Rotate key" invisible="not key_prefix"
+                            confirm="The current key stops working immediately. Continue?"/>
+                    <button name="action_revoke" type="object" string="Revoke" invisible="not active"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Revoked" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title"><h1><field name="name" placeholder="Warehouse scanner app"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="scope_ids" widget="many2many_checkboxes"/>
+                        </group>
+                        <group>
+                            <field name="key_prefix" string="Key starts with"/>
+                            <field name="expires_at"/>
+                            <field name="last_used_at"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <p class="text-muted">Send it as <code>Authorization: Bearer kw_…</code>. Reference: <code>/api/v1/docs</code>.</p>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="kw_api_key_action" model="ir.actions.act_window">
+        <field name="name">API keys</field>
+        <field name="res_model">kw.api.key</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+    </record>
+</odoo>

@@ -49,13 +49,14 @@ Estimasi jujur: MVP ±22–26 hari kerja paruh waktu (±5–6 minggu), lebih dar
 - **Verifikasi:** invoice demo dibayar via sandbox → invoice Paid; tes hijau.
 
 ## M5 — kw_rest_api + kw_ops_dashboard + kw_reports (±6 hari)
-- [ ] `kw.api.key` (hash, prefix, tampil sekali), scope, dekorator auth + rate bucket
-- [ ] Endpoint products/stock/orders/partners + serializer eksplisit + spec OpenAPI statis
-- [ ] Webhook keluar: endpoint, delivery, job kirim + jadwal retry, Resend
-- [ ] `kw.ops.dashboard.get_data` + client action OWL S01 (segmented periode, state kosong/loading/error)
-- [ ] Field HS code/karton + laporan packing list & delivery slip batch (QWeb)
-- [ ] Tes TECH-SPEC §8 untuk tiga modul
+- [x] `kw.api.key` (hash, prefix, tampil sekali), scope, dekorator auth + rate bucket
+- [x] Endpoint products/stock/orders/partners + serializer eksplisit + spec OpenAPI statis
+- [x] Webhook keluar: endpoint, delivery, job kirim + jadwal retry, Resend
+- [x] `kw.ops.dashboard.get_data` + client action OWL S01 (segmented periode, state kosong/loading/error)
+- [x] Field HS code/karton + laporan packing list & delivery slip batch (QWeb)
+- [x] Tes TECH-SPEC §8 untuk tiga modul
 - **Fitur:** F6, F7, F8, F9
+- **Hasil (2026-11-10):** 17 tes `kw_rest_api` (hash-only key, rotasi, revoke/expired, scope, rate limit 61st → 429, quotation via POST sebagai user key, record rule mencegah kebocoran, pagination cursor, OpenAPI; webhook: signature HMAC, jadwal retry 1/5/30 mnt/2/6 jam lalu `failed`, timeout, resend dengan id sama, `stock.low` hanya saat melewati batas), 4 tes `kw_reports` (karton per units-per-carton, total, blokir tanpa HS code, render), 4 tes `kw_ops_dashboard`, dan **tour browser S01→S02 sungguhan** (image kini membawa Chromium headless dari Playwright karena paket chromium di Ubuntu hanya stub snap; sebelumnya tour diam-diam di-skip). Live: `curl` dengan key demo, 403/401, order Shopify → webhook `order.confirmed` bertanda tangan diterima mock (200). Dashboard 1440/390 tanpa error/overflow. Riwayat demo diratakan ke 60 hari agar perbandingan periode masuk akal. Perubahan desain: webhook gagal tidak melempar `RetryableJobError` (rollback akan menghapus catatan percobaan); job berikutnya dijadwalkan eksplisit. Delivery slip per batch pembakaran dipindah ke M6 bersama `kw_firing_batch`. CI kini menjalankan tes lewat image yang sama dan menilai dari baris hasil Odoo.
 - **Verifikasi:** `curl` dengan key scope kurang → 403; dashboard < 1,5 dtk; PDF packing list 3 karton benar.
 
 ## M6 — kw_firing_batch v16→v18 + rilis (±4 hari)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_form_kw_packing" model="ir.ui.view">
+        <field name="name">stock.picking.form.kw.packing</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='do_print_picking']" position="after">
+                <button name="action_kw_print_packing_list" type="object" string="Packing List"
+                        invisible="picking_type_code != 'outgoing'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+{
+    "name": "Kilnworks REST API",
+    "summary": "Scoped REST API keys, rate limiting and signed outgoing webhooks for Odoo",
+    "version": "18.0.1.0.0",
+    "category": "Technical",
+    "author": "Kilnworks demo (synthetic)",
+    "website": "https://github.com/geffaa/kilnworks-odoo",
+    "license": "LGPL-3",
+    "depends": ["kw_ops", "sale_stock", "queue_job"],
+    "external_dependencies": {"python": ["requests"]},
+    "data": [
+        "security/ir.model.access.csv",
+        "data/kw_api_scope_data.xml",
+        "data/queue_job_data.xml",
+        "wizard/kw_api_key_show_views.xml",
+        "views/kw_api_key_views.xml",
+        "views/kw_webhook_views.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+}

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_packing_list" model="ir.actions.report">
+        <field name="name">Packing List</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kw_reports.report_packing_list</field>
+        <field name="report_file">kw_reports.report_packing_list</field>
+        <field name="print_report_name">'Packing List - %s' % object.name</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_packing_list_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang or o.env.lang)"/>
+            <t t-set="cartons" t-value="o._kw_cartons()"/>
+            <t t-set="totals" t-value="o._kw_packing_totals()"/>
+            <div class="page">
+                <h2>Packing List <span t-field="o.name"/></h2>
+                <div class="row mt-3 mb-4">
+                    <div class="col-6">
+                        <strong>Exporter</strong>
+                        <div t-field="o.company_id.partner_id"
+                             t-options="{'widget': 'contact', 'fields': ['name', 'address'], 'no_marker': True}"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>Consignee</strong>
+                        <div t-field="o.partner_id"
+                             t-options="{'widget': 'contact', 'fields': ['name', 'address'], 'no_marker': True}"/>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><strong>Reference</strong><div t-out="o.origin or ''"/></div>
+                    <div class="col-3"><strong>Date</strong><div t-field="o.scheduled_date" t-options="{'widget': 'date'}"/></div>
+                    <div class="col-3"><strong>Cartons</strong><div t-out="totals['cartons']"/></div>
+                    <div class="col-3"><strong>Gross weight</strong><div><t t-out="totals['gross_kg']"/> kg</div></div>
+                </div>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th>Carton</th><th>Product</th><th>HS code</th><th>Firing lots</th>
+                            <th class="text-end">Units</th><th class="text-end">Net kg</th>
+                            <th class="text-end">Gross kg</th><th>Size (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="cartons" t-as="c">
+                            <td t-out="c['number']"/>
+                            <td><t t-out="c['product'].display_name"/></td>
+                            <td t-out="c['hs_code']"/>
+                            <td t-out="c['lots']"/>
+                            <td class="text-end" t-out="c['units']"/>
+                            <td class="text-end" t-out="'%.2f' % c['net_kg']"/>
+                            <td class="text-end" t-out="'%.2f' % c['gross_kg']"/>
+                            <td t-out="c['dims']"/>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="fw-bold">
+                            <td colspan="4">Total</td>
+                            <td class="text-end" t-out="totals['units']"/>
+                            <td class="text-end" t-out="'%.2f' % totals['net_kg']"/>
+                            <td class="text-end" t-out="'%.2f' % totals['gross_kg']"/>
+                            <td/>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p class="small text-muted">Stoneware tableware, made in Kasongan, Bantul, Indonesia. One product per carton.</p>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_packing_list">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="kw_reports.report_packing_list_document"/>
+            </t>
+        </t>
+    </template>
+</odoo>

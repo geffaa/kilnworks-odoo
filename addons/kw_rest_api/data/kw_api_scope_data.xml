@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="scope_products_read" model="kw.api.scope"><field name="code">products:read</field><field name="description">List sellable products</field></record>
+    <record id="scope_stock_read" model="kw.api.scope"><field name="code">stock:read</field><field name="description">Read stock per product</field></record>
+    <record id="scope_orders_read" model="kw.api.scope"><field name="code">orders:read</field><field name="description">Read sale orders</field></record>
+    <record id="scope_orders_write" model="kw.api.scope"><field name="code">orders:write</field><field name="description">Create quotations</field></record>
+    <record id="scope_partners_read" model="kw.api.scope"><field name="code">partners:read</field><field name="description">Read customer companies</field></record>
+</odoo>

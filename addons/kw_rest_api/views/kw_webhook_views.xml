@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_webhook_endpoint_view_list" model="ir.ui.view">
+        <field name="name">kw.webhook.endpoint.list</field>
+        <field name="model">kw.webhook.endpoint</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="url"/>
+                <field name="event_order_confirmed"/>
+                <field name="event_stock_low"/>
+                <field name="failed_count"/>
+            </list>
+        </field>
+    </record>
+    <record id="kw_webhook_endpoint_view_form" model="ir.ui.view">
+        <field name="name">kw.webhook.endpoint.form</field>
+        <field name="model">kw.webhook.endpoint</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" placeholder="Warehouse app"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="url" placeholder="https://example.com/hooks/kilnworks" widget="url"/>
+                            <field name="secret" password="True" groups="base.group_system"/>
+                        </group>
+                        <group string="Events">
+                            <field name="event_order_confirmed"/>
+                            <field name="event_stock_low"/>
+                        </group>
+                    </group>
+                    <p class="text-muted">Each request carries <code>X-Kw-Signature: sha256=&lt;HMAC of the body&gt;</code>
+                        and a stable <code>X-Kw-Delivery</code> id. Failed deliveries retry after 1, 5 and 30 minutes, then 2 and 6 hours.</p>
+                    <field name="delivery_ids" readonly="1">
+                        <list decoration-danger="state == 'failed'" decoration-warning="state == 'retrying'">
+                            <field name="create_date"/>
+                            <field name="event"/>
+                            <field name="state" widget="badge"/>
+                            <field name="attempts"/>
+                            <field name="last_status_code"/>
+                            <field name="next_attempt_at"/>
+                            <button name="action_resend" type="object" string="Resend" icon="fa-repeat"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="kw_webhook_delivery_view_list" model="ir.ui.view">
+        <field name="name">kw.webhook.delivery.list</field>
+        <field name="model">kw.webhook.delivery</field>
+        <field name="arch" type="xml">
+            <list create="False" decoration-danger="state == 'failed'" decoration-warning="state == 'retrying'">
+                <field name="create_date"/>
+                <field name="endpoint_id"/>
+                <field name="event"/>
+                <field name="delivery_uid" optional="hide"/>
+                <field name="state" widget="badge" decoration-success="state == 'sent'"/>
+                <field name="attempts"/>
+                <field name="last_status_code"/>
+                <field name="last_error" optional="show"/>
+                <field name="next_attempt_at"/>
+                <button name="action_resend" type="object" string="Resend" icon="fa-repeat"/>
+            </list>
+        </field>
+    </record>
+    <record id="kw_webhook_endpoint_action" model="ir.actions.act_window">
+        <field name="name">Webhooks</field>
+        <field name="res_model">kw.webhook.endpoint</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="kw_webhook_delivery_action" model="ir.actions.act_window">
+        <field name="name">Webhook deliveries</field>
+        <field name="res_model">kw.webhook.delivery</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

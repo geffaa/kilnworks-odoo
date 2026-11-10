@@ -27,6 +27,16 @@ class Handler(BaseHTTPRequestHandler):
         self._send(200, {"ok": True})
 
     def do_POST(self):
+        if self.path.startswith("/hooks/"):
+            # A stand-in receiver for Kilnworks' outgoing webhooks.
+            length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(length) or b"{}")
+            print(
+                f"webhook {self.headers.get('X-Kw-Event')} {self.headers.get('X-Kw-Delivery')} "
+                f"signature={self.headers.get('X-Kw-Signature', '')[:20]}… data={json.dumps(body.get('data'))[:80]}",
+                flush=True,
+            )
+            return self._send(200, {"received": True})
         if not self.path.endswith("/graphql.json"):
             return self._send(404, {"errors": "Not Found"})
         if not self.headers.get("X-Shopify-Access-Token"):

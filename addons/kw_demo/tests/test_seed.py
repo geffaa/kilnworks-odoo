@@ -1,4 +1,4 @@
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import HttpCase, TransactionCase, tagged
 
 from ..hooks import PO_COUNT, SO_COUNT, STOCK_TARGETS, post_init_hook
 
@@ -160,3 +160,32 @@ class TestSeed(TransactionCase):
         self.assertTrue(tx.payment_id, "an accounting payment was created")
         invoice.invalidate_recordset(["payment_state", "amount_residual"])
         self.assertIn(invoice.payment_state, ("paid", "in_payment"))
+
+    def test_dashboard_on_demo_data(self):
+        ratna = self.env.ref("kw_demo.user_ratna")
+        data = self.env["kw.ops.dashboard"].with_user(ratna).get_data(30)
+        self.assertEqual(data["approvals"]["count"], 3)
+        self.assertTrue(data["approvals"]["rows"][0]["late"], "the escalated PO comes first")
+        self.assertEqual(data["sync"]["count"], 2)
+        self.assertEqual(data["low_stock"]["count"], 5)
+        b2b, shopify = data["revenue"]["channels"]
+        self.assertGreater(b2b["orders"], 0)
+        self.assertGreater(shopify["orders"], 0)
+        self.assertTrue(shopify["foreign"])
+
+    def test_export_fields_and_api_key(self):
+        from ..hooks import DEMO_API_KEY
+
+        mug = self.env["product.product"].search([("default_code", "=", "KW-MUG-350-CEL")])
+        self.assertEqual(mug.kw_hs_code, "6912.00")
+        self.assertEqual(mug.kw_carton_qty, 24)
+        key = self.env["kw.api.key"]._authenticate(DEMO_API_KEY)
+        self.assertEqual(key.name, "Warehouse scanner app")
+
+
+@tagged("post_install", "-at_install")
+class TestDemoTour(HttpCase):
+    def test_dashboard_to_purchase_order(self):
+        self.start_tour(
+            "/odoo/action-kw_ops_dashboard.action_dashboard", "kw_dashboard_to_po", login="ratna"
+        )

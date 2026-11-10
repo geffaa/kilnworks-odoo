@@ -14,27 +14,19 @@ jobs:
       - uses: pre-commit/action@v3.0.1
 
   test:
+    # Same image and Makefile as local runs: Odoo 18 + OCA test helper + headless Chromium for tours.
     runs-on: ubuntu-latest
-    container:
-      image: odoo:18.0
-      options: --user root
-    services:
-      db:
-        image: postgres:16
-        env: { POSTGRES_USER: odoo, POSTGRES_PASSWORD: odoo, POSTGRES_DB: postgres }
-        options: >-
-          --health-cmd "pg_isready -U odoo" --health-interval 5s --health-retries 10
     strategy:
+      fail-fast: false
       matrix:
-        module: [kw_ops, kw_approval, kw_shopify, kw_demo]
+        module: [kw_ops, kw_approval, kw_shopify, payment_midtrans, kw_reports, kw_rest_api, kw_ops_dashboard, kw_demo]
     steps:
       - uses: actions/checkout@v4
         with: { submodules: true }
-      - name: Install test helper
-        run: pip3 install --break-system-packages odoo-test-helper==2.1.1
+      - name: Build image
+        run: docker compose build odoo
       - name: Test ${{ matrix.module }}
         run: |
-          odoo --db_host db --db_user odoo --db_password odoo -d ci \
-            --addons-path "$GITHUB_WORKSPACE/addons,$GITHUB_WORKSPACE/oca/server-ux,$GITHUB_WORKSPACE/oca/purchase-workflow,$GITHUB_WORKSPACE/oca/sale-workflow,$GITHUB_WORKSPACE/oca/queue,/usr/lib/python3/dist-packages/odoo/addons" \
-            -i ${{ matrix.module }} --test-tags=/${{ matrix.module }} --test-enable --db-filter=^ci$ --stop-after-init --without-demo=all --log-level=test 2>&1 | tee test.log
-          ! grep -E "(ERROR|FAIL|Traceback)" test.log
+          make test MOD=${{ matrix.module }} 2>&1 | tee test.log
+          grep -q "0 failed, 0 error(s) of [1-9][0-9]* tests" test.log
+          ! grep -E " CRITICAL |skipped .*Failed to detect chrome" test.log

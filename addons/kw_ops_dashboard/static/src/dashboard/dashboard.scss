@@ -1,0 +1,39 @@
+// Kilnworks layer: celadon for Shopify, clay for B2B. Everything else is the webclient's.
+$kw-celadon: #5f8f7b;
+$kw-clay: #a5673f;
+
+.kw_dash {
+    .kw_grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
+    .kw_span12 { grid-column: span 12; } .kw_span7 { grid-column: span 7; } .kw_span5 { grid-column: span 5; }
+    .kw_panel { background: $o-view-background-color; border: 1px solid $border-color; border-radius: .5rem; min-width: 0; }
+    .kw_panel_h { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .75rem 1rem; min-height: 48px;
+        border-bottom: 1px solid $border-color; h2 { font-size: 1rem; font-weight: 600; margin: 0; } }
+    .kw_attn { display: grid; grid-template-columns: 1fr 1fr; background: $o-view-background-color;
+        border: 1px solid $border-color; border-radius: .5rem; overflow: hidden;
+        > section { min-width: 0; } > section + section { border-left: 1px solid $border-color; } }
+    .kw_attn_h { display: flex; align-items: baseline; gap: .5rem; padding: 1rem 1rem .5rem;
+        h2 { font-size: 1rem; font-weight: 600; margin: 0; } }
+    .kw_big { font-size: 1.625rem; font-weight: 600; line-height: 1; }
+    .kw_foot { padding: .5rem 1rem .75rem; margin: 0; }
+    .kw_table { td, th { padding-left: 1rem; padding-right: 1rem; vertical-align: middle; } tbody tr { cursor: pointer; } }
+    .kw_link { color: $o-action; }
+    .kw_num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .kw_why { max-width: 34ch; }
+    .kw_age { font-size: .8125rem; white-space: nowrap; }
+    .kw_late { color: $danger; font-weight: 600; }
+    .kw_empty { padding: 1.5rem 1rem; color: $text-muted; }
+    .kw_channels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .kw_key { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+    .kw_key_b2b, .kw_bar_b2b { background: $kw-clay; fill: $kw-clay; }
+    .kw_key_shopify, .kw_bar_shopify { background: $kw-celadon; fill: $kw-celadon; }
+    .kw_chart { width: 100%; height: auto; display: block;
+        text { font-size: 11px; fill: $text-muted; } .kw_gridline { stroke: $border-color; } }
+    .kw_stockbar { height: 6px; border-radius: 3px; background: $gray-200; overflow: hidden; width: 96px;
+        i { display: block; height: 100%; background: $danger; } i.kw_mid { background: #c98a14; } }
+    .kw_skel { height: 12px; border-radius: 3px; background: $gray-200; }
+    @include media-breakpoint-down(xl) { .kw_span7, .kw_span5 { grid-column: span 12; } }
+    @include media-breakpoint-down(md) {
+        .kw_attn { grid-template-columns: 1fr; > section + section { border-left: 0; border-top: 1px solid $border-color; } }
+    }
+    @include media-breakpoint-down(sm) { .kw_channels { grid-template-columns: 1fr; } .kw_chart text { font-size: 20px; } }
+}

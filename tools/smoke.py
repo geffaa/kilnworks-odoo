@@ -69,7 +69,21 @@ with sync_playwright() as p:
             print(f"{user:6} {'approval-po':19} errors={errs} {'ok' if ok else 'FAIL'}")
             bad += not ok
         ctx.close()
-    # The Shopify console is a client action, not a list.
+    # The dashboard and the Shopify console are client actions, not lists.
+    for width, tag in ((1440, "desktop"), (390, "mobile")):
+        ctx, pg, errs = login(browser, "ratna")
+        pg.set_viewport_size({"width": width, "height": 900})
+        pg.goto(BASE + "/odoo/action-kw_ops_dashboard.action_dashboard")
+        pg.wait_for_selector(".kw_dash .kw_attn", timeout=20000)
+        pg.wait_for_timeout(800)
+        overflow = pg.evaluate("document.documentElement.scrollWidth - window.innerWidth")
+        pg.screenshot(path=str(out / f"dashboard-{tag}.png"), full_page=True)
+        ok = not errs and overflow <= 0
+        print(
+            f"{'ratna':6} {'dashboard-' + tag:19} overflow={overflow:<3} errors={errs} {'ok' if ok else 'FAIL'}"
+        )
+        bad += not ok
+        ctx.close()
     ctx, pg, errs = login(browser, "bayu")
     pg.goto(BASE + "/odoo/action-kw_shopify.kw_shopify_console_action")
     pg.wait_for_selector(".kw_store_strip", timeout=20000)

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_integrations" name="API &amp; Webhooks" parent="kw_ops.menu_config" sequence="40"/>
+    <menuitem id="menu_api_keys" name="API keys" parent="menu_integrations" sequence="10" action="kw_api_key_action"/>
+    <menuitem id="menu_webhooks" name="Webhooks" parent="menu_integrations" sequence="20" action="kw_webhook_endpoint_action"/>
+    <menuitem id="menu_deliveries" name="Deliveries" parent="menu_integrations" sequence="30" action="kw_webhook_delivery_action"/>
+</odoo>

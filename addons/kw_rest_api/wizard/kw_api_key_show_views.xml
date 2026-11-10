@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_api_key_show_view_form" model="ir.ui.view">
+        <field name="name">kw.api.key.show.form</field>
+        <field name="model">kw.api.key.show</field>
+        <field name="arch" type="xml">
+            <form string="Your new API key">
+                <div class="alert alert-warning" role="status">
+                    Copy this key now. It is shown only once; Odoo keeps only a hash of it.
+                </div>
+                <group>
+                    <field name="key" widget="CopyClipboardChar" nolabel="1" colspan="2"/>
+                </group>
+                <footer><button string="Done" special="cancel" class="btn-primary"/></footer>
+            </form>
+        </field>
+    </record>
+</odoo>

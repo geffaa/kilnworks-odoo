@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_scope_user,scope user,model_kw_api_scope,base.group_user,1,0,0,0
+access_scope_manager,scope manager,model_kw_api_scope,kw_ops.group_manager,1,1,1,1
+access_key_manager,key manager,model_kw_api_key,kw_ops.group_manager,1,1,1,1
+access_bucket_system,bucket system,model_kw_api_rate_bucket,base.group_system,1,1,1,1
+access_endpoint_manager,endpoint manager,model_kw_webhook_endpoint,kw_ops.group_manager,1,1,1,1
+access_delivery_manager,delivery manager,model_kw_webhook_delivery,kw_ops.group_manager,1,1,1,1
+access_key_show_manager,key show manager,model_kw_api_key_show,kw_ops.group_manager,1,1,1,0

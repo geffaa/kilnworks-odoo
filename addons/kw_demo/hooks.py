@@ -83,6 +83,8 @@ def _seed(env):
     _orderpoints(env, goods)
     _approval_showcase(env)
     _midtrans(env)
+    _export_data(env, goods)
+    _integrations(env)
     env["ir.config_parameter"].sudo().set_param(SEED_FLAG, fields.Datetime.now())
     _logger.info("Kilnworks demo data seeded")
 
@@ -217,7 +219,8 @@ def _sales(env, rng, goods):
         [("type", "=", "bank"), ("company_id", "=", env.company.id)], limit=1
     )
     for i in range(SO_COUNT):
-        days_ago = int(88 - i * (86 / SO_COUNT))
+        # Roughly two B2B orders a week over the last 60 days.
+        days_ago = int(58 - i * (58 / SO_COUNT))
         when = today - timedelta(days=max(days_ago, 0), hours=rng.randint(0, 6))
         lines = [
             Command.create(
@@ -395,7 +398,7 @@ BUYERS = [
     ("Hana", "Kim", "Vancouver", "CA"),
     ("Olivia", "Brandt", "Copenhagen", "DK"),
 ]
-SHOPIFY_ORDERS = 40  # #KW1005 … #KW1044 over 30 days
+SHOPIFY_ORDERS = 40  # #KW1005 … #KW1044 over 60 days
 
 
 def _shopify(env, rng):
@@ -449,9 +452,9 @@ def _shopify(env, rng):
     events = env["kw.shopify.event"]
     for i in range(SHOPIFY_ORDERS):
         number = 1005 + i
-        # Spread over 30 days; the last eight land in the past 24 hours.
+        # Spread over 60 days so periods compare; the last eight land in the past 24 hours.
         hours_ago = (
-            (SHOPIFY_ORDERS - 1 - i) * 2.4 if i >= SHOPIFY_ORDERS - 8 else (30 - i * 0.75) * 24
+            (SHOPIFY_ORDERS - 1 - i) * 2.4 if i >= SHOPIFY_ORDERS - 8 else (60 - i * 1.8) * 24
         )
         when = now - timedelta(hours=hours_ago)
         first, last, city, country = BUYERS[i % len(BUYERS)]
@@ -595,3 +598,52 @@ def _midtrans(env):
     if invoice:
         invoice._portal_ensure_token()
         icp.set_param("kw_demo.payment_link", invoice.get_base_url() + invoice._get_share_url())
+
+
+# -- export data, API and webhooks ---------------------------------------------------------
+CARTON_QTY = {
+    "MUG": 24,
+    "ESP": 48,
+    "CUP": 24,
+    "SAU": 36,
+    "PLT": 12,
+    "BWL": 18,
+    "DRP": 12,
+    "SRV": 12,
+    "TPT": 6,
+    "VAS": 12,
+    "SET": 4,
+}
+DEMO_API_KEY = "kw_demo0001_UfT6pGQ2y0wq3m9hVbXk7cLr1sNaZ4eJ"  # public: synthetic demo only
+
+
+def _export_data(env, goods):
+    for product in goods:
+        family = product.default_code.split("-")[1]
+        product.product_tmpl_id.write(
+            {
+                "kw_hs_code": "6912.00",
+                "kw_carton_qty": CARTON_QTY.get(family, 12),
+                "kw_carton_tare_kg": 1.2 if family in ("MUG", "ESP", "CUP", "SAU") else 1.6,
+            }
+        )
+
+
+def _integrations(env):
+    from odoo.addons.kw_rest_api.models.kw_api_key import hash_secret
+
+    bayu = env.ref("kw_demo.user_bayu")
+    scopes = env["kw.api.scope"].search(
+        [("code", "in", ("products:read", "stock:read", "orders:read"))]
+    )
+    key = env["kw.api.key"].create(
+        {"name": "Warehouse scanner app", "user_id": bayu.id, "scope_ids": [(6, 0, scopes.ids)]}
+    )
+    key.sudo().write({"key_prefix": "demo0001", "key_hash": hash_secret(DEMO_API_KEY)})
+    env["kw.webhook.endpoint"].create(
+        {
+            "name": "Warehouse scanner app",
+            "url": "http://shopify-mock:8080/hooks/kilnworks",
+            "secret": "kilnworks-demo-outgoing-secret",
+        }
+    )
