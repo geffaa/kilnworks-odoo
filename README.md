@@ -67,3 +67,8 @@ OCA dependencies are pinned git submodules under `oca/` (branch 18.0): `server-u
 ## Docs
 
 Product and technical plan: [BREAKDOWN.md](BREAKDOWN.md), [docs/](docs/). UI mockups: [mockups/](mockups/).
+
+## Licence
+
+Each module declares its licence in `__manifest__.py`: LGPL-3, except `kw_approval` (AGPL-3, as it extends AGPL-3
+OCA modules). OCA submodules keep their own licences.
