@@ -86,3 +86,18 @@ class TestSeed(TransactionCase):
             .search([("reviewer_ids", "in", ratna.id), ("status", "=", "pending")])
         )
         self.assertEqual(len(inbox), 3)
+
+    def test_shopify_history(self):
+        store = self.env.ref("kw_demo.shopify_store")
+        events = self.env["kw.shopify.event"].search([("store_id", "=", store.id)])
+        stuck = events.filtered(lambda e: e.state == "needs_mapping")
+        self.assertEqual(stuck.order_name, "#KW1043")
+        self.assertEqual(stuck.missing_skus, "KW-MUG-350-SAGE")
+        failed = events.filtered(lambda e: e.state == "failed")
+        self.assertEqual(failed.topic, "orders/cancelled")
+        orders = self.env["sale.order"].search([("kw_channel", "=", "shopify")])
+        self.assertEqual(len(orders), 39)
+        self.assertEqual(set(orders.mapped("currency_id")), {self.env.ref("base.USD")})
+        data = store.get_console_data(store.id)
+        self.assertEqual(data["counts"]["attention"], 2)
+        self.assertEqual(data["duplicates_today"], 2)

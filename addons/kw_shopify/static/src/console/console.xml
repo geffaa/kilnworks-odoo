@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="kw_shopify.Console">
+        <div class="o_action kw_console d-flex flex-column h-100">
+            <div class="o_control_panel d-flex align-items-center gap-2 px-3 py-2 border-bottom bg-view">
+                <span class="fs-4">Shopify</span>
+                <div class="ms-auto d-flex gap-2" t-if="state.data and state.data.store">
+                    <button class="btn btn-secondary" t-on-click="pushStock">
+                        <i class="fa fa-upload me-1" aria-hidden="true"/>Push stock now
+                    </button>
+                    <button class="btn btn-light" t-on-click="openStore" aria-label="Store settings" title="Store settings">
+                        <i class="fa fa-cog" aria-hidden="true"/>
+                    </button>
+                </div>
+            </div>
+
+            <div class="o_content flex-grow-1 overflow-auto p-3">
+                <div t-if="state.error" class="alert alert-warning d-flex gap-2" role="alert">
+                    <span t-esc="state.error"/>
+                    <a href="#" t-on-click.prevent="load">Try again</a>
+                </div>
+                <t t-elif="state.loading and !state.data">
+                    <div class="kw_skel w-50"/><div class="kw_skel w-75 mt-2"/><div class="kw_skel w-25 mt-2"/>
+                </t>
+                <div t-elif="!state.data.store" class="kw_empty text-center py-5">
+                    <i class="fa fa-shopping-bag fa-2x kw_celadon mb-2" aria-hidden="true"/>
+                    <h3 class="fs-5">No Shopify store connected</h3>
+                    <p class="text-muted mb-0">Add one in Configuration › Shopify stores, then register the webhook URL in Shopify.</p>
+                </div>
+                <t t-else="">
+                    <t t-set="d" t-value="state.data"/>
+                    <div class="kw_store_strip">
+                        <span class="kw_store_mark"><i class="fa fa-shopping-bag" aria-hidden="true"/></span>
+                        <div>
+                            <div class="fw-semibold" t-esc="d.store.domain"/>
+                            <div class="kw_facts">
+                                <span><span class="kw_ok_dot"/><b>Connected</b></span>
+                                <span>API <b t-esc="d.store.api_version"/></span>
+                                <span t-if="d.store.last_push">Stock push <b t-esc="time(d.store.last_push)"/>, <t t-esc="d.store.last_push_count"/> items</span>
+                                <span t-else="">Stock not pushed yet</span>
+                                <span>Location <b t-esc="d.store.location"/></span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-secondary" t-on-click="openMap">
+                            <i class="fa fa-link me-1" aria-hidden="true"/>Product map · <t t-esc="d.store.map_count"/> SKUs
+                        </button>
+                    </div>
+
+                    <div class="kw_console_grid">
+                        <section class="kw_panel" aria-labelledby="kw-ev-h">
+                            <div class="kw_panel_h">
+                                <h2 id="kw-ev-h">Sync log</h2><span class="text-muted small">last 24 hours</span>
+                            </div>
+                            <div class="kw_filters">
+                                <div class="btn-group" role="radiogroup" aria-label="Filter by state">
+                                    <t t-foreach="filters" t-as="f" t-key="f.key">
+                                        <button role="radio" t-att-aria-checked="state.filter === f.key ? 'true' : 'false'"
+                                                t-attf-class="btn btn-sm {{ state.filter === f.key ? 'btn-primary' : 'btn-light' }}"
+                                                t-on-click="() => this.setFilter(f.key)">
+                                            <t t-esc="f.label"/> <span class="opacity-75" t-esc="d.counts[f.key]"/>
+                                        </button>
+                                    </t>
+                                </div>
+                            </div>
+                            <div t-if="!d.events.length" class="kw_empty text-center py-5">
+                                <i class="fa fa-check-circle fa-2x kw_celadon mb-2" aria-hidden="true"/>
+                                <h3 class="fs-6">Nothing here</h3>
+                                <p class="text-muted mb-0">Every order from the last 24 hours went through.</p>
+                            </div>
+                            <div t-else="" class="table-responsive">
+                                <table class="table table-hover mb-0 kw_table">
+                                    <caption class="visually-hidden">Webhook events</caption>
+                                    <thead><tr><th>Received</th><th>Order</th><th>State</th><th class="d-none d-md-table-cell">Sale order</th></tr></thead>
+                                    <tbody>
+                                        <tr t-foreach="d.events" t-as="e" t-key="e.id" t-on-click="() => this.select(e.id)"
+                                            t-att-class="{ 'table-active': e.id === state.selectedId }" tabindex="0"
+                                            t-on-keydown="(ev) => ev.key === 'Enter' and this.select(e.id)">
+                                            <td class="text-muted font-monospace-num" t-esc="time(e.received_at)"/>
+                                            <td><b t-esc="e.order_name"/><div class="small text-muted" t-esc="e.topic"/></td>
+                                            <td><span t-attf-class="badge rounded-pill {{ badge(e.state) }}" t-esc="e.state_label"/></td>
+                                            <td class="d-none d-md-table-cell">
+                                                <a t-if="e.sale_order" href="#" t-on-click.prevent.stop="() => this.openSaleOrder(e.sale_order_id)" t-esc="e.sale_order"/>
+                                                <span t-else="" class="text-muted">—</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="kw_panel_f text-muted small">
+                                <t t-if="state.filter === 'attention'">Showing the <t t-esc="d.counts.attention"/> that need a look, then the latest done. </t>
+                                <t t-if="d.duplicates_today > 0">Duplicate deliveries are ignored by webhook ID (<t t-esc="d.duplicates_today"/> today).</t>
+                            </p>
+                        </section>
+
+                        <section class="kw_panel kw_detail" t-if="d.selected" aria-labelledby="kw-dt-h">
+                            <t t-set="s" t-value="d.selected"/>
+                            <div class="kw_panel_h">
+                                <h2 id="kw-dt-h" t-esc="s.order_name"/>
+                                <span t-attf-class="badge rounded-pill {{ badge(s.state) }}" t-esc="s.state_label"/>
+                            </div>
+                            <div class="p-3">
+                                <dl class="kw_dl">
+                                    <dt>Topic</dt><dd t-esc="s.topic"/>
+                                    <dt>Webhook ID</dt><dd class="font-monospace small" t-esc="s.webhook_id"/>
+                                    <dt>Signature</dt><dd><i class="fa fa-shield me-1" aria-hidden="true"/>HMAC valid</dd>
+                                    <dt t-if="s.total">Order total</dt><dd t-if="s.total"><t t-esc="s.currency"/> <t t-esc="s.total"/> · <t t-esc="s.line_count"/> lines</dd>
+                                    <dt>Attempts</dt><dd t-esc="s.attempts"/>
+                                </dl>
+                                <div t-if="s.error" class="kw_fix">
+                                    <h3 t-esc="s.error"/>
+                                    <p t-if="s.state === 'needs_mapping'">No sale order was created, so nothing is half-imported. Map the SKU, then retry.</p>
+                                </div>
+                                <div class="d-flex gap-2 mt-3" t-if="s.state === 'needs_mapping' or s.state === 'failed'">
+                                    <button t-if="s.state === 'needs_mapping' and !s.can_retry" class="btn btn-primary" t-on-click="() => this.mapSku(s.id)">
+                                        <i class="fa fa-link me-1" aria-hidden="true"/>Map SKU
+                                    </button>
+                                    <button class="btn btn-secondary" t-att-disabled="!s.can_retry" t-on-click="() => this.retry(s.id)"
+                                            t-att-title="s.can_retry ? '' : 'Map the SKU first'">
+                                        <i class="fa fa-repeat me-1" aria-hidden="true"/>Retry
+                                    </button>
+                                </div>
+                                <ul class="kw_timeline" aria-label="Event history">
+                                    <li t-foreach="s.log" t-as="entry" t-key="entry_index">
+                                        <time t-esc="time(entry[0], true)"/><span t-esc="entry[1]"/>
+                                    </li>
+                                </ul>
+                                <pre class="kw_payload" aria-label="Payload excerpt" t-esc="payloadText(s.payload_excerpt)"/>
+                            </div>
+                        </section>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

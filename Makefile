@@ -23,7 +23,7 @@ test:          ## run one module's tests in a throwaway database: make test MOD=
 	docker compose up -d db
 	docker compose exec -T db dropdb -U odoo --if-exists test_$(MOD)
 	docker compose run --rm odoo odoo -d test_$(MOD) -i $(MOD) --test-tags=/$(MOD) --test-enable --stop-after-init \
-		--without-demo=all --log-level=test --workers=0 --db-filter=.*; \
+		--without-demo=all --log-level=test --workers=0 --db-filter=^test_$(MOD)$$; \
 	status=$$?; docker compose exec -T db dropdb -U odoo --if-exists test_$(MOD); exit $$status
 
 shell:

@@ -1,0 +1,45 @@
+// Kilnworks layer inside Odoo: celadon accents only; everything else follows the webclient.
+$kw-celadon: #5f8f7b;
+$kw-celadon-ink: #2f5a49;
+$kw-celadon-soft: #e6efeb;
+
+.kw_console {
+    .kw_celadon { color: $kw-celadon; }
+    .kw_store_strip {
+        display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center;
+        padding: .75rem 1rem; margin-bottom: 1rem; background: $o-view-background-color;
+        border: 1px solid $border-color; border-radius: .5rem;
+    }
+    .kw_store_mark {
+        width: 36px; height: 36px; border-radius: .375rem; display: grid; place-items: center;
+        background: $kw-celadon-soft; color: $kw-celadon-ink;
+    }
+    .kw_facts { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; font-size: .8125rem; color: $text-muted; b { color: $body-color; } }
+    .kw_ok_dot { width: 8px; height: 8px; border-radius: 50%; background: $success; display: inline-block; margin-right: 6px; }
+    .kw_console_grid { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 1rem; align-items: start; }
+    .kw_panel { background: $o-view-background-color; border: 1px solid $border-color; border-radius: .5rem; min-width: 0; }
+    .kw_panel_h {
+        display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .75rem 1rem; min-height: 48px;
+        border-bottom: 1px solid $border-color;
+        h2 { font-size: 1rem; font-weight: 600; margin: 0; }
+    }
+    .kw_panel_f { padding: .5rem 1rem .75rem; margin: 0; }
+    .kw_filters { padding: .75rem 1rem; border-bottom: 1px solid $border-color; }
+    .kw_table { td, th { padding-left: 1rem; padding-right: 1rem; vertical-align: middle; } tbody tr { cursor: pointer; } }
+    .font-monospace-num { font-variant-numeric: tabular-nums; }
+    .kw_dl { display: grid; grid-template-columns: 120px 1fr; gap: .375rem .75rem; margin: 0;
+        dt { color: $text-muted; font-weight: 400; } dd { margin: 0; overflow-wrap: anywhere; } }
+    .kw_fix { margin-top: 1rem; padding: .75rem 1rem; background: #fdf1d6; color: #5c3c00; border-radius: .375rem;
+        h3 { font-size: .875rem; font-weight: 600; margin: 0 0 .25rem; } p { margin: 0; font-size: .8125rem; } }
+    .kw_timeline { list-style: none; padding: 0; margin: 1rem 0 0; font-size: .8125rem; color: $text-muted;
+        li { display: grid; grid-template-columns: 64px 1fr; gap: .5rem; padding: 2px 0; }
+        time { font-variant-numeric: tabular-nums; } }
+    .kw_payload { margin: 1rem 0 0; padding: .75rem; background: $gray-100; border: 1px solid $border-color; border-radius: .375rem;
+        font-size: 12px; line-height: 1.55; max-height: 240px; overflow: auto; }
+    .kw_skel { height: 12px; border-radius: 3px; background: $gray-200; }
+    @include media-breakpoint-down(xl) { .kw_console_grid { grid-template-columns: minmax(0, 1fr); } }
+    @include media-breakpoint-down(sm) {
+        .kw_store_strip { grid-template-columns: auto 1fr; > .btn { grid-column: 1 / -1; } }
+        .kw_dl { grid-template-columns: 1fr; dt { margin-top: .5rem; } }
+    }
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_shopify_store_view_form" model="ir.ui.view">
+        <field name="name">kw.shopify.store.form</field>
+        <field name="model">kw.shopify.store</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_push_stock_now" type="object" string="Push stock now" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(kw_shopify_product_map_action)d" type="action" class="oe_stat_button"
+                                icon="fa-link" context="{'search_default_store_id': id, 'default_store_id': id}">
+                            <field name="map_count" widget="statinfo" string="Mapped SKUs"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title"><h1><field name="name" placeholder="Kilnworks Studio"/></h1></div>
+                    <group>
+                        <group string="Shop">
+                            <field name="shop_domain" placeholder="kilnworks-studio.myshopify.com"/>
+                            <field name="api_version"/>
+                            <field name="api_base_url" placeholder="https://kilnworks-studio.myshopify.com"/>
+                            <field name="webhook_url" widget="CopyClipboardChar"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Credentials" groups="base.group_system">
+                            <field name="access_token" password="True"/>
+                            <field name="webhook_secret" password="True"/>
+                        </group>
+                        <group string="Orders">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="pricelist_id"/>
+                            <field name="salesperson_id"/>
+                        </group>
+                        <group string="Stock">
+                            <field name="warehouse_id"/>
+                            <field name="location_gid"/>
+                            <field name="last_stock_push_at"/>
+                            <field name="last_stock_push_count"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="kw_shopify_store_view_list" model="ir.ui.view">
+        <field name="name">kw.shopify.store.list</field>
+        <field name="model">kw.shopify.store</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="shop_domain"/>
+                <field name="api_version"/>
+                <field name="map_count"/>
+                <field name="last_stock_push_at"/>
+            </list>
+        </field>
+    </record>
+    <record id="kw_shopify_store_action" model="ir.actions.act_window">
+        <field name="name">Shopify stores</field>
+        <field name="res_model">kw.shopify.store</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="channel_shopify" model="queue.job.channel">
+        <field name="name">kw_shopify</field>
+        <field name="parent_id" ref="queue_job.channel_root"/>
+    </record>
+    <record id="job_function_process" model="queue.job.function">
+        <field name="model_id" ref="model_kw_shopify_event"/>
+        <field name="method">process</field>
+        <field name="channel_id" ref="channel_shopify"/>
+        <field name="retry_pattern" eval="{1: 10, 5: 60, 10: 600}"/>
+    </record>
+    <record id="job_function_push_stock" model="queue.job.function">
+        <field name="model_id" ref="model_kw_shopify_store"/>
+        <field name="method">push_stock</field>
+        <field name="channel_id" ref="channel_shopify"/>
+        <field name="retry_pattern" eval="{1: 10, 5: 60, 10: 600}"/>
+    </record>
+</odoo>

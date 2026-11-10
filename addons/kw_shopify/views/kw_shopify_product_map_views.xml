@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_shopify_product_map_view_list" model="ir.ui.view">
+        <field name="name">kw.shopify.product.map.list</field>
+        <field name="model">kw.shopify.product.map</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="store_id" column_invisible="context.get('default_store_id')"/>
+                <field name="sku"/>
+                <field name="product_id"/>
+                <field name="variant_gid" optional="hide"/>
+                <field name="inventory_item_gid" optional="show"/>
+            </list>
+        </field>
+    </record>
+    <record id="kw_shopify_product_map_view_form" model="ir.ui.view">
+        <field name="name">kw.shopify.product.map.form</field>
+        <field name="model">kw.shopify.product.map</field>
+        <field name="arch" type="xml">
+            <form string="Map a Shopify SKU">
+                <group>
+                    <field name="store_id"/>
+                    <field name="sku"/>
+                    <field name="product_id" options="{'no_create': True}"/>
+                    <field name="variant_gid" placeholder="gid://shopify/ProductVariant/…"/>
+                    <field name="inventory_item_gid" placeholder="gid://shopify/InventoryItem/…"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="kw_shopify_product_map_view_search" model="ir.ui.view">
+        <field name="name">kw.shopify.product.map.search</field>
+        <field name="model">kw.shopify.product.map</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="sku"/>
+                <field name="product_id"/>
+                <field name="store_id"/>
+                <filter name="no_stock_item" string="Stock not linked" domain="[('inventory_item_gid', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+    <record id="kw_shopify_product_map_action" model="ir.actions.act_window">
+        <field name="name">Product map</field>
+        <field name="res_model">kw.shopify.product.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

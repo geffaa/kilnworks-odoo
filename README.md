@@ -13,7 +13,7 @@ reports, and version migrations. Kilnworks Stoneware is made up; so is every cus
 | `kw_ops` | The Kilnworks Ops app and role groups (user, production lead, owner) | done (M2) |
 | `kw_demo` | Company in IDR with the Indonesian chart, four role-based users, 90 days of purchases, sales, deliveries and invoices, plus open approvals to demo | done (M1–M2) |
 | `kw_approval` | PO approvals above Rp 10 M (production lead) and Rp 25 M (owner) and discount approvals above 10 % on OCA `base_tier_validation`; creators never approve their own documents; delegation with on-behalf audit; escalation after 24 working hours | done (M2) |
-| `kw_shopify` | Shopify orders and stock through signed webhooks and `queue_job`, with a sync log and retry | planned (M3) |
+| `kw_shopify` | Shopify orders through HMAC-verified, idempotent webhooks processed by `queue_job`; debounced stock push over GraphQL; an OWL console where unmapped SKUs and failed cancellations are fixed and retried | done (M3, against a mock Shopify) |
 | `payment_midtrans` | A payment provider written from scratch on `payment.provider` | planned (M4) |
 | `kw_rest_api` | Scoped REST API with rate limiting and signed outgoing webhooks | planned (M5) |
 | `kw_ops_dashboard`, `kw_reports` | OWL dashboard, export packing list and batch-aware delivery slip | planned (M5) |
@@ -31,6 +31,15 @@ open http://localhost:8069   # log in as ratna / ratna (owner), dimas, sekar or 
 ```
 
 Port clash? `ODOO_PORT=8070 make demo`.
+
+Shopify runs against a local mock (`shopify-mock` service), so the demo works offline:
+
+```bash
+python3 tools/mocks/send_order.py                         # signed orders/create webhook -> sale order
+python3 tools/mocks/send_order.py --sku KW-MUG-350-SAGE   # unmapped SKU -> "Needs mapping" in the console
+python3 tools/mocks/send_order.py --repeat                # same delivery twice -> stored once
+MOCK_THROTTLE_EVERY=2 docker compose up -d shopify-mock   # make the mock answer 429 and watch jobs retry
+```
 
 ## Develop
 

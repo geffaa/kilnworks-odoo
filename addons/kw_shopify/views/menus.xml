@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_shopify" name="Shopify" parent="kw_ops.menu_root" sequence="30"/>
+    <menuitem id="menu_shopify_console" name="Console" parent="menu_shopify" sequence="10"
+              action="kw_shopify_console_action"/>
+    <menuitem id="menu_shopify_events" name="Sync log" parent="menu_shopify" sequence="20"
+              action="kw_shopify_event_action"/>
+    <menuitem id="menu_shopify_map" name="Product map" parent="menu_shopify" sequence="30"
+              action="kw_shopify_product_map_action"/>
+    <menuitem id="menu_shopify_stores" name="Shopify stores" parent="kw_ops.menu_config" sequence="30"
+              action="kw_shopify_store_action"/>
+</odoo>

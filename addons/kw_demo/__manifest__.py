@@ -14,6 +14,7 @@
         "account",
         "l10n_id",
         "kw_approval",
+        "kw_shopify",
     ],
     "data": [
         "data/res_partner_category.xml",

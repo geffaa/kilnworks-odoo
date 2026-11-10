@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_view_form_kw_shopify" model="ir.ui.view">
+        <field name="name">sale.order.form.kw.shopify</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="kw_channel" widget="badge"/>
+                <field name="kw_shopify_store_id" invisible="kw_channel != 'shopify'"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="sale_order_view_search_kw_shopify" model="ir.ui.view">
+        <field name="name">sale.order.search.kw.shopify</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <filter name="channel_shopify" string="Shopify" domain="[('kw_channel', '=', 'shopify')]"/>
+                <filter name="channel_b2b" string="B2B" domain="[('kw_channel', '=', 'b2b')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

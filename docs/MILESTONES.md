@@ -26,14 +26,16 @@ Estimasi jujur: MVP ±22–26 hari kerja paruh waktu (±5–6 minggu), lebih dar
 - **Verifikasi:** skenario PO Rp 48.600.000 berjalan sesuai IA alur A di demo; CI hijau.
 
 ## M3 — kw_shopify (±5 hari)
-- [ ] Hari 1: buat Shopify dev store + custom app (uji A2); mock Flask GraphQL di `tools/mocks/shopify.py`
-- [ ] Model store/product.map/event + view + grup
-- [ ] Controller webhook (HMAC, idempotensi, 1 MB limit) + `HttpCase`
-- [ ] Job `process` order → SO (`kw_channel=shopify`), status needs_mapping, `action_retry`
-- [ ] Push stok debounced + mutation `inventorySetQuantities` + penanganan throttle
-- [ ] Order dibatalkan → SO batal bila belum dikirim
-- [ ] Client action OWL Shopify Console (S05/S06) sesuai mockup
+- [ ] Hari 1: buat Shopify dev store + custom app (uji A2) — **ditunda atas permintaan user; semua berjalan di mock**
+- [x] Mock GraphQL (stdlib, service Docker `shopify-mock`) di `tools/mocks/shopify_mock.py` + pengirim webhook bertanda tangan `tools/mocks/send_order.py`
+- [x] Model store/product.map/event + view + grup
+- [x] Controller webhook (HMAC, idempotensi, 1 MB limit) + `HttpCase`
+- [x] Job `process` order → SO (`kw_channel=shopify`), status needs_mapping, `action_retry`
+- [x] Push stok debounced + mutation `inventorySetQuantities` + penanganan throttle
+- [x] Order dibatalkan → SO batal bila belum dikirim
+- [x] Client action OWL Shopify Console (S05/S06) sesuai mockup
 - **Fitur:** F4
+- **Hasil (2026-11-10):** 18 tes `kw_shopify` (webhook lewat HTTP sungguhan: HMAC valid/salah, redelivery, 404, 413; order → SO USD tanpa PPN; order ganda; pelanggan dicocokkan email; SKU hilang → needs_mapping → mapping → retry; batal sebelum/sesudah kirim; push stok: debounce jadi 1 job, payload GraphQL, 429/THROTTLED retryable, userErrors). E2E dengan job runner asli: `send_order.py --repeat` → satu event + `duplicate_count=1`, SO tercipta; push stok 18 item diterima mock. Konsol OWL lulus di 1440 dan 390 px tanpa error console. Demo berisi 40 order Shopify (30 hari) termasuk #KW1043 (SKU KW-MUG-350-SAGE belum dipetakan) dan pembatalan #KW1031 setelah dikirim. Belum: uji dengan dev store Shopify asli (A2), versi API `2025-10` dan argumen `ignoreCompareQuantity` perlu verifikasi terhadap dokumentasi Shopify saat dev store tersedia; ongkir dan pajak Shopify belum diimpor (P2).
 - **Verifikasi:** order dari dev store muncul sebagai SO < 1 menit; kirim webhook duplikat dengan curl → tetap satu SO; tes hijau dengan mock.
 
 ## M4 — payment_midtrans (±3 hari)

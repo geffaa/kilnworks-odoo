@@ -74,6 +74,7 @@ def _seed(env):
     try:
         _purchases(env, rng)
         _sales(env, rng, goods)
+        _shopify(env, rng)
     finally:
         rules.active = True
     _stock_levels(env, goods)
@@ -349,3 +350,180 @@ def _approval_showcase(env):
     )
     quote.with_user(sekar).request_validation()
     quote.review_ids.sudo().kw_pending_since = now - timedelta(hours=5)
+
+
+# -- Shopify ------------------------------------------------------------------------------
+DEMO_WEBHOOK_SECRET = "kilnworks-demo-webhook-secret"  # public: synthetic demo only
+USD_PER_IDR = 1 / 16250  # synthetic demo rate, not a market quote
+SHOPIFY_PRICES = {  # USD
+    "KW-MUG-350-CEL": 24,
+    "KW-MUG-350-ASH": 24,
+    "KW-MUG-250-SND": 21,
+    "KW-ESP-090-SND": 14,
+    "KW-ESP-090-CEL": 14,
+    "KW-CUP-200-IRR": 19,
+    "KW-SAU-140-IRR": 11,
+    "KW-PLT-270-SPK": 34,
+    "KW-PLT-210-SPK": 22,
+    "KW-PLT-270-CEL": 36,
+    "KW-BWL-900-ASH": 32,
+    "KW-BWL-500-CEL": 19,
+    "KW-BWL-150-SND": 10,
+    "KW-DRP-002-IRR": 42,
+    "KW-SRV-001-CEL": 38,
+    "KW-TPT-800-ASH": 64,
+    "KW-VAS-180-SPK": 28,
+    "KW-SET-4PC-CEL": 89,
+}
+BUYERS = [
+    ("Maya", "Okafor", "Wellington", "NZ"),
+    ("Lena", "Vogel", "Hamburg", "DE"),
+    ("Tom", "Hartley", "Bristol", "GB"),
+    ("Aiko", "Tanaka", "Fukuoka", "JP"),
+    ("Priya", "Raman", "Singapore", "SG"),
+    ("Jonas", "de Wit", "Utrecht", "NL"),
+    ("Claire", "Dubois", "Montréal", "CA"),
+    ("Sam", "Whitfield", "Portland", "US"),
+    ("Noor", "Haddad", "Melbourne", "AU"),
+    ("Ellis", "Moreno", "Austin", "US"),
+    ("Hana", "Kim", "Vancouver", "CA"),
+    ("Olivia", "Brandt", "Copenhagen", "DK"),
+]
+SHOPIFY_ORDERS = 40  # #KW1005 … #KW1044 over 30 days
+
+
+def _shopify(env, rng):
+    company = env.ref("base.main_company")
+    usd = env.ref("base.USD")
+    usd.active = True
+    env["res.currency.rate"].create(
+        {
+            "currency_id": usd.id,
+            "company_id": company.id,
+            "rate": USD_PER_IDR,
+            "name": fields.Date.today() - timedelta(days=120),
+        }
+    )
+    pricelist = env["product.pricelist"].create({"name": "Shopify (USD)", "currency_id": usd.id})
+    store = env["kw.shopify.store"].create(
+        {
+            "name": "Kilnworks Studio",
+            "shop_domain": "kilnworks-studio.myshopify.com",
+            "api_version": "2025-10",
+            "api_base_url": "http://shopify-mock:8080",
+            "access_token": "shpat_demo_not_a_real_token",
+            "webhook_secret": DEMO_WEBHOOK_SECRET,
+            "location_gid": "gid://shopify/Location/71522431",
+            "warehouse_id": env.ref("stock.warehouse0").id,
+            "pricelist_id": pricelist.id,
+            "salesperson_id": env.ref("kw_demo.user_bayu").id,
+        }
+    )
+    env["ir.model.data"].create(
+        {
+            "module": "kw_demo",
+            "name": "shopify_store",
+            "model": store._name,
+            "res_id": store.id,
+            "noupdate": True,
+        }
+    )
+    for i, sku in enumerate(SHOPIFY_PRICES, start=1):
+        env["kw.shopify.product.map"].create(
+            {
+                "store_id": store.id,
+                "product_id": _by_sku(env, sku).id,
+                "sku": sku,
+                "variant_gid": f"gid://shopify/ProductVariant/4419{i:04d}",
+                "inventory_item_gid": f"gid://shopify/InventoryItem/5520{i:04d}",
+            }
+        )
+    now = fields.Datetime.now()
+    skus = list(SHOPIFY_PRICES)
+    events = env["kw.shopify.event"]
+    for i in range(SHOPIFY_ORDERS):
+        number = 1005 + i
+        # Spread over 30 days; the last eight land in the past 24 hours.
+        hours_ago = (
+            (SHOPIFY_ORDERS - 1 - i) * 2.4 if i >= SHOPIFY_ORDERS - 8 else (30 - i * 0.75) * 24
+        )
+        when = now - timedelta(hours=hours_ago)
+        first, last, city, country = BUYERS[i % len(BUYERS)]
+        items = []
+        for sku in rng.sample(skus, rng.randint(1, 3)):
+            items.append(
+                {
+                    "sku": sku,
+                    "quantity": rng.choice([1, 2, 2, 4, 6]),
+                    "price": f"{SHOPIFY_PRICES[sku]:.2f}",
+                    "discount_allocations": [],
+                }
+            )
+        if number == 1043:
+            items[0]["sku"] = "KW-MUG-350-SAGE"  # added in Shopify yesterday, not mapped yet
+        total = sum(float(it["price"]) * it["quantity"] for it in items)
+        gid = f"gid://shopify/Order/58{number:08d}"
+        payload = {
+            "id": int(f"58{number:08d}"),
+            "admin_graphql_api_id": gid,
+            "name": f"#KW{number}",
+            "email": f"{first.lower()}.{last.lower().replace(' ', '')}@example.com",
+            "currency": "USD",
+            "total_price": f"{total:.2f}",
+            "created_at": when.isoformat(),
+            "customer": {
+                "first_name": first,
+                "last_name": last,
+                "email": f"{first.lower()}.{last.lower().replace(' ', '')}@example.com",
+            },
+            "shipping_address": {"city": city, "country_code": country},
+            "line_items": items,
+        }
+        event = events.create(
+            {
+                "store_id": store.id,
+                "webhook_id": f"b54557e4-{number:04d}-4b37-8a5f-bf7d70bcd043",
+                "topic": "orders/create",
+                "order_name": payload["name"],
+                "order_gid": gid,
+                "payload": payload,
+                "received_at": when,
+            }
+        )
+        event.log = [
+            [when.isoformat(), "Received, signature checked, stored"],
+            [when.isoformat(), "Queued on channel root.kw_shopify"],
+        ]
+        event.process()
+        event.processed_at = when + timedelta(seconds=2)
+        order = event.sale_order_id
+        if order:
+            order.date_order = when
+            if hours_ago > 48:
+                for picking in order.picking_ids:
+                    _validate_picking(picking, when + timedelta(days=1))
+    # A customer cancelled #KW1031 after it had shipped: a person has to arrange the return.
+    shipped = events.search([("order_name", "=", "#KW1031")]).payload
+    cancel = events.create(
+        {
+            "store_id": store.id,
+            "webhook_id": "c0a8b3f2-1031-4e1c-9d2e-7a7f1b2c1031",
+            "topic": "orders/cancelled",
+            "order_name": "#KW1031",
+            "order_gid": shipped["admin_graphql_api_id"],
+            "payload": dict(
+                shipped,
+                cancelled_at=(now - timedelta(hours=6)).isoformat(),
+                cancel_reason="customer",
+            ),
+            "received_at": now - timedelta(hours=6),
+        }
+    )
+    cancel.process()
+    # Shopify retried two deliveries we had already stored.
+    events.search([("order_name", "in", ("#KW1041", "#KW1042"))]).write(
+        {"duplicate_count": 1, "last_duplicate_at": now - timedelta(hours=1)}
+    )
+    store.write(
+        {"last_stock_push_at": now - timedelta(minutes=20), "last_stock_push_count": len(skus)}
+    )

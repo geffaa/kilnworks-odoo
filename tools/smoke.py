@@ -69,5 +69,18 @@ with sync_playwright() as p:
             print(f"{user:6} {'approval-po':19} errors={errs} {'ok' if ok else 'FAIL'}")
             bad += not ok
         ctx.close()
+    # The Shopify console is a client action, not a list.
+    ctx, pg, errs = login(browser, "bayu")
+    pg.goto(BASE + "/odoo/action-kw_shopify.kw_shopify_console_action")
+    pg.wait_for_selector(".kw_store_strip", timeout=20000)
+    pg.wait_for_timeout(800)
+    rows = pg.locator(".kw_table tbody tr").count()
+    pg.screenshot(path=str(out / "shopify-console.png"), full_page=True)
+    ok = not errs and rows > 0
+    print(
+        f"{'bayu':6} {'shopify-console':19} rows={rows:<3} errors={errs} {'ok' if ok else 'FAIL'}"
+    )
+    bad += not ok
+    ctx.close()
     browser.close()
 sys.exit(1 if bad else 0)
