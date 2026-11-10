@@ -4,9 +4,11 @@ Runs once on install. The random generator is seeded so every fresh database get
 same 90 days of history, shifted to end on the install date.
 """
 
+import base64
 import logging
 import random
 from datetime import timedelta
+from pathlib import Path
 
 from odoo import Command, fields
 
@@ -80,6 +82,7 @@ def _seed(env):
     _stock_levels(env, goods)
     _orderpoints(env, goods)
     _approval_showcase(env)
+    _midtrans(env)
     env["ir.config_parameter"].sudo().set_param(SEED_FLAG, fields.Datetime.now())
     _logger.info("Kilnworks demo data seeded")
 
@@ -98,6 +101,9 @@ def _setup_company(env):
             "currency_id": idr.id,
             "email": "hello@kilnworks.example",
             "website": "https://kilnworks.example",
+            "logo": base64.b64encode(
+                (Path(__file__).parent / "static/description/logo.png").read_bytes()
+            ),
         }
     )
     env.ref("base.partner_admin").tz = "Asia/Jakarta"
@@ -527,3 +533,65 @@ def _shopify(env, rng):
     store.write(
         {"last_stock_push_at": now - timedelta(minutes=20), "last_stock_push_count": len(skus)}
     )
+
+
+# -- Midtrans -----------------------------------------------------------------------------
+DEMO_MIDTRANS_SERVER_KEY = "SB-Mid-server-kilnworks-demo"  # matches tools/mocks; demo only
+
+
+def _midtrans(env):
+    """Midtrans in test mode against the local mock, and one open invoice to pay."""
+    icp = env["ir.config_parameter"].sudo()
+    icp.set_param("web.base.url", "http://localhost:8069")
+    icp.set_param("web.base.url.freeze", "True")
+    # payment_midtrans installed before account_payment, so its accounting payment method was
+    # never created; run the setup again now that account_payment is present.
+    env["payment.provider"]._setup_provider("midtrans")
+    provider = env.ref("payment_midtrans.payment_provider_midtrans")
+    provider.write(
+        {
+            "state": "test",
+            "is_published": True,
+            "company_id": env.ref("base.main_company").id,
+            "midtrans_merchant_id": "G000000000",
+            "midtrans_client_key": "SB-Mid-client-kilnworks-demo",
+            "midtrans_server_key": DEMO_MIDTRANS_SERVER_KEY,
+            "midtrans_snap_url_override": "http://midtrans-mock:8090",
+            "midtrans_api_url_override": "http://midtrans-mock:8090",
+            # account_payment links a journal only to providers that exist when it installs;
+            # payments need it (and the payment method line it creates) to post.
+            "journal_id": env["account.journal"]
+            .search(
+                [("type", "=", "bank"), ("company_id", "=", env.ref("base.main_company").id)],
+                limit=1,
+            )
+            .id,
+        }
+    )
+    # Without an outstanding-receipts account Odoo 18 leaves the payment "in process" with no
+    # journal entry, so it cannot be matched to the invoice until bank reconciliation.
+    company = env.ref("base.main_company")
+    outstanding = env["account.account"].create(
+        {
+            "name": "Outstanding Receipts (Midtrans)",
+            "code": "112901",
+            "account_type": "asset_current",
+            "reconcile": True,
+            "company_ids": [(6, 0, company.ids)],
+        }
+    )
+    env["account.payment.method.line"].search([("payment_provider_id", "=", provider.id)]).write(
+        {"payment_account_id": outstanding.id}
+    )
+    invoice = env["account.move"].search(
+        [
+            ("move_type", "=", "out_invoice"),
+            ("payment_state", "=", "not_paid"),
+            ("state", "=", "posted"),
+        ],
+        order="invoice_date desc",
+        limit=1,
+    )
+    if invoice:
+        invoice._portal_ensure_token()
+        icp.set_param("kw_demo.payment_link", invoice.get_base_url() + invoice._get_share_url())

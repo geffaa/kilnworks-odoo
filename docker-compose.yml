@@ -21,6 +21,18 @@ services:
     environment:
       MOCK_THROTTLE_EVERY: "${MOCK_THROTTLE_EVERY:-0}"
 
+  midtrans-mock:
+    image: python:3.12-alpine
+    command: ["python", "-u", "/mocks/midtrans_mock.py"]
+    volumes:
+      - ./tools/mocks:/mocks:ro
+    ports:
+      - "${MIDTRANS_MOCK_PORT:-8090}:8090"
+    environment:
+      PUBLIC_URL: "http://localhost:${MIDTRANS_MOCK_PORT:-8090}"
+      NOTIFY_URL: "http://odoo:8069/payment/midtrans/notification"
+      MIDTRANS_SERVER_KEY: "SB-Mid-server-kilnworks-demo"
+
   odoo:
     build: .
     image: kilnworks-odoo:18.0
@@ -28,6 +40,8 @@ services:
       db:
         condition: service_healthy
       shopify-mock:
+        condition: service_started
+      midtrans-mock:
         condition: service_started
     ports:
       - "${ODOO_PORT:-8069}:8069"

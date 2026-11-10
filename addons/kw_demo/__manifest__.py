@@ -15,6 +15,8 @@
         "l10n_id",
         "kw_approval",
         "kw_shopify",
+        "account_payment",
+        "payment_midtrans",
     ],
     "data": [
         "data/res_partner_category.xml",

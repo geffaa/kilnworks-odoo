@@ -39,11 +39,13 @@ Estimasi jujur: MVP ±22–26 hari kerja paruh waktu (±5–6 minggu), lebih dar
 - **Verifikasi:** order dari dev store muncul sebagai SO < 1 menit; kirim webhook duplikat dengan curl → tetap satu SO; tes hijau dengan mock.
 
 ## M4 — payment_midtrans (±3 hari)
-- [ ] Daftar sandbox Midtrans (uji A3); verifikasi Midtrans memang tidak ada di core 18 (A4)
-- [ ] Modul provider (data `payment.provider`, field key, ikon, method VA/QRIS)
-- [ ] Snap token + redirect; route return & notification; signature SHA512
-- [ ] Pemetaan 6 status + tes notifikasi ganda
+- [ ] Daftar sandbox Midtrans (uji A3) — **ditunda; berjalan di mock `tools/mocks/midtrans_mock.py`**
+- [x] Verifikasi Midtrans tidak ada di core 18 (A4): terbukti, image `odoo:18.0` hanya punya adyen, aps, asiapay, authorize, buckaroo, custom, demo, flutterwave, mercado_pago, mollie, nuvei, paypal, razorpay, stripe, worldline, xendit
+- [x] Modul provider (data `payment.provider`, field key, ikon, method VA/QRIS)
+- [x] Snap token + redirect; route return & notification; signature SHA512
+- [x] Pemetaan 6 status + tes notifikasi ganda
 - **Fitur:** F5
+- **Hasil (2026-11-10):** 14 tes `payment_midtrans` (request Snap: URL, Basic auth, `gross_amount` integer, `enabled_payments` sesuai metode; referensi aman untuk Midtrans; endpoint produksi saat `enabled`; pesan error Snap; pemetaan status; kartu `capture` + fraud review; nomor VA; sinkron dari Status API; notifikasi via HTTP: settlement, ganda, signature salah 403, jumlah tidak cocok 403, order tak dikenal 403) + tes demo bahwa transaksi selesai melunasi invoice. E2E browser `tools/e2e_payment.py`: portal invoice → BCA VA → halaman mock → notifikasi bertanda tangan → invoice `paid`, tanpa error console. Temuan: (1) halaman return memanggil Status API karena notifikasi tidak menjangkau localhost dan query string tidak bisa dipercaya; (2) bila `payment_midtrans` terpasang sebelum `account_payment`, payment method akuntansi tidak terbuat — demo memanggil ulang `_setup_provider`; (3) Odoo 18 butuh akun Outstanding Receipts pada payment method line agar pembayaran berjurnal dan bisa dicocokkan ke invoice. Belum: uji sandbox Midtrans asli; karakter yang diizinkan untuk `order_id` perlu verifikasi; refund ditangani manual (P2).
 - **Verifikasi:** invoice demo dibayar via sandbox → invoice Paid; tes hijau.
 
 ## M5 — kw_rest_api + kw_ops_dashboard + kw_reports (±6 hari)

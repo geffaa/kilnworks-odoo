@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">Midtrans Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'midtrans'" name="midtrans_credentials">
+                    <field name="midtrans_merchant_id" required="code == 'midtrans' and state != 'disabled'"/>
+                    <field name="midtrans_client_key" required="code == 'midtrans' and state != 'disabled'"/>
+                    <field name="midtrans_server_key" password="True"
+                           required="code == 'midtrans' and state != 'disabled'"/>
+                    <field name="midtrans_snap_url_override" groups="base.group_no_one"/>
+                    <field name="midtrans_api_url_override" groups="base.group_no_one"/>
+                </group>
+                <div class="alert alert-info" role="status" invisible="code != 'midtrans'" colspan="2">
+                    Set the Payment Notification URL in the Midtrans dashboard to
+                    <code>/payment/midtrans/notification</code> on this database's public address.
+                </div>
+            </group>
+        </field>
+    </record>
+</odoo>

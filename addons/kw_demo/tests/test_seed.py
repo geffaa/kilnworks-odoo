@@ -101,3 +101,62 @@ class TestSeed(TransactionCase):
         data = store.get_console_data(store.id)
         self.assertEqual(data["counts"]["attention"], 2)
         self.assertEqual(data["duplicates_today"], 2)
+
+    def test_midtrans_ready_for_open_invoices(self):
+        provider = self.env.ref("payment_midtrans.payment_provider_midtrans")
+        self.assertEqual(provider.state, "test")
+        self.assertTrue(provider.is_published)
+        link = self.env["ir.config_parameter"].sudo().get_param("kw_demo.payment_link")
+        self.assertIn("/my/invoices/", link)
+        self.assertIn("access_token=", link)
+        compatible = (
+            self.env["payment.provider"]
+            .sudo()
+            ._get_compatible_providers(
+                self.env.company.id,
+                self.env.ref("kw_demo.c_teras").id,
+                21_000_000,
+                currency_id=self.env.ref("base.IDR").id,
+            )
+        )
+        self.assertIn(provider, compatible)
+
+    def test_midtrans_payment_settles_invoice(self):
+        from odoo.addons.payment_midtrans.models.payment_transaction import midtrans_signature
+
+        from ..hooks import DEMO_MIDTRANS_SERVER_KEY
+
+        provider = self.env.ref("payment_midtrans.payment_provider_midtrans")
+        invoice = self.env["account.move"].search(
+            [("move_type", "=", "out_invoice"), ("payment_state", "=", "not_paid")], limit=1
+        )
+        tx = self.env["payment.transaction"].create(
+            {
+                "provider_id": provider.id,
+                "payment_method_id": self.env.ref("payment.payment_method_bank_bca").id,
+                "amount": invoice.amount_residual,
+                "currency_id": invoice.currency_id.id,
+                "partner_id": invoice.partner_id.id,
+                "reference": invoice.name.replace("/", "-") + "-T",
+                "operation": "online_redirect",
+                "invoice_ids": [(6, 0, invoice.ids)],
+            }
+        )
+        gross = f"{int(round(tx.amount))}.00"
+        data = {
+            "order_id": tx.reference,
+            "status_code": "200",
+            "gross_amount": gross,
+            "transaction_status": "settlement",
+            "payment_type": "bank_transfer",
+            "va_numbers": [{"bank": "bca", "va_number": "12785002530231"}],
+            "signature_key": midtrans_signature(
+                tx.reference, "200", gross, DEMO_MIDTRANS_SERVER_KEY
+            ),
+        }
+        tx._handle_notification_data("midtrans", data)
+        tx._post_process()
+        self.assertEqual(tx.state, "done")
+        self.assertTrue(tx.payment_id, "an accounting payment was created")
+        invoice.invalidate_recordset(["payment_state", "amount_residual"])
+        self.assertIn(invoice.payment_state, ("paid", "in_payment"))
