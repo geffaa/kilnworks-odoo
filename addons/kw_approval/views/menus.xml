@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_approvals" name="Approvals" parent="kw_ops.menu_root" sequence="20"
+              action="tier_review_action_inbox"/>
+    <menuitem id="menu_delegations" name="Delegations" parent="kw_ops.menu_config" sequence="20"
+              action="kw_approval_delegation_action"/>
+    <menuitem id="menu_rules" name="Approval Rules" parent="kw_ops.menu_config" sequence="10"
+              action="tier_definition_action_kw"/>
+</odoo>

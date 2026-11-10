@@ -14,14 +14,15 @@ Estimasi jujur: MVP ±22–26 hari kerja paruh waktu (±5–6 minggu), lebih dar
 - **Verifikasi:** `make demo` dari nol berhasil; CI hijau; install ulang tidak menggandakan data.
 
 ## M2 — kw_approval (±4 hari)
-- [ ] Field `kw_amount_company`, `kw_max_discount` + tes konversi USD
-- [ ] Data `tier.definition` (PO > 25 jt L1→L2, PO > 100 jt L2, SO diskon > 10%) dengan `sale_tier_validation`
-- [ ] Pengalihan self-approve + pesan chatter
-- [ ] `kw.approval.delegation` (model, view, constraint melingkar) + perluasan pencarian reviewer + `acted_on_behalf_of_id`
-- [ ] Cron SLA 24 jam (`escalated_at`), aktivitas + template email
-- [ ] Menu Kilnworks Ops › Approvals (action `tier.review` milik saya + delegasi), Delegations
-- [ ] Tes semua kasus TECH-SPEC §8 + tur S01→S02 (setelah M5 tur diperluas)
+- [x] Field `kw_amount_company`, `kw_max_discount` + tes konversi USD
+- [x] Data `tier.definition` (PO > 25 jt L1→L2, PO > 100 jt L2, SO diskon > 10%) dengan `sale_tier_validation`
+- [x] Pengalihan self-approve + pesan chatter
+- [x] `kw.approval.delegation` (model, view, constraint melingkar) + perluasan pencarian reviewer + `acted_on_behalf_of_id`
+- [x] Cron SLA 24 jam (`escalated_at`), aktivitas + template email
+- [x] Menu Kilnworks Ops › Approvals (action `tier.review` milik saya + delegasi), Delegations
+- [x] Tes semua kasus TECH-SPEC §8 (tur S01→S02 dipindah ke M5 bersama dashboard)
 - **Fitur:** F2, F3
+- **Hasil (2026-11-10):** 22 tes `kw_approval` + 2 `kw_ops` + 7 `kw_demo` lulus. Modul fondasi `kw_ops` ditambahkan (app + grup peran) agar aturan tier tidak bergantung pada user demo. E2E browser: Sekar (delegate) memvalidasi PO Rp 48,6 jt → tercatat atas nama Ratna. Temuan: (1) OCA memberi nomor tier dari `sequence` definisi **terbesar**, jadi definisi kepala produksi = 20, owner = 10; (2) OCA tidak punya bypass untuk perubahan state, jadi riwayat demo ditulis dengan aturan dinonaktifkan sementara; (3) OCA mengunci baris saat validasi berjalan, sehingga logika "reset bila total berubah" tidak diperlukan; (4) cap waktu pending tertimpa oleh tulisan ulang status oleh OCA, diperbaiki + tes regresi. Aturan PO diubah ke 10 jt / 25 jt (aturan 100 jt lama tumpang tindih). Komentar wajib saat reject belum diaktifkan (`has_comment`).
 - **Verifikasi:** skenario PO Rp 48.600.000 berjalan sesuai IA alur A di demo; CI hijau.
 
 ## M3 — kw_shopify (±5 hari)

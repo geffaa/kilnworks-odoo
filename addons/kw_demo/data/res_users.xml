@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Synthetic demo users. Passwords equal the login and exist only for local demos. -->
 <odoo noupdate="1">
+    <!-- Admin sets things up but does not approve: keep approver groups to the demo people. -->
     <record id="user_ratna" model="res.users">
         <field name="name">Ratna Wibisono</field><field name="login">ratna</field><field name="password">ratna</field>
         <field name="email">ratna@kilnworks.example</field><field name="tz">Asia/Jakarta</field>
         <field name="groups_id" eval="[Command.set([
             ref('base.group_user'), ref('purchase.group_purchase_manager'), ref('sales_team.group_sale_manager'),
-            ref('stock.group_stock_manager'), ref('account.group_account_manager')])]"/>
+            ref('stock.group_stock_manager'), ref('account.group_account_manager'),
+            ref('kw_ops.group_manager')])]"/>
     </record>
     <record id="user_dimas" model="res.users">
         <field name="name">Dimas Pratama</field><field name="login">dimas</field><field name="password">dimas</field>
         <field name="email">dimas@kilnworks.example</field><field name="tz">Asia/Jakarta</field>
         <field name="groups_id" eval="[Command.set([
-            ref('base.group_user'), ref('purchase.group_purchase_user'), ref('stock.group_stock_user')])]"/>
+            ref('base.group_user'), ref('purchase.group_purchase_user'), ref('stock.group_stock_user'),
+            ref('kw_ops.group_production_lead')])]"/>
     </record>
     <record id="user_sekar" model="res.users">
         <field name="name">Sekar Ayuningtyas</field><field name="login">sekar</field><field name="password">sekar</field>
         <field name="email">sekar@kilnworks.example</field><field name="tz">Asia/Jakarta</field>
         <field name="groups_id" eval="[Command.set([
-            ref('base.group_user'), ref('sales_team.group_sale_salesman_all_leads'), ref('account.group_account_invoice')])]"/>
+            ref('base.group_user'), ref('sales_team.group_sale_salesman_all_leads'), ref('account.group_account_invoice'),
+            ref('kw_ops.group_user')])]"/>
     </record>
     <record id="user_bayu" model="res.users">
         <field name="name">Bayu Santoso</field><field name="login">bayu</field><field name="password">bayu</field>
         <field name="email">bayu@kilnworks.example</field><field name="tz">Asia/Jakarta</field>
         <field name="groups_id" eval="[Command.set([
-            ref('base.group_user'), ref('sales_team.group_sale_salesman'), ref('stock.group_stock_user')])]"/>
+            ref('base.group_user'), ref('sales_team.group_sale_salesman'), ref('stock.group_stock_user'),
+            ref('kw_ops.group_user')])]"/>
     </record>
 </odoo>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_root" name="Kilnworks Ops" web_icon="kw_ops,static/description/icon.png"
+              groups="group_user" sequence="25"/>
+    <menuitem id="menu_config" name="Configuration" parent="menu_root" sequence="90" groups="group_manager"/>
+</odoo>

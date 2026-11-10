@@ -37,7 +37,7 @@ Keputusan: satu app **Kilnworks Ops** sebagai rumah semua permukaan custom, seme
 
 ### A. Procure → Pay (bahan baku)
 1. Dimas membuat PO tanah liat Rp 48.600.000 (Purchase) → klik **Request Validation**.
-2. Rule: > Rp 25 jt butuh L1 (kepala produksi) lalu L2 (owner). Pembuat tidak boleh menyetujui PO sendiri, jadi tier L1 milik Dimas dialihkan ke owner (ditulis di chatter).
+2. Rule: > Rp 10 jt butuh kepala produksi, > Rp 25 jt ditambah owner. Pembuat tidak boleh menyetujui PO sendiri, jadi tier L1 milik Dimas dialihkan ke owner (ditulis di chatter).
 3. Ratna sedang cuti → delegasi ke Sekar (berlaku 10–14 Nov) → muncul di Inbox Approvals Sekar.
 4. Lewat 24 jam tanpa aksi → cron eskalasi, aktivitas + email ke owner.
 5. Disetujui → Confirm Order → Receipt → Vendor Bill (core).

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="tier_definition_view_form_kw" model="ir.ui.view">
+        <field name="name">tier.definition.form.kw</field>
+        <field name="model">tier.definition</field>
+        <field name="inherit_id" ref="base_tier_validation.tier_definition_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Kilnworks rules" name="kw_rules">
+                    <field name="kw_self_approval_group_id"/>
+                    <field name="kw_sla_hours"/>
+                    <field name="kw_escalation_group_id" invisible="not kw_sla_hours"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="tier_definition_action_kw" model="ir.actions.act_window">
+        <field name="name">Approval rules</field>
+        <field name="res_model">tier.definition</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

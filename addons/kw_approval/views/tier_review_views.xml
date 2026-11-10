@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="tier_review_view_list_kw" model="ir.ui.view">
+        <field name="name">tier.review.list.kw</field>
+        <field name="model">tier.review</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <list create="False" edit="False" decoration-danger="kw_escalated_at"
+                  action="action_kw_open_document" type="object">
+                <field name="kw_document_name" string="Document"/>
+                <field name="name" string="Rule"/>
+                <field name="sequence" string="Tier"/>
+                <field name="kw_document_amount" width="150px" widget="monetary" options="{'currency_field': 'kw_currency_id'}"/>
+                <field name="kw_currency_id" column_invisible="True"/>
+                <field name="requested_by" widget="many2one_avatar_user"/>
+                <field name="kw_redirected_from_id" optional="show"/>
+                <field name="kw_waiting_hours"/>
+                <field name="kw_escalated_at" optional="show" widget="remaining_days"/>
+                <field name="status" widget="badge" decoration-warning="status == 'pending'"/>
+            </list>
+        </field>
+    </record>
+    <record id="tier_review_view_search_kw" model="ir.ui.view">
+        <field name="name">tier.review.search.kw</field>
+        <field name="model">tier.review</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="model"/>
+                <filter name="mine" string="Waiting for me" domain="[('reviewer_ids', 'in', uid), ('status', '=', 'pending')]"/>
+                <filter name="escalated" string="Escalated" domain="[('kw_escalated_at', '!=', False)]"/>
+                <separator/>
+                <filter name="purchase" string="Purchases" domain="[('model', '=', 'purchase.order')]"/>
+                <filter name="sale" string="Sales" domain="[('model', '=', 'sale.order')]"/>
+                <group>
+                    <filter name="group_model" string="Document type" context="{'group_by': 'model'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="tier_review_action_inbox" model="ir.actions.act_window">
+        <field name="name">Approvals</field>
+        <field name="res_model">tier.review</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="tier_review_view_list_kw"/>
+        <field name="search_view_id" ref="tier_review_view_search_kw"/>
+        <field name="context">{'search_default_mine': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Nothing is waiting for your approval</p>
+            <p>Purchase orders above Rp 10 M and quotations with discounts above 10 % land here.</p>
+        </field>
+    </record>
+</odoo>

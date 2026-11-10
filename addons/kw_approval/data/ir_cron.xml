@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cron_escalate" model="ir.cron">
+        <field name="name">Kilnworks: escalate overdue approvals</field>
+        <field name="model_id" ref="base_tier_validation.model_tier_review"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_kw_escalate()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+    </record>
+    <record id="cron_refresh_delegations" model="ir.cron">
+        <field name="name">Kilnworks: apply starting and ending delegations</field>
+        <field name="model_id" ref="model_kw_approval_delegation"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_refresh()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>

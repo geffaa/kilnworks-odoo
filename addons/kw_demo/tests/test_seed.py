@@ -41,9 +41,11 @@ class TestSeed(TransactionCase):
         pos = self.env["purchase.order"].search(
             [("user_id", "=", self.env.ref("kw_demo.user_dimas").id)]
         )
-        self.assertEqual(len(sos), SO_COUNT)
-        self.assertEqual(len(pos), PO_COUNT)
+        showcase = sos.filtered("review_ids")
+        self.assertEqual(len(sos), SO_COUNT + len(showcase))
+        self.assertEqual(len(pos.filtered(lambda p: not p.review_ids)), PO_COUNT)
         self.assertTrue(sos.filtered(lambda s: s.state == "draft"), "some quotations stay open")
+        self.assertTrue(pos[0].name.startswith("PO/"))
         idr = self.env.ref("base.IDR")
         self.assertEqual(set(sos.mapped("currency_id")), {idr})
         invoices = sos.invoice_ids
@@ -57,10 +59,30 @@ class TestSeed(TransactionCase):
         self.assertTrue(all(m.invoice_date_due > m.invoice_date for m in invoices))
         self.assertTrue(invoices.filtered(lambda m: m.payment_state in ("paid", "in_payment")))
         self.assertTrue(invoices.filtered(lambda m: m.payment_state == "not_paid"))
-        # vendor bills: raw-material vendors are not VAT-registered
+        # raw-material vendors are not VAT-registered
         self.assertFalse(pos.order_line.taxes_id)
 
     def test_hook_runs_once(self):
         before = self.env["sale.order"].search_count([])
         post_init_hook(self.env)
         self.assertEqual(self.env["sale.order"].search_count([]), before)
+
+    def test_approval_showcase(self):
+        ratna = self.env.ref("kw_demo.user_ratna")
+        dimas = self.env.ref("kw_demo.user_dimas")
+        sekar = self.env.ref("kw_demo.user_sekar")
+        clay = self.env["purchase.order"].search([("amount_total", "=", 48_600_000)])
+        self.assertEqual(len(clay), 1)
+        tier1, tier2 = clay.review_ids.sorted("sequence")
+        self.assertEqual(tier1.kw_redirected_from_id, dimas)
+        self.assertEqual(tier1.reviewer_ids, ratna | sekar, "owner plus her delegate")
+        self.assertTrue(tier1.kw_escalated_at)
+        self.assertEqual(tier2.status, "waiting")
+        quote = self.env["sale.order"].search([("kw_max_discount", "=", 15)])
+        self.assertEqual(quote.review_ids.status, "pending")
+        inbox = (
+            self.env["tier.review"]
+            .with_user(ratna)
+            .search([("reviewer_ids", "in", ratna.id), ("status", "=", "pending")])
+        )
+        self.assertEqual(len(inbox), 3)

@@ -72,8 +72,8 @@ def dashboard():
 
     approvals = [
         ("PO/2026/0418", "Sumber Lempung Godean", "Purchase · tier 1 of 2", "Rp 48,600,000", "26 h", True, "You"),
-        ("S/2026/1187", "Teras Kopi Jakal", "Discount 15% · owner", "Rp 21,420,000", "5 h", False, "You"),
-        ("PO/2026/0421", "UD Glasir Tirta Mulya", "Purchase · tier 1 of 1", "Rp 31,250,000", "2 h", False, "Sekar (delegate)"),
+        ("S/2026/1184", "Teras Kopi Jakal", "Discount 15% · owner", "Rp 20,945,700", "5 h", False, "You"),
+        ("PO/2026/0419", "UD Glasir Tirta Mulya", "Purchase · tier 1 of 1", "Rp 18,300,000", "2 h", False, "You"),
     ]
     arows = "".join(
         f'<tr><td><a href="purchase-order.html">{n}</a><span class="sub">{p}</span></td>'
@@ -218,7 +218,7 @@ def purchase_order():
       </div>
     </div>
     <div class="alert alert-warning" role="status">{ic("shield-alert")}<div><b>This order needs 2 approvals before it can be confirmed.</b>
-      Amount Rp 48,600,000 is above the Rp 25,000,000 purchase limit. Tier 1 has waited 26 hours and was escalated to you.</div></div>
+      Amount Rp 48,600,000 is above the Rp 25,000,000 limit, so the owner approves after the production lead. Tier 1 has waited 26 hours and was escalated to you.</div></div>
     <div class="o-sheet">
       <div class="o-title"><small>Purchase Order</small><h1>PO/2026/0418</h1></div>
       <div class="o-groups">

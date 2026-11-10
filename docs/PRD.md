@@ -42,7 +42,7 @@ Portfolio Senior Odoo Developer berupa satu instalasi **Odoo 18 Community** untu
 - **Bukan tujuan:** payment Stripe (core sudah ada), engine approval dari nol, fitur Enterprise, data pelanggan nyata.
 
 ## 7. User stories
-- **F2** Sebagai Dimas, saya ingin PO > Rp 25 jt otomatis meminta persetujuan bertingkat, supaya pembelian besar tidak lolos tanpa owner.
+- **F2** Sebagai Dimas, saya ingin PO > Rp 10 jt otomatis meminta persetujuan (dan > Rp 25 jt juga owner), supaya pembelian besar tidak lolos tanpa owner.
 - **F2** Sebagai Sekar, saya ingin quotation dengan diskon > 10% meminta persetujuan owner, supaya margin terjaga tanpa menunggu chat.
 - **F3** Sebagai Ratna, saya ingin mendelegasikan approval selama cuti, supaya PO tidak macet.
 - **F3** Sebagai Ratna, saya ingin diingatkan jika approval tertahan > 24 jam.
@@ -63,12 +63,12 @@ Seed synthetic: 1 perusahaan (IDR, l10n_id), 18 produk (mug, piring, mangkuk, se
 - Layar: semua.
 
 ### F2 — Approval PO & diskon (`kw_approval`)
-Memakai OCA `tier.definition`. Modul menambahkan: definisi data (PO > Rp 25 jt → L1 lalu L2; PO > Rp 100 jt → L2 wajib; SO diskon baris > 10% → owner), larangan menyetujui dokumen buatan sendiri (dialihkan ke reviewer tier berikutnya), dan tombol aksi di Inbox.
+Memakai OCA `tier.definition`. Modul menambahkan: definisi data (PO > Rp 10 jt → kepala produksi; PO > Rp 25 jt → ditambah owner; SO diskon baris > 10% → owner), larangan menyetujui dokumen buatan sendiri (dialihkan ke reviewer tier berikutnya), dan tombol aksi di Inbox.
 - Ketika PO Rp 48.600.000 di-*Request Validation*, maka dibuat 2 `tier.review` berurutan dan PO tidak bisa di-confirm sebelum keduanya approved.
 - Ketika pembuat PO adalah reviewer L1, maka review L1 dialihkan ke owner dan chatter mencatat alasannya.
 - Ketika baris SO diskon 15%, maka tombol Confirm terkunci sampai owner approve.
 - Ketika reviewer menolak dengan komentar, maka dokumen kembali ke draft dan komentar tampil di chatter.
-- Edge: total PO berubah setelah approval → validasi direset; mata uang USD dikonversi ke IDR sebelum dibandingkan.
+- Edge: setelah validasi diminta, baris PO terkunci (perilaku OCA), jadi persetujuan tidak pernah menutupi total yang berubah; ubah harus lewat Restart Validation. Mata uang USD dikonversi ke IDR sebelum dibandingkan.
 - Layar: S02, S03, S04.
 
 ### F3 — Delegasi & SLA

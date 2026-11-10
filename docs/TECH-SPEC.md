@@ -41,7 +41,7 @@ Hanya model baru/tambahan. Kolom sensitif ditandai 🔒 (`groups="base.group_sys
 - `kw.approval.delegation`: `delegator_id` (res.users), `delegate_id` (res.users), `date_from`, `date_to` (date), `active`, `reason`. Constraint: `delegator_id != delegate_id`; tidak ada delegasi aktif balik yang overlap (Python constraint). Fitur F3.
 - Perluasan `tier.review`: `escalated_at` (datetime), `acted_on_behalf_of_id` (res.users). Fitur F2, F3.
 - Perluasan `purchase.order` / `sale.order`: `kw_amount_company` (monetary terhitung, IDR) untuk perbandingan tier lintas mata uang; `kw_max_discount` (float, compute dari baris). Fitur F2.
-- Data `tier.definition`: 3 rule (PO > 25 jt, PO > 100 jt, SO diskon > 10%).
+- Data `tier.definition`: 3 rule (PO > 10 jt kepala produksi, PO > 25 jt owner, SO diskon > 10% owner).
 
 **kw_shopify**
 - `kw.shopify.store`: `name`, `shop_domain` (unik), `api_version` (char, default `2025-10`, perlu verifikasi versi aktif), 🔒`access_token`, 🔒`webhook_secret`, `location_gid`, `warehouse_id`, `pricelist_id` (USD), `active`, `last_stock_push_at`. F4.

@@ -43,10 +43,10 @@ def post_init_hook(env):
         return
     _setup_company(env)
     registry = env.registry
-    if hasattr(registry, "_auto_install_template"):
-        # `account` was installed in the same run and queued the generic chart for the end of
-        # module loading. Replace that step so the Indonesian chart is loaded instead, then seed
-        # once the registry is complete.
+    if not registry.loaded:
+        # Charts must load on a complete registry. `account` runs the hook below at the end of
+        # module loading (and may have queued the generic chart there); take that slot so the
+        # Indonesian chart is loaded instead and the data is seeded right after.
         def load_and_seed(final_env):
             _load_chart(final_env)
             _seed(final_env)
@@ -60,16 +60,25 @@ def post_init_hook(env):
 def _seed(env):
     rng = random.Random(20261110)
     env = env(context=dict(env.context, tracking_disable=True, mail_notrack=True))
+    _numbering(env)
     goods = _products(env, "KW-")
     # Products were created before the chart existed, so they carry no default taxes yet.
     company = env.ref("base.main_company")
     goods.product_tmpl_id.taxes_id = company.account_sale_tax_id
     _products(env, "RM-").product_tmpl_id.supplier_taxes_id = False
     _stock_levels(env, goods, base=1000)
-    _purchases(env, rng)
-    _sales(env, rng, goods)
+    # The 90 days of history predate the approval rules. OCA has no bypass for state changes,
+    # so the rules are switched off while the history is written.
+    rules = env["tier.definition"].search([])
+    rules.active = False
+    try:
+        _purchases(env, rng)
+        _sales(env, rng, goods)
+    finally:
+        rules.active = True
     _stock_levels(env, goods)
     _orderpoints(env, goods)
+    _approval_showcase(env)
     env["ir.config_parameter"].sudo().set_param(SEED_FLAG, fields.Datetime.now())
     _logger.info("Kilnworks demo data seeded")
 
@@ -243,3 +252,100 @@ def _sales(env, rng, goods):
                     "payment_date": invoice.invoice_date + timedelta(days=12),
                 }
             )._create_payments()
+
+
+def _numbering(env):
+    """Year-based numbers such as PO/2026/0418 instead of P00018."""
+    for xmlid, prefix, start in (
+        ("purchase.seq_purchase_order", "PO/%(year)s/", 404),
+        ("sale.seq_sale_order", "S/%(year)s/", 1158),
+    ):
+        seq = env.ref(xmlid)
+        seq.write({"prefix": prefix, "padding": 4, "number_next": start})
+
+
+def _approval_showcase(env):
+    """The approvals the demo opens on: one escalated two-tier PO, one discount, one small PO."""
+    now = fields.Datetime.now()
+    ratna = env.ref("kw_demo.user_ratna")
+    dimas = env.ref("kw_demo.user_dimas")
+    sekar = env.ref("kw_demo.user_sekar")
+    today = fields.Date.context_today(env["res.users"].with_user(ratna))
+    env["kw.approval.delegation"].create(
+        {
+            "delegator_id": ratna.id,
+            "delegate_id": sekar.id,
+            "date_from": today,
+            "date_to": today + timedelta(days=4),
+            "reason": "Trade fair in Jakarta",
+        }
+    )
+
+    def po_line(sku, qty, price=None):
+        product = _by_sku(env, sku)
+        return Command.create(
+            {
+                "product_id": product.id,
+                "product_qty": qty,
+                "price_unit": price or product.seller_ids[:1].price,
+                "taxes_id": [Command.clear()],
+            }
+        )
+
+    clay_po = (
+        env["purchase.order"]
+        .with_user(dimas)
+        .create(
+            {
+                "partner_id": env.ref("kw_demo.v_lempung").id,
+                "partner_ref": "SLG/INV/11-026",
+                "order_line": [
+                    po_line("RM-CLAY-GDN", 2400),
+                    po_line("RM-GLZ-CEL", 60),
+                    po_line("RM-CTN-5PLY", 400),
+                ],
+            }
+        )
+    )
+    # A note Dimas typed, not an interface string: no translation.
+    clay_po.message_post(  # pylint: disable=translation-required
+        body="Clay for the December glaze run. Price is up Rp 500/kg from October, "
+        "still below Bantul suppliers.",
+        author_id=dimas.partner_id.id,
+        message_type="comment",
+        subtype_xmlid="mail.mt_note",
+    )
+    clay_po.with_user(dimas).request_validation()
+    tier1 = clay_po.review_ids.sorted("sequence")[:1]
+    tier1.sudo().kw_pending_since = now - timedelta(hours=26)
+    tier1.sudo()._kw_escalate(now - timedelta(minutes=40))
+
+    glaze_po = (
+        env["purchase.order"]
+        .with_user(dimas)
+        .create(
+            {
+                "partner_id": env.ref("kw_demo.v_glasir").id,
+                "order_line": [po_line("RM-GLZ-CEL", 60), po_line("RM-GLZ-ASH", 50)],
+            }
+        )
+    )
+    glaze_po.with_user(dimas).request_validation()
+    glaze_po.review_ids.sudo().kw_pending_since = now - timedelta(hours=2)
+
+    mug = _by_sku(env, "KW-MUG-350-CEL")
+    quote = (
+        env["sale.order"]
+        .with_user(sekar)
+        .create(
+            {
+                "partner_id": env.ref("kw_demo.c_teras").id,
+                "user_id": sekar.id,
+                "order_line": [
+                    Command.create({"product_id": mug.id, "product_uom_qty": 120, "discount": 15})
+                ],
+            }
+        )
+    )
+    quote.with_user(sekar).request_validation()
+    quote.review_ids.sudo().kw_pending_since = now - timedelta(hours=5)

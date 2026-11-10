@@ -14,7 +14,8 @@ services:
       retries: 10
 
   odoo:
-    image: odoo:18.0
+    build: .
+    image: kilnworks-odoo:18.0
     depends_on:
       db:
         condition: service_healthy

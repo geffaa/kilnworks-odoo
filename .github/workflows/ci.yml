@@ -15,7 +15,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container: odoo:18.0
+    container:
+      image: odoo:18.0
+      options: --user root
     services:
       db:
         image: postgres:16
@@ -24,10 +26,12 @@ jobs:
           --health-cmd "pg_isready -U odoo" --health-interval 5s --health-retries 10
     strategy:
       matrix:
-        module: [kw_demo]
+        module: [kw_demo, kw_ops, kw_approval]
     steps:
       - uses: actions/checkout@v4
         with: { submodules: true }
+      - name: Install test helper
+        run: pip3 install --break-system-packages odoo-test-helper==2.1.1
       - name: Test ${{ matrix.module }}
         run: |
           odoo --db_host db --db_user odoo --db_password odoo -d ci \

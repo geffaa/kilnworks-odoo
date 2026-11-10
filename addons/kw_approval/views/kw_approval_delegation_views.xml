@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_approval_delegation_view_list" model="ir.ui.view">
+        <field name="name">kw.approval.delegation.list</field>
+        <field name="model">kw.approval.delegation</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not is_current">
+                <field name="delegator_id" widget="many2one_avatar_user"/>
+                <field name="delegate_id" widget="many2one_avatar_user"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="reason"/>
+                <field name="is_current" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+    <record id="kw_approval_delegation_view_form" model="ir.ui.view">
+        <field name="name">kw.approval.delegation.form</field>
+        <field name="model">kw.approval.delegation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Active now" bg_color="text-bg-success" invisible="not is_current"/>
+                    <group>
+                        <group>
+                            <field name="delegator_id" widget="many2one_avatar_user"/>
+                            <field name="delegate_id" widget="many2one_avatar_user"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <field name="reason" placeholder="Annual leave, trade fair in Jakarta…"/>
+                    <field name="is_current" invisible="True"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="kw_approval_delegation_action" model="ir.actions.act_window">
+        <field name="name">Delegations</field>
+        <field name="res_model">kw.approval.delegation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Going on leave?</p>
+            <p>Delegate your approvals for a few days. The delegate approves on your behalf and
+               every approval records who it was for.</p>
+        </field>
+    </record>
+</odoo>

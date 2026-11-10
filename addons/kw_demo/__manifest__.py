@@ -13,6 +13,7 @@
         "sale_management",
         "account",
         "l10n_id",
+        "kw_approval",
     ],
     "data": [
         "data/res_partner_category.xml",

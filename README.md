@@ -10,8 +10,9 @@ reports, and version migrations. Kilnworks Stoneware is made up; so is every cus
 
 | Module | What it shows | Status |
 |---|---|---|
-| `kw_demo` | Company in IDR with the Indonesian chart, four role-based users, 90 days of purchases, sales, deliveries and invoices | done (M1) |
-| `kw_approval` | Multi-level PO and discount approvals on top of OCA `base_tier_validation`, delegation, SLA escalation | planned (M2) |
+| `kw_ops` | The Kilnworks Ops app and role groups (user, production lead, owner) | done (M2) |
+| `kw_demo` | Company in IDR with the Indonesian chart, four role-based users, 90 days of purchases, sales, deliveries and invoices, plus open approvals to demo | done (M1–M2) |
+| `kw_approval` | PO approvals above Rp 10 M (production lead) and Rp 25 M (owner) and discount approvals above 10 % on OCA `base_tier_validation`; creators never approve their own documents; delegation with on-behalf audit; escalation after 24 working hours | done (M2) |
 | `kw_shopify` | Shopify orders and stock through signed webhooks and `queue_job`, with a sync log and retry | planned (M3) |
 | `payment_midtrans` | A payment provider written from scratch on `payment.provider` | planned (M4) |
 | `kw_rest_api` | Scoped REST API with rate limiting and signed outgoing webhooks | planned (M5) |
