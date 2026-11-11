@@ -24,6 +24,8 @@ say() { printf '\n== %s\n' "$*"; }
 for v in 17.0 18.0; do
   [ -d "$work/OpenUpgrade-$v" ] || git clone -q --depth 1 -b "$v" https://github.com/OCA/OpenUpgrade.git "$work/OpenUpgrade-$v"
 done
+# The PyPI release lags behind OpenUpgrade 18.0; use the library from git.
+[ -d "$work/openupgradelib" ] || git clone -q --depth 1 https://github.com/OCA/openupgradelib.git "$work/openupgradelib"
 
 # 16.0 module from the tag, 18.0 module from the working tree.
 rm -rf "$work/addons16" "$work/addons18"
@@ -42,7 +44,7 @@ odoo() { # odoo <version> <extra docker args...> -- <odoo args...>
   while [ "$1" != "--" ]; do dargs+=("$1"); shift; done; shift
   docker run --rm -i --network "$net" -u root -e HOST="$net-db" -e USER=odoo -e PASSWORD=odoo \
     -v "$work":/work ${dargs[@]+"${dargs[@]}"} "odoo:$v" sh -c '
-      pip install -q --break-system-packages openupgradelib >/dev/null 2>&1 || pip install -q openupgradelib >/dev/null 2>&1
+      pip install -q --break-system-packages /work/openupgradelib >/dev/null 2>&1 || pip install -q /work/openupgradelib >/dev/null 2>&1
       exec su odoo -s /bin/sh -c "odoo --db_host=$HOST --db_user=$USER --db_password=$PASSWORD $*"' -- "$@"
 }
 

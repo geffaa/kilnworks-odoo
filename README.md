@@ -17,7 +17,7 @@ reports, and version migrations. Kilnworks Stoneware is made up; so is every cus
 | `payment_midtrans` | Midtrans Snap written from scratch on `payment.provider` (Midtrans is not in Odoo core): VA, QRIS, e-wallets and cards in IDR; SHA512-signed notifications checked for signature and amount; return page confirms status with the Status API | done (M4, against a mock Midtrans) |
 | `kw_rest_api` | `/api/v1` with hashed, scoped, rotatable keys, 60 req/min limits and record rules applied; signed outgoing webhooks (`order.confirmed`, `stock.low`) with a 1 min → 6 h retry schedule; OpenAPI at `/api/v1/docs` | done (M5) |
 | `kw_ops_dashboard`, `kw_reports` | OWL dashboard (approvals, sync failures, revenue by channel, low stock, invoices due) covered by a browser tour; export packing list per carton with HS codes and weights | done (M5) |
-| `kw_firing_batch` | A module written for 16.0 and migrated to 18.0, commit by commit | planned (M6) |
+| `kw_firing_batch` | A module written for 16.0 and migrated to 18.0 in its own commit, with a data-keeping migration script and an OpenUpgrade 16 → 17 → 18 rehearsal ([notes](docs/MIGRATION-16-18.md)) | done (M6) |
 
 ## Run it
 
@@ -66,6 +66,7 @@ OCA dependencies are pinned git submodules under `oca/` (branch 18.0): `server-u
 
 ## Docs
 
+Case study: [docs/CASE-STUDY.md](docs/CASE-STUDY.md). Migration notes: [docs/MIGRATION-16-18.md](docs/MIGRATION-16-18.md).
 Product and technical plan: [BREAKDOWN.md](BREAKDOWN.md), [docs/](docs/). UI mockups: [mockups/](mockups/).
 
 ## Licence

@@ -60,13 +60,13 @@ Estimasi jujur: MVP ±22–26 hari kerja paruh waktu (±5–6 minggu), lebih dar
 - **Verifikasi:** `curl` dengan key scope kurang → 403; dashboard < 1,5 dtk; PDF packing list 3 karton benar.
 
 ## M6 — kw_firing_batch v16→v18 + rilis (±4 hari)
-- [ ] Tulis modul v16 asli di DB v16 (container `odoo:16.0`), tag `kw_firing_batch-16.0`
-- [ ] Commit migrasi terpisah (manifest, views, Python, OWL, `pre-migrate.py`) + `docs/MIGRATION-16-18.md`
+- [x] Tulis modul v16 asli di DB v16 (container `odoo:16.0`), tag `kw_firing_batch-16.0`
+- [x] Commit migrasi terpisah (manifest, views, Python, OWL, `pre-migrate.py`) + `docs/MIGRATION-16-18.md`
 - [ ] Uji upgrade: DB v16 berisi 30 batch → OpenUpgrade 17 → 18 → script modul; catat hasil dan kendala
 - [ ] Demo online (putuskan VPS vs Tunnel), akun reviewer read-only, reset harian
 - [ ] Screenshot per modul, GIF 20 dtk per catalog, video walkthrough 3–4 menit
 - [ ] `docs/CASE-STUDY.md`, README final, repo publik `geffaa/kilnworks-odoo`
-- [ ] Draf 6 Upwork Project Catalog (judul, deskripsi, paket, FAQ) di `docs/UPWORK-CATALOG.md`
+- [x] Draf 6 Upwork Project Catalog (judul, deskripsi, paket, FAQ) di `docs/UPWORK-CATALOG.md`
 - **Fitur:** F10, F11
 - **Verifikasi:** semua tes hijau di CI; demo dibuka dari jaringan lain; catalog draf siap tempel.
 
