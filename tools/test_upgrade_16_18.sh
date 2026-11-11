@@ -42,10 +42,11 @@ odoo() { # odoo <version> <extra docker args...> -- <odoo args...>
   local v=$1; shift
   local dargs=()
   while [ "$1" != "--" ]; do dargs+=("$1"); shift; done; shift
-  docker run --rm -i --network "$net" -u root -e HOST="$net-db" -e USER=odoo -e PASSWORD=odoo \
-    -v "$work":/work ${dargs[@]+"${dargs[@]}"} "odoo:$v" sh -c '
-      pip install -q --break-system-packages /work/openupgradelib >/dev/null 2>&1 || pip install -q /work/openupgradelib >/dev/null 2>&1
-      exec su odoo -s /bin/sh -c "odoo --db_host=$HOST --db_user=$USER --db_password=$PASSWORD $*"' -- "$@"
+  # openupgradelib is pure Python and its deps (lxml, psycopg2) ship with Odoo, so it is put on
+  # PYTHONPATH instead of pip-installed (its setup needs git + setuptools_scm, absent here).
+  docker run --rm -i --network "$net" -e HOST="$net-db" -e USER=odoo -e PASSWORD=odoo \
+    -e PYTHONPATH=/work/openupgradelib -v "$work":/work ${dargs[@]+"${dargs[@]}"} "odoo:$v" \
+    sh -c 'exec odoo --db_host="$HOST" --db_user="$USER" --db_password="$PASSWORD" "$@"' -- "$@"
 }
 
 say "16.0: install kw_firing_batch and seed 30 batches"

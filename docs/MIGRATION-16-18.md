@@ -53,9 +53,23 @@ empty `peak_temp` column and the recorded temperatures would be lost when `kiln_
   in the database while the module waits. Expected: those views are rewritten when the 18.0 module is upgraded.
 - Odoo 17 reports `inconsistent states ... ['kw_firing_batch']` because the module code is missing at that step. Expected.
 - The PyPI release of `openupgradelib` is older than OpenUpgrade 18.0 needs
-  (`no attribute 'add_inherits_parent_xmlids'`). Install it from the OCA git repository instead.
+  (`no attribute 'add_inherits_parent_xmlids'`). Use the OCA git version. Its setup needs git and
+  `setuptools_scm`, which the Odoo images lack, so the script puts it on `PYTHONPATH` instead of installing it.
 - On macOS with Colima, only folders under `$HOME` can be mounted into containers; the scripts keep their work files in the repo.
 
 ### Result
 
-_Pending: the final 18.0 run (step 3) is waiting on the openupgradelib install from git._
+Run on 2026-11-11 (`odoo:16.0` → OpenUpgrade 17.0 → OpenUpgrade 18.0):
+
+| Check | Seeded on 16.0 | After upgrade to 18.0 |
+| --- | --- | --- |
+| Module | `kw_firing_batch` 16.0.1.0.0 | installed, 18.0.1.0.0 |
+| Batches | 30 | 30 |
+| Batches with a temperature | 30 (`kiln_temp`) | 30 (`peak_temp`) |
+| Sum of temperatures | 37,513 | 37,513 |
+| States | 26 done, 4 draft | 26 done, 4 draft |
+| Display name | (`name_get`) | `FB/2026/0030 · Electric kiln · 1289 °C` (`_compute_display_name`) |
+| Saved filter | `[('kiln_temp', '>', 1280)]` | `[('peak_temp', '>', 1280)]` |
+| Old column `kiln_temp` | present | gone |
+
+No data was lost and the module needed no manual step after the upgrade.

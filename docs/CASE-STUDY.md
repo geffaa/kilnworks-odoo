@@ -60,7 +60,9 @@ Each problem became one module on Odoo 18 Community. The rule throughout: extend
 
 ## Migration result
 
-See [MIGRATION-16-18.md](MIGRATION-16-18.md). _Final 18.0 rehearsal numbers to be added._
+A 16.0 database with 30 firing batches went through OpenUpgrade 17.0 and 18.0 plus the module's own script:
+all 30 batches arrived with their temperatures (sum 37,513 before and after), states and a saved filter
+rewritten to the new field name. Details in [MIGRATION-16-18.md](MIGRATION-16-18.md).
 
 ## What I would do next for a real client
 
