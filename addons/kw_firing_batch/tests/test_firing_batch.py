@@ -8,13 +8,13 @@ class TestFiringBatch(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.kiln = cls.env["kw.kiln"].create({"name": "Gas kiln 1", "kiln_type": "gas", "capacity_pcs": 420})
-        cls.mug = cls.env["product.product"].create({"name": "Celadon mug", "type": "product"})
+        cls.mug = cls.env["product.product"].create({"name": "Celadon mug", "type": "consu", "is_storable": True})
 
     def _batch(self, **vals):
         return self.env["kw.firing.batch"].create(dict({"kiln_id": self.kiln.id}, **vals))
 
     def test_sequence_and_display_name(self):
-        batch = self._batch(kiln_temp=1280)
+        batch = self._batch(peak_temp=1280)
         self.assertTrue(batch.name.startswith("FB/"))
         self.assertEqual(batch.display_name, f"{batch.name} · Gas kiln 1 · 1280 °C")
 
@@ -27,6 +27,6 @@ class TestFiringBatch(TransactionCase):
         batch.action_start()
         with self.assertRaises(UserError):
             batch.action_done()
-        batch.kiln_temp = 1275
+        batch.peak_temp = 1275
         batch.action_done()
         self.assertEqual(batch.state, "done")

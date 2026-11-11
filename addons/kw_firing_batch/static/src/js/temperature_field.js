@@ -1,17 +1,20 @@
-/** @odoo-module **/
-// Odoo 16 field registration: the component class goes straight into the registry.
+// Odoo 18: fields register a descriptor object; the value comes from the record.
 import { registry } from "@web/core/registry";
-import { IntegerField } from "@web/views/fields/integer/integer_field";
+import { IntegerField, integerField } from "@web/views/fields/integer/integer_field";
 
 export class TemperatureField extends IntegerField {
+    static template = "kw_firing_batch.TemperatureField";
+
     get tone() {
-        const value = this.props.value || 0;
+        const value = this.props.record.data[this.props.name] || 0;
         if (!value) return "";
-        if (value < 1200) return "text-warning";   // bisque / earthenware range
-        if (value > 1300) return "text-danger";    // beyond stoneware glazes
+        if (value < 1200) return "text-warning"; // bisque / earthenware range
+        if (value > 1300) return "text-danger"; // beyond stoneware glazes
         return "text-success";
     }
 }
-TemperatureField.template = "kw_firing_batch.TemperatureField";
 
-registry.category("fields").add("kw_temperature", TemperatureField);
+registry.category("fields").add("kw_temperature", {
+    ...integerField,
+    component: TemperatureField,
+});

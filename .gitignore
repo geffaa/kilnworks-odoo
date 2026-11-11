@@ -5,3 +5,4 @@ __pycache__/
 /.impeccable/config.local.json
 /tmp/
 .legacy16.*/
+.upgrade/
