@@ -16,11 +16,13 @@ logs:
 
 demo:          ## create the demo database with every Kilnworks module
 	docker compose up -d db
+	until docker compose exec -T db pg_isready -U odoo >/dev/null 2>&1; do sleep 1; done
 	$(RUN) -i kw_demo --without-demo=all --stop-after-init --load-language=en_US
 	docker compose up -d odoo
 
 test:          ## run one module's tests in a throwaway database: make test MOD=kw_approval
 	docker compose up -d db
+	until docker compose exec -T db pg_isready -U odoo >/dev/null 2>&1; do sleep 1; done
 	docker compose exec -T db dropdb -U odoo --if-exists test_$(MOD)
 	docker compose run --rm odoo odoo -d test_$(MOD) -i $(MOD) --test-tags=/$(MOD) --test-enable --stop-after-init \
 		--without-demo=all --log-level=test --workers=0 --db-filter=^test_$(MOD)$$; \

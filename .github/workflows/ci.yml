@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: [kw_ops, kw_approval, kw_shopify, payment_midtrans, kw_reports, kw_rest_api, kw_ops_dashboard, kw_demo]
+        module: [kw_ops, kw_approval, kw_shopify, payment_midtrans, kw_reports, kw_rest_api, kw_ops_dashboard, kw_firing_batch, kw_demo]
     steps:
       - uses: actions/checkout@v4
         with: { submodules: true }
