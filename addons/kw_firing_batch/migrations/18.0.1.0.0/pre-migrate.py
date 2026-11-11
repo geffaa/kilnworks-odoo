@@ -4,6 +4,7 @@ Runs before the module's models load, so renaming the column keeps every
 recorded temperature instead of letting the ORM add an empty peak_temp
 and drop kiln_temp.
 """
+
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -24,7 +25,8 @@ def migrate(cr, version):
         return
     cr.execute("ALTER TABLE kw_firing_batch RENAME COLUMN kiln_temp TO peak_temp")
     cr.execute(
-        "UPDATE ir_model_fields SET name = 'peak_temp' WHERE model = 'kw.firing.batch' AND name = 'kiln_temp'"
+        "UPDATE ir_model_fields SET name = 'peak_temp' "
+        "WHERE model = 'kw.firing.batch' AND name = 'kiln_temp'"
     )
     cr.execute(
         "UPDATE ir_model_data SET name = 'field_kw_firing_batch__peak_temp' "
@@ -36,4 +38,7 @@ def migrate(cr, version):
         "context = replace(context, 'kiln_temp', 'peak_temp') WHERE model_id = 'kw.firing.batch'"
     )
     cr.execute("SELECT count(*) FROM kw_firing_batch WHERE peak_temp IS NOT NULL")
-    _logger.info("kw_firing_batch: kiln_temp -> peak_temp, %s batches kept their temperature", cr.fetchone()[0])
+    _logger.info(
+        "kw_firing_batch: kiln_temp -> peak_temp, %s batches kept their temperature",
+        cr.fetchone()[0],
+    )
