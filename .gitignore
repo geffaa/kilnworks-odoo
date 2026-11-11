@@ -4,3 +4,4 @@ __pycache__/
 .env
 /.impeccable/config.local.json
 /tmp/
+.legacy16.*/

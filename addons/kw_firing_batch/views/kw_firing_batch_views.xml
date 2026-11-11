@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_firing_batch_view_tree" model="ir.ui.view">
+        <field name="name">kw.firing.batch.tree</field>
+        <field name="model">kw.firing.batch</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state == 'rejected'" decoration-info="state == 'in_kiln'">
+                <field name="name"/>
+                <field name="kiln_id"/>
+                <field name="fired_on"/>
+                <field name="kiln_temp" widget="kw_temperature"/>
+                <field name="duration_h"/>
+                <field name="defect_rate"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+    <record id="kw_firing_batch_view_form" model="ir.ui.view">
+        <field name="name">kw.firing.batch.form</field>
+        <field name="model">kw.firing.batch</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start" type="object" string="Load kiln" class="btn-primary" states="draft"/>
+                    <button name="action_done" type="object" string="Cooled, close batch" class="btn-primary" states="in_kiln"/>
+                    <button name="action_reject" type="object" string="Reject" states="draft,in_kiln"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_kiln,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="kiln_id"/>
+                            <field name="fired_on"/>
+                        </group>
+                        <group>
+                            <field name="kiln_temp" widget="kw_temperature" attrs="{'required': [('state', '=', 'in_kiln')]}"/>
+                            <field name="duration_h"/>
+                            <field name="defect_rate" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Load">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="qty_loaded"/>
+                                    <field name="qty_good"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lots" attrs="{'invisible': [('lot_ids', '=', [])]}">
+                            <field name="lot_ids"/>
+                        </page>
+                    </notebook>
+                    <field name="note" placeholder="Glaze crawled on the top shelf, cone 10 down at 11:40…"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="kw_firing_batch_action" model="ir.actions.act_window">
+        <field name="name">Firing batches</field>
+        <field name="res_model">kw.firing.batch</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_firing_root" name="Firing" parent="stock.menu_stock_root" sequence="15"/>
+    <menuitem id="menu_firing_batches" name="Firing batches" parent="menu_firing_root" action="kw_firing_batch_action" sequence="10"/>
+    <menuitem id="menu_kilns" name="Kilns" parent="menu_firing_root" action="kw_kiln_action" sequence="20"/>
+</odoo>

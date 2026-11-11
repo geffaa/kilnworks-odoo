@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kiln_user,kiln user,model_kw_kiln,stock.group_stock_user,1,0,0,0
+access_kiln_manager,kiln manager,model_kw_kiln,stock.group_stock_manager,1,1,1,1
+access_batch_user,batch user,model_kw_firing_batch,stock.group_stock_user,1,1,1,0
+access_batch_manager,batch manager,model_kw_firing_batch,stock.group_stock_manager,1,1,1,1
+access_batch_line_user,batch line user,model_kw_firing_batch_line,stock.group_stock_user,1,1,1,1

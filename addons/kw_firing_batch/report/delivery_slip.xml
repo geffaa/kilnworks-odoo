@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Show the firing batch next to each lot on the delivery slip. -->
+    <template id="report_delivery_document_firing" inherit_id="stock.stock_report_delivery_has_serial_move_line">
+        <xpath expr="//span[@t-field='move_line.lot_id.name']" position="after">
+            <t t-if="move_line.lot_id.firing_batch_id">
+                <br/><small>Batch <span t-field="move_line.lot_id.firing_batch_id.name"/></small>
+            </t>
+        </xpath>
+    </template>
+</odoo>

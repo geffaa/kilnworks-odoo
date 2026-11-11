@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_kiln_view_tree" model="ir.ui.view">
+        <field name="name">kw.kiln.tree</field>
+        <field name="model">kw.kiln</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="kiln_type"/>
+                <field name="capacity_pcs"/>
+            </tree>
+        </field>
+    </record>
+    <record id="kw_kiln_action" model="ir.actions.act_window">
+        <field name="name">Kilns</field>
+        <field name="res_model">kw.kiln</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

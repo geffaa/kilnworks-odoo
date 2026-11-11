@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="kw_firing_batch.TemperatureField" t-inherit="web.IntegerField" t-inherit-mode="primary" owl="1">
+        <xpath expr="//span" position="attributes">
+            <attribute name="t-att-class">tone</attribute>
+        </xpath>
+    </t>
+</templates>
