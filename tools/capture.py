@@ -8,8 +8,8 @@ clips into GIFs and the walkthrough.
     python3 tools/capture.py firing api   # some scenes
 """
 
-import pathlib
 import json
+import pathlib
 import shutil
 import subprocess
 import sys

@@ -3,6 +3,7 @@
 Usage: LUCIDE_DIR=<lucide-static>/icons python3 tools/mockups/build.py
 Icons come from the shared portfolio kit (official Lucide via lucide-static).
 """
+
 import pathlib
 import sys
 
@@ -13,12 +14,24 @@ OUT = pathlib.Path(__file__).resolve().parents[2] / "mockups"
 
 
 def page(title, body, ic, active=None, crumbs_app="Kilnworks Ops"):
-    menu = [("Dashboard", "dashboard.html"), ("Approvals", "#"), ("Shopify", "shopify.html"),
-            ("Firing Batches", "#"), ("Configuration", "#")]
+    menu = [
+        ("Dashboard", "dashboard.html"),
+        ("Approvals", "#"),
+        ("Shopify", "shopify.html"),
+        ("Firing Batches", "#"),
+        ("Configuration", "#"),
+    ]
     if crumbs_app == "Purchase":
-        menu = [("Orders", "purchase-order.html"), ("Products", "#"), ("Reporting", "#"), ("Configuration", "#")]
+        menu = [
+            ("Orders", "purchase-order.html"),
+            ("Products", "#"),
+            ("Reporting", "#"),
+            ("Configuration", "#"),
+        ]
     items = "".join(
-        f'<li><a href="{h}"{" aria-current=\"page\"" if n == active else ""}>{n}</a></li>' for n, h in menu)
+        f'<li><a href="{h}"{" aria-current=\"page\"" if n == active else ""}>{n}</a></li>'
+        for n, h in menu
+    )
     nav = f"""<header class="o-navbar">
   <button class="o-apps" aria-label="Home menu">{ic("layout-grid")}</button>
   <button class="o-apps o-burger" aria-label="Open menu">{ic("menu")}</button>
@@ -46,8 +59,8 @@ def page(title, body, ic, active=None, crumbs_app="Kilnworks Ops"):
 def dashboard():
     ic = Icons()
     weeks = ["13 Oct", "20 Oct", "27 Oct", "3 Nov", "10 Nov"]
-    b2b = [38.1, 46.7, 41.2, 52.6, 5.65]      # Rp million, sums to 184.25
-    shp = [33.9, 35.2, 40.6, 39.8, 6.9]       # Rp million (USD converted), sums to 156.4
+    b2b = [38.1, 46.7, 41.2, 52.6, 5.65]  # Rp million, sums to 184.25
+    shp = [33.9, 35.2, 40.6, 39.8, 6.9]  # Rp million (USD converted), sums to 156.4
     W, H, pad_l, pad_b, top = 640, 220, 40, 26, 10
     vmax = 60
     plot_h = H - pad_b - top
@@ -56,39 +69,87 @@ def dashboard():
     bars = []
     for g in (0, 20, 40, 60):
         y = top + plot_h - g / vmax * plot_h
-        bars.append(f'<line x1="{pad_l}" x2="{W}" y1="{y:.1f}" y2="{y:.1f}" stroke="#eceef1"/>'
-                    f'<text x="{pad_l - 8}" y="{y + 4:.1f}" text-anchor="end">{g}</text>')
+        bars.append(
+            f'<line x1="{pad_l}" x2="{W}" y1="{y:.1f}" y2="{y:.1f}" stroke="#eceef1"/>'
+            f'<text x="{pad_l - 8}" y="{y + 4:.1f}" text-anchor="end">{g}</text>'
+        )
     for i, wk in enumerate(weeks):
         cx = pad_l + group_w * i + group_w / 2
         for j, (v, col) in enumerate(((b2b[i], "var(--kw-clay)"), (shp[i], "var(--kw-celadon)"))):
             h = v / vmax * plot_h
             x = cx - bar_w - 1 + j * (bar_w + 2)
             label = ("B2B" if j == 0 else "Shopify") + f" week of {wk}: Rp {v:.1f} million"
-            bars.append(f'<rect x="{x:.1f}" y="{top + plot_h - h:.1f}" width="{bar_w}" height="{h:.1f}" rx="2" '
-                        f'fill="{col}"><title>{label}</title></rect>')
-        bars.append(f'<text x="{cx:.1f}" y="{H - 8}" text-anchor="middle">{wk}{" *" if i == 4 else ""}</text>')
-    chart = (f'<svg class="chart" viewBox="0 0 {W} {H}" role="img" aria-label="Weekly revenue by channel, '
-             f'last 30 days, in Rp million">{"".join(bars)}</svg>')
+            bars.append(
+                f'<rect x="{x:.1f}" y="{top + plot_h - h:.1f}" width="{bar_w}" height="{h:.1f}" rx="2" '
+                f'fill="{col}"><title>{label}</title></rect>'
+            )
+        bars.append(
+            f'<text x="{cx:.1f}" y="{H - 8}" text-anchor="middle">{wk}{" *" if i == 4 else ""}</text>'
+        )
+    chart = (
+        f'<svg class="chart" viewBox="0 0 {W} {H}" role="img" aria-label="Weekly revenue by channel, '
+        f'last 30 days, in Rp million">{"".join(bars)}</svg>'
+    )
 
     approvals = [
-        ("PO/2026/0418", "Sumber Lempung Godean", "Purchase · tier 1 of 2", "Rp 48,600,000", "26 h", True, "You"),
-        ("S/2026/1184", "Teras Kopi Jakal", "Discount 15% · owner", "Rp 20,945,700", "5 h", False, "You"),
-        ("PO/2026/0419", "UD Glasir Tirta Mulya", "Purchase · tier 1 of 1", "Rp 18,300,000", "2 h", False, "You"),
+        (
+            "PO/2026/0418",
+            "Sumber Lempung Godean",
+            "Purchase · tier 1 of 2",
+            "Rp 48,600,000",
+            "26 h",
+            True,
+            "You",
+        ),
+        (
+            "S/2026/1184",
+            "Teras Kopi Jakal",
+            "Discount 15% · owner",
+            "Rp 20,945,700",
+            "5 h",
+            False,
+            "You",
+        ),
+        (
+            "PO/2026/0419",
+            "UD Glasir Tirta Mulya",
+            "Purchase · tier 1 of 1",
+            "Rp 18,300,000",
+            "2 h",
+            False,
+            "You",
+        ),
     ]
     arows = "".join(
         f'<tr><td><a href="purchase-order.html">{n}</a><span class="sub">{p}</span></td>'
         f'<td class="hide-sm">{k}</td><td class="r num">{a}</td>'
         f'<td class="r"><span class="age{" late" if late else ""}">{age}</span></td></tr>'
-        for n, p, k, a, age, late, _ in approvals)
+        for n, p, k, a, age, late, _ in approvals
+    )
     sync = [
-        ("#KW1043", "orders/create", "Needs mapping", "b-warning", "SKU KW-MUG-350-SAGE has no Odoo product", "09:17"),
-        ("#KW1044", "orders/create", "Retrying", "b-info", "Shopify throttled the call · next try 09:31", "09:26"),
+        (
+            "#KW1043",
+            "orders/create",
+            "Needs mapping",
+            "b-warning",
+            "SKU KW-MUG-350-SAGE has no Odoo product",
+            "09:17",
+        ),
+        (
+            "#KW1044",
+            "orders/create",
+            "Retrying",
+            "b-info",
+            "Shopify throttled the call · next try 09:31",
+            "09:26",
+        ),
     ]
     srows = "".join(
         f'<tr><td><a href="shopify.html">{o}</a><span class="sub">{t}</span></td>'
         f'<td><span class="badge {cls}">{s}</span><span class="sub">{why}</span></td>'
         f'<td class="r num muted">{tm}</td></tr>'
-        for o, t, s, cls, why, tm in sync)
+        for o, t, s, cls, why, tm in sync
+    )
     stock = [
         ("Celadon mug 350 ml", "KW-MUG-350-CEL", 42, 120, "mid"),
         ("Speckled dinner plate 27 cm", "KW-PLT-270-SPK", 18, 80, ""),
@@ -101,16 +162,32 @@ def dashboard():
         f'<td class="r num">{q} <span class="muted">/ {m}</span></td>'
         f'<td class="hide-sm"><div class="stockbar" role="img" aria-label="{round(q / m * 100)}% of minimum">'
         f'<i class="{c}" style="width:{min(100, q / m * 100):.0f}%"></i></div></td></tr>'
-        for n, s, q, m, c in stock)
+        for n, s, q, m, c in stock
+    )
     inv = [
         ("INV/2026/00391", "Teras Kopi Jakal", "Rp 21,420,000", "12 Nov", "Link sent", "b-info"),
-        ("INV/2026/00377", "Wisma Lereng Merapi", "Rp 64,800,000", "Overdue 3 d", "No payment", "b-danger"),
-        ("INV/2026/00385", "Kedai Seduh Pakem", "Rp 8,910,000", "15 Nov", "VA pending", "b-warning"),
+        (
+            "INV/2026/00377",
+            "Wisma Lereng Merapi",
+            "Rp 64,800,000",
+            "Overdue 3 d",
+            "No payment",
+            "b-danger",
+        ),
+        (
+            "INV/2026/00385",
+            "Kedai Seduh Pakem",
+            "Rp 8,910,000",
+            "15 Nov",
+            "VA pending",
+            "b-warning",
+        ),
     ]
     invrows = "".join(
         f'<tr><td>{n}<span class="sub">{c}</span></td><td class="r num">{a}</td>'
         f'<td class="r"><span class="num">{d}</span><span class="sub"><span class="badge {cls}">{s}</span></span></td></tr>'
-        for n, c, a, d, s, cls in inv)
+        for n, c, a, d, s, cls in inv
+    )
 
     body = f"""<div class="o-cp">
   <div class="o-bc"><span class="cur">Dashboard</span></div>
@@ -197,8 +274,11 @@ def purchase_order():
         ("Celadon glaze base, dry", "60.00 kg", "180,000.00", "10,800,000.00"),
         ("Export carton 5-ply, 40×30×30 cm", "400.00 Units", "7,500.00", "3,000,000.00"),
     ]
-    lrows = "".join(f'<tr><td>{p}</td><td class="r num">{q}</td><td class="r num">{u}</td>'
-                    f'<td class="r num hide-sm">—</td><td class="r num">Rp {s}</td></tr>' for p, q, u, s in lines)
+    lrows = "".join(
+        f'<tr><td>{p}</td><td class="r num">{q}</td><td class="r num">{u}</td>'
+        f'<td class="r num hide-sm">—</td><td class="r num">Rp {s}</td></tr>'
+        for p, q, u, s in lines
+    )
     body = f"""<div class="o-cp">
   <div class="o-bc"><a href="#">Requests for Quotation</a><span class="sep">/</span><span class="cur">PO/2026/0418</span></div>
   <div class="o-cp-right"><span class="o-pager">4 / 12 <button class="btn btn-ghost btn-icon btn-sm" aria-label="Previous">{ic("chevron-left")}</button>
@@ -305,15 +385,18 @@ def shopify():
         f'<tr{" aria-selected=\"true\"" if sel else ""}><td class="num muted">{t}</td><td><b>{o}</b>'
         f'<span class="sub">{tp}</span></td><td><span class="badge {cls}">{s}</span></td>'
         f'<td class="hide-sm">{so if so == "—" else f"<a href=\"#\">{so}</a>"}</td></tr>'
-        for t, o, tp, s, cls, so, sel in ev)
-    payload = ('{\n  <span class="pk">"name"</span>: <span class="ps">"#KW1043"</span>,\n'
-               '  <span class="pk">"currency"</span>: <span class="ps">"USD"</span>,\n'
-               '  <span class="pk">"total_price"</span>: <span class="ps">"118.00"</span>,\n'
-               '  <span class="pk">"customer"</span>: { <span class="pk">"email"</span>: <span class="ps">"m.okafor@example.com"</span> },\n'
-               '  <span class="pk">"line_items"</span>: [\n'
-               '    { <span class="pk">"sku"</span>: <span class="ps">"KW-MUG-350-SAGE"</span>, <span class="pk">"quantity"</span>: <span class="pn">4</span>, <span class="pk">"price"</span>: <span class="ps">"24.00"</span> },\n'
-               '    { <span class="pk">"sku"</span>: <span class="ps">"KW-PLT-210-SPK"</span>, <span class="pk">"quantity"</span>: <span class="pn">1</span>, <span class="pk">"price"</span>: <span class="ps">"22.00"</span> }\n'
-               '  ]\n}')
+        for t, o, tp, s, cls, so, sel in ev
+    )
+    payload = (
+        '{\n  <span class="pk">"name"</span>: <span class="ps">"#KW1043"</span>,\n'
+        '  <span class="pk">"currency"</span>: <span class="ps">"USD"</span>,\n'
+        '  <span class="pk">"total_price"</span>: <span class="ps">"118.00"</span>,\n'
+        '  <span class="pk">"customer"</span>: { <span class="pk">"email"</span>: <span class="ps">"m.okafor@example.com"</span> },\n'
+        '  <span class="pk">"line_items"</span>: [\n'
+        '    { <span class="pk">"sku"</span>: <span class="ps">"KW-MUG-350-SAGE"</span>, <span class="pk">"quantity"</span>: <span class="pn">4</span>, <span class="pk">"price"</span>: <span class="ps">"24.00"</span> },\n'
+        '    { <span class="pk">"sku"</span>: <span class="ps">"KW-PLT-210-SPK"</span>, <span class="pk">"quantity"</span>: <span class="pn">1</span>, <span class="pk">"price"</span>: <span class="ps">"22.00"</span> }\n'
+        "  ]\n}"
+    )
     body = f"""<div class="o-cp">
   <div class="o-bc"><span class="cur">Shopify</span></div>
   <div class="o-cp-right">
@@ -392,7 +475,9 @@ def components():
         if d == 10:
             cls.append("today")
         sel = ' aria-pressed="true"' if d in (10, 14) else ""
-        days.append(f'<button class="{" ".join(cls)}"{sel} aria-label="November {d}, 2026">{d}</button>')
+        days.append(
+            f'<button class="{" ".join(cls)}"{sel} aria-label="November {d}, 2026">{d}</button>'
+        )
     cal = "".join(days[:42])
     body = f"""<div class="o-cp"><div class="o-bc"><span class="cur">Components</span></div></div>
 <main class="o-content">
@@ -433,12 +518,36 @@ def components():
 
 def index():
     ic = Icons()
-    items = [("S01", "dashboard.html", "Ops Dashboard", "Approvals, sync failures, revenue by channel, low stock, invoices due"),
-             ("S02", "purchase-order.html", "Purchase order with tier validation", "OCA tiers, creator redirect, escalation, delegation, chatter"),
-             ("S05", "shopify.html", "Shopify console and sync log", "Webhook events, needs-mapping fix, retry, payload"),
-             ("—", "components.html", "Components", "Open states of select, date range, checkbox, segmented control")]
-    li = "".join(f'<li><a href="{h}"><span class="id">{i}</span><span><b>{t}</b><span class="d">{d}</span></span>{ic("chevron-right")}</a></li>'
-                 for i, h, t, d in items)
+    items = [
+        (
+            "S01",
+            "dashboard.html",
+            "Ops Dashboard",
+            "Approvals, sync failures, revenue by channel, low stock, invoices due",
+        ),
+        (
+            "S02",
+            "purchase-order.html",
+            "Purchase order with tier validation",
+            "OCA tiers, creator redirect, escalation, delegation, chatter",
+        ),
+        (
+            "S05",
+            "shopify.html",
+            "Shopify console and sync log",
+            "Webhook events, needs-mapping fix, retry, payload",
+        ),
+        (
+            "—",
+            "components.html",
+            "Components",
+            "Open states of select, date range, checkbox, segmented control",
+        ),
+    ]
+    li = "".join(
+        f'<li><a href="{h}"><span class="id">{i}</span><span><b>{t}</b><span class="d">{d}</span></span>{ic("chevron-right")}</a></li>'
+        for i, h, t, d in items
+    )
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kilnworks on Odoo · Mockups</title><link rel="stylesheet" href="kilnworks-ds.css"></head><body>{ic.sprite()}
 <main class="idx"><h1>Kilnworks on Odoo</h1>
@@ -449,7 +558,12 @@ Kilnworks Stoneware is a synthetic company; all data is made up.</p>
 
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
-    for name, fn in [("dashboard", dashboard), ("purchase-order", purchase_order), ("shopify", shopify),
-                     ("components", components), ("index", index)]:
+    for name, fn in [
+        ("dashboard", dashboard),
+        ("purchase-order", purchase_order),
+        ("shopify", shopify),
+        ("components", components),
+        ("index", index),
+    ]:
         (OUT / f"{name}.html").write_text(fn())
     print("built", OUT)
