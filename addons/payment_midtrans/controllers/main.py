@@ -18,11 +18,7 @@ class MidtransController(http.Controller):
     def midtrans_return(self, order_id=None, **_data):
         """Back from Snap. The query string is not trusted: the status comes from Midtrans."""
         if order_id:
-            tx = (
-                request.env["payment.transaction"]
-                .sudo()
-                .search([("reference", "=", order_id), ("provider_code", "=", "midtrans")], limit=1)
-            )
+            tx = request.env["payment.transaction"].sudo()._midtrans_find(order_id)
             if tx:
                 try:
                     tx._midtrans_sync_status()

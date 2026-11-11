@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import logging
 import re
+import secrets
 
 from werkzeug import urls
 
@@ -25,6 +26,10 @@ class PaymentTransaction(models.Model):
 
     midtrans_payment_type = fields.Char(readonly=True)
     midtrans_va_number = fields.Char(string="Virtual account", readonly=True)
+    # Midtrans refuses an order_id it has seen before, on the same merchant account, forever.
+    # A database rebuilt from scratch, or staging next to production, would reuse invoice
+    # references, so each attempt gets its own id: the reference plus a random suffix.
+    midtrans_order_id = fields.Char(readonly=True, copy=False, index="btree_not_null")
 
     @api.model
     def _compute_reference(self, provider_code, prefix=None, separator="-", **kwargs):
@@ -57,9 +62,11 @@ class PaymentTransaction(models.Model):
             else (self.partner_name, "")
         )
         enabled = const.PAYMENT_METHODS_MAPPING.get(self.payment_method_code)
+        if not self.midtrans_order_id:
+            self.midtrans_order_id = f"{self.reference}-{secrets.token_hex(3)}"
         payload = {
             "transaction_details": {
-                "order_id": self.reference,
+                "order_id": self.midtrans_order_id,
                 "gross_amount": self._midtrans_gross_amount(),
             },
             "customer_details": {
@@ -83,12 +90,20 @@ class PaymentTransaction(models.Model):
         reference = notification_data.get("order_id")
         if not reference:
             raise ValidationError(_("Midtrans: %s", _("Received data with missing order id.")))
-        tx = self.search([("reference", "=", reference), ("provider_code", "=", "midtrans")])
+        tx = self._midtrans_find(reference)
         if not tx:
             raise ValidationError(
                 _("Midtrans: no transaction found matching reference %s.", reference)
             )
         return tx
+
+    @api.model
+    def _midtrans_find(self, order_id):
+        """The transaction Midtrans knows as `order_id` (older transactions used the reference)."""
+        domain = [("provider_code", "=", "midtrans")]
+        return self.search(domain + [("midtrans_order_id", "=", order_id)], limit=1) or self.search(
+            domain + [("reference", "=", order_id)], limit=1
+        )
 
     def _midtrans_check_signature(self, data):
         """Signed data is trusted only if the signature matches and the amount is ours."""
@@ -172,7 +187,7 @@ class PaymentTransaction(models.Model):
         cannot be trusted and the notification may not have arrived (or cannot, on localhost)."""
         self.ensure_one()
         data = self.provider_id._midtrans_request(
-            "api", f"v2/{self.reference}/status", method="GET"
+            "api", f"v2/{self.midtrans_order_id or self.reference}/status", method="GET"
         )
         if str(data.get("status_code")) == "404":
             return False

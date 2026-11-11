@@ -39,8 +39,10 @@ class TestMidtrans(MidtransCommon):
         url = post.call_args.args[0]
         self.assertEqual(url, "https://app.sandbox.midtrans.com/snap/v1/transactions")
         sent = post.call_args.kwargs["json"]
+        self.assertRegex(tx.midtrans_order_id, rf"^{tx.reference}-[0-9a-f]{{6}}$")
         self.assertEqual(
-            sent["transaction_details"], {"order_id": tx.reference, "gross_amount": 21420000}
+            sent["transaction_details"],
+            {"order_id": tx.midtrans_order_id, "gross_amount": 21420000},
         )
         self.assertIsInstance(sent["transaction_details"]["gross_amount"], int)
         self.assertEqual(sent["enabled_payments"], ["bca_va"])
@@ -102,4 +104,29 @@ class TestMidtrans(MidtransCommon):
         ) as get:
             tx._midtrans_sync_status()
         self.assertTrue(get.call_args.args[0].endswith(f"/v2/{tx.reference}/status"))
+        self.assertEqual(tx.state, "done")
+
+    def test_order_id_unique_per_attempt(self):
+        """A rebuilt database reuses invoice references; Midtrans must still see a new order id."""
+        first = self._create_transaction("redirect")
+        second = self._create_transaction("redirect", reference=f"{first.reference}-retry")
+        body = {
+            "token": "t",
+            "redirect_url": "https://app.sandbox.midtrans.com/snap/v4/redirection/t",
+        }
+        with patch(f"{REQUESTS}.post", return_value=response(201, body)) as post:
+            first._get_specific_rendering_values(None)
+            second._get_specific_rendering_values(None)
+        sent = [c.kwargs["json"]["transaction_details"]["order_id"] for c in post.call_args_list]
+        self.assertEqual(len(set(sent)), 2)
+        self.assertTrue(sent[0].startswith(first.reference + "-") and sent[0] != first.reference)
+        self.assertEqual(self.env["payment.transaction"]._midtrans_find(sent[1]), second)
+
+    def test_status_uses_midtrans_order_id(self):
+        tx = self._create_transaction("redirect")
+        tx.midtrans_order_id = f"{tx.reference}-a1b2c3"
+        data = dict(self.notification("settlement", reference=tx.midtrans_order_id))
+        with patch(f"{REQUESTS}.get", return_value=response(200, data)) as get:
+            tx._midtrans_sync_status()
+        self.assertTrue(get.call_args.args[0].endswith(f"/v2/{tx.midtrans_order_id}/status"))
         self.assertEqual(tx.state, "done")
