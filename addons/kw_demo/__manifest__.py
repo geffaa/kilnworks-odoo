@@ -20,6 +20,7 @@
         "kw_reports",
         "kw_rest_api",
         "kw_ops_dashboard",
+        "kw_firing_batch",
     ],
     "data": [
         "data/res_partner_category.xml",

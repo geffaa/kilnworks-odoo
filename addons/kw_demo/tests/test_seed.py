@@ -21,8 +21,9 @@ class TestSeed(TransactionCase):
 
     def test_catalogue(self):
         goods = self.env["product.product"].search([("default_code", "=like", "KW-%")])
-        self.assertEqual(len(goods), 18)
-        self.assertEqual(len(set(goods.mapped("default_code"))), 18)
+        # 18 in the catalogue plus the sage mug launched this week (not mapped to Shopify yet).
+        self.assertEqual(len(goods), 19)
+        self.assertEqual(len(set(goods.mapped("default_code"))), 19)
         self.assertTrue(all(goods.mapped("is_storable")))
 
     def test_stock_matches_targets(self):
@@ -189,3 +190,15 @@ class TestDemoTour(HttpCase):
         self.start_tour(
             "/odoo/action-kw_ops_dashboard.action_dashboard", "kw_dashboard_to_po", login="ratna"
         )
+
+    def test_firing_batches(self):
+        batches = self.env["kw.firing.batch"].search([])
+        self.assertEqual(len(batches), 26)
+        self.assertEqual(
+            {
+                s: len(batches.filtered(lambda b, s=s: b.state == s))
+                for s in ("draft", "in_kiln", "done", "rejected")
+            },
+            {"draft": 1, "in_kiln": 1, "done": 23, "rejected": 1},
+        )
+        self.assertTrue(self.env["stock.lot"].search_count([("firing_batch_id", "!=", False)]) >= 6)

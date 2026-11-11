@@ -85,6 +85,8 @@ def _seed(env):
     _midtrans(env)
     _export_data(env, goods)
     _integrations(env)
+    _firing(env, random.Random(1280))
+    _new_product(env)
     env["ir.config_parameter"].sudo().set_param(SEED_FLAG, fields.Datetime.now())
     _logger.info("Kilnworks demo data seeded")
 
@@ -645,5 +647,112 @@ def _integrations(env):
             "name": "Warehouse scanner app",
             "url": "http://shopify-mock:8080/hooks/kilnworks",
             "secret": "kilnworks-demo-outgoing-secret",
+        }
+    )
+
+
+FIRING_NOTES = [
+    "Cone 10 down at 11:40, even across shelves.",
+    "Glaze crawled on two bowls, top shelf. Check bisque dust.",
+    "Reduction started late; celadon slightly olive.",
+    "Clean firing. Iron red came out deep.",
+    "",
+    "",
+]
+
+
+def _firing(env, rng):
+    """Two kilns and about 60 days of firing batches, a few still open, some linked to lots."""
+    Batch = env["kw.firing.batch"]
+    gas, electric = env["kw.kiln"].create(
+        [
+            {"name": "Gas kiln 1 (reduction)", "kiln_type": "gas", "capacity_pcs": 420},
+            {"name": "Electric kiln (bisque)", "kiln_type": "electric", "capacity_pcs": 260},
+        ]
+    )
+    fired = _products(env, "KW-").filtered(
+        lambda p: p.default_code[3:6] in ("MUG", "PLT", "BWL", "ESP")
+    )
+    today = fields.Date.context_today(Batch)
+    for i in range(24):
+        day = today - timedelta(days=60 - i * 2 - rng.randint(0, 1))
+        kiln = gas if i % 3 else electric
+        loads = []
+        for product in rng.sample(list(fired), 3):
+            loaded = rng.randint(40, 130)
+            loss = rng.choice([1, 2, 3, 4, 6, 9, 14]) if kiln == gas else rng.randint(0, 3)
+            loads.append(
+                Command.create(
+                    {"product_id": product.id, "qty_loaded": loaded, "qty_good": loaded - loss}
+                )
+            )
+        batch = Batch.create(
+            {
+                "kiln_id": kiln.id,
+                "fired_on": day,
+                "peak_temp": rng.randint(1265, 1295) if kiln == gas else rng.randint(990, 1010),
+                "duration_h": round(
+                    rng.uniform(10.5, 13.5) if kiln == gas else rng.uniform(8, 9.5), 1
+                ),
+                "line_ids": loads,
+                "note": rng.choice(FIRING_NOTES),
+            }
+        )
+        batch.action_start()
+        if i == 9:
+            batch.action_reject()
+            batch.note = "Burner fault at 900 °C, kiln shut down. Load re-fired in the next batch."
+        else:
+            batch.action_done()
+        if i % 4 == 0:
+            line = batch.line_ids[0]
+            env["stock.lot"].create(
+                {
+                    "name": f"{batch.name.replace('/', '-')}-{line.product_id.default_code[3:6]}",
+                    "product_id": line.product_id.id,
+                    "firing_batch_id": batch.id,
+                }
+            )
+    # Today's work: one firing in the kiln, one being loaded.
+    Batch.create(
+        {
+            "kiln_id": gas.id,
+            "fired_on": today,
+            "peak_temp": 1282,
+            "duration_h": 0,
+            "line_ids": [
+                Command.create({"product_id": fired[0].id, "qty_loaded": 120, "qty_good": 0})
+            ],
+        }
+    ).action_start()
+    Batch.create(
+        {
+            "kiln_id": electric.id,
+            "fired_on": today,
+            "line_ids": [
+                Command.create({"product_id": fired[1].id, "qty_loaded": 80, "qty_good": 0})
+            ],
+        }
+    )
+
+
+def _new_product(env):
+    """A mug launched this week: in Odoo and on Shopify, not mapped yet (#KW1043 waits for it).
+
+    Created last so it has no history and stays out of the counts above.
+    """
+    finished = env.ref("kw_demo.p_kw_mug_350_cel").categ_id
+    env["product.product"].create(
+        {
+            "name": "Sage mug 350 ml",
+            "default_code": "KW-MUG-350-SGE",
+            "type": "consu",
+            "is_storable": True,
+            "categ_id": finished.id,
+            "list_price": 185000,
+            "standard_price": 62000,
+            "weight": 0.42,
+            "purchase_ok": False,
+            "taxes_id": [Command.set(env.ref("base.main_company").account_sale_tax_id.ids)],
         }
     )
