@@ -4,7 +4,7 @@ Six catalogs, one per module. Each is ready to paste: title (under 75 characters
 three packages, requirements and FAQ. Prices are a starting point to adjust; delivery days assume part-time work.
 
 Proof for every catalog: public repo `github.com/geffaa/kilnworks-odoo` (the module folder), its tests in CI,
-the online demo and a 20-second GIF. Every catalog says plainly that Kilnworks is a demo build with synthetic data.
+a 20–30 second GIF (`media/gif/<scene>.gif`: approval, shopify, payment, api, dashboard, firing) and the walkthrough video (`media/kilnworks-walkthrough.mp4`). Every catalog says plainly that Kilnworks is a demo build with synthetic data.
 
 Shared line for the end of each description:
 

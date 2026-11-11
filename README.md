@@ -19,6 +19,19 @@ reports, and version migrations. Kilnworks Stoneware is made up; so is every cus
 | `kw_ops_dashboard`, `kw_reports` | OWL dashboard (approvals, sync failures, revenue by channel, low stock, invoices due) covered by a browser tour; export packing list per carton with HS codes and weights | done (M5) |
 | `kw_firing_batch` | A module written for 16.0 and migrated to 18.0 in its own commit, with a data-keeping migration script and an OpenUpgrade 16 → 17 → 18 rehearsal ([notes](docs/MIGRATION-16-18.md)) | done (M6) |
 
+## See it
+
+[Walkthrough video (2½ min, English captions)](media/kilnworks-walkthrough.mp4). Recorded from the local demo with
+`tools/capture.py` and `tools/make_media.sh`.
+
+| Approvals | Shopify sync |
+|---|---|
+| ![Approval inbox and a purchase order waiting for the production lead](media/gif/approval.gif) | ![Unknown SKU mapped, order retried and imported](media/gif/shopify.gif) |
+| **Midtrans payment** | **REST API** |
+| ![Invoice paid by BCA virtual account through Midtrans](media/gif/payment.gif) | ![OpenAPI routes and a stock call with and without a key](media/gif/api.gif) |
+| **Dashboard** | **16 → 18 migration** |
+| ![Operations dashboard](media/gif/dashboard.gif) | ![Firing batches migrated from Odoo 16](media/gif/firing.gif) |
+
 ## Run it
 
 Requirements: Docker with Compose.

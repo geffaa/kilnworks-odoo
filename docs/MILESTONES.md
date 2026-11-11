@@ -64,7 +64,7 @@ Estimasi jujur: MVP ±22–26 hari kerja paruh waktu (±5–6 minggu), lebih dar
 - [x] Commit migrasi terpisah (manifest, views, Python, OWL, `pre-migrate.py`) + `docs/MIGRATION-16-18.md`
 - [ ] Uji upgrade: DB v16 berisi 30 batch → OpenUpgrade 17 → 18 → script modul; catat hasil dan kendala
 - [ ] Demo online (putuskan VPS vs Tunnel), akun reviewer read-only, reset harian
-- [ ] Screenshot per modul, GIF 20 dtk per catalog, video walkthrough 3–4 menit
+- [x] Screenshot per modul, GIF per catalog, video walkthrough (2½ menit, teks Inggris; direkam lokal)
 - [ ] `docs/CASE-STUDY.md`, README final, repo publik `geffaa/kilnworks-odoo`
 - [x] Draf 6 Upwork Project Catalog (judul, deskripsi, paket, FAQ) di `docs/UPWORK-CATALOG.md`
 - **Fitur:** F10, F11
