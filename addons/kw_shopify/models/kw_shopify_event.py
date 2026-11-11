@@ -241,6 +241,7 @@ class KwShopifyEvent(models.Model):
         sku = (self._unmapped_skus(self._skus()) or [""])[0]
         return {
             "type": "ir.actions.act_window",
+            "name": self.env._("Map Shopify SKU"),
             "res_model": "kw.shopify.product.map",
             "view_mode": "form",
             "views": [(False, "form")],
